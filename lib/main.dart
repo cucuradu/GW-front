@@ -67,7 +67,8 @@ class MyApp extends StatelessWidget {
                       child: TextField(
                         decoration: InputDecoration(
                           hintText: 'E-mail',
-                          hintStyle: TextStyle(color: Colors.white),
+                          hintStyle:
+                              TextStyle(color: Colors.white, fontSize: 20),
                           border: InputBorder.none,
                         ),
                         style: TextStyle(color: Colors.white, fontSize: 20),
@@ -90,7 +91,7 @@ class MyApp extends StatelessWidget {
                               TextStyle(color: Colors.white, fontSize: 20),
                           border: InputBorder.none,
                         ),
-                        style: TextStyle(color: Colors.white),
+                        style: TextStyle(color: Colors.white, fontSize: 20),
                       ),
                     ),
                     SizedBox(height: 10),
