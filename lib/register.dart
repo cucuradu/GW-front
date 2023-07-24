@@ -61,12 +61,12 @@ class Register extends StatelessWidget {
                         'Register',
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize: 32, // Increase font size
+                          fontSize: 28, // Increase font size
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
-                    SizedBox(height: 10),
+                    SizedBox(height: 12),
                     Container(
                       padding: EdgeInsets.symmetric(horizontal: 6, vertical: 8),
                       width: double.infinity, // Adjust width as needed
@@ -84,7 +84,7 @@ class Register extends StatelessWidget {
                         style: TextStyle(color: Colors.white, fontSize: 20),
                       ),
                     ),
-                    SizedBox(height: 10),
+                    SizedBox(height: 12),
                     Container(
                       padding:
                           EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -104,7 +104,7 @@ class Register extends StatelessWidget {
                         style: TextStyle(color: Colors.white),
                       ),
                     ),
-                    SizedBox(height: 10),
+                    SizedBox(height: 12),
                     Container(
                       padding: EdgeInsets.symmetric(horizontal: 6, vertical: 8),
                       width: double.infinity, // Adjust width as needed
@@ -122,7 +122,7 @@ class Register extends StatelessWidget {
                         style: TextStyle(color: Colors.white, fontSize: 20),
                       ),
                     ),
-                    SizedBox(height: 10),
+                    SizedBox(height: 12),
                     Container(
                       padding:
                           EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -142,10 +142,52 @@ class Register extends StatelessWidget {
                         style: TextStyle(color: Colors.white),
                       ),
                     ),
+                    SizedBox(height: 10),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: RichText(
+                        text: TextSpan(
+                          text: "Already have an account? ",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                          ),
+                          children: [
+                            TextSpan(
+                              text: "Login here",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18, // Increase font size
+                                decoration: TextDecoration.underline,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 20),
+                    SizedBox(
+                      height: 48,
+                      width: double.infinity, // Adjust width as needed
+                      child: ElevatedButton(
+                        onPressed: () {
+                          // Add login button functionality here
+                        },
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.yellow,
+                        ),
+                        child: Text(
+                          'REGISTER',
+                          style:
+                              TextStyle(color: Color(0xFF17594A), fontSize: 20),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),
