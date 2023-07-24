@@ -12,18 +12,17 @@ class MyApp extends StatelessWidget {
       home: Scaffold(
         resizeToAvoidBottomInset: false,
         body: Stack(
+          fit: StackFit.expand,
           children: [
             Image.asset(
               'assets/image2.png',
               fit: BoxFit.cover,
-              width: double.infinity,
-              height: double.infinity,
             ),
-            Image.asset(
-              'assets/gradient.png',
-              width: double.infinity,
-              height: double.infinity,
-              fit: BoxFit.cover,
+            Positioned.fill(
+              child: Image.asset(
+                'assets/gradient.png',
+                fit: BoxFit.cover,
+              ),
             ),
             Positioned(
               top: MediaQuery.of(context).size.height / 3 - 175,
