@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'register.dart';
 
 void main() {
   runApp(MyApp());
@@ -93,26 +94,26 @@ class MyApp extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: 10),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: RichText(
-                        text: TextSpan(
-                          text: "Don't have an account? ",
+                    InkWell(
+                      onTap: () {
+                        // Navigate to the Register page here
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Register(),
+                          ),
+                        );
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          "Don't have an account? Register here",
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 18,
+                            decoration: TextDecoration.underline,
+                            fontWeight: FontWeight.bold,
                           ),
-                          children: [
-                            TextSpan(
-                              text: "Register here",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 18, // Increase font size
-                                decoration: TextDecoration.underline,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
                         ),
                       ),
                     ),
@@ -122,7 +123,12 @@ class MyApp extends StatelessWidget {
                       width: double.infinity, // Adjust width as needed
                       child: ElevatedButton(
                         onPressed: () {
-                          // Add login button functionality here
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => Register(),
+                            ),
+                          );
                         },
                         style: ElevatedButton.styleFrom(
                           primary: Colors.yellow,
