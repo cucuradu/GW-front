@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'login.dart';
 
-void main() {
-  runApp(Register());
+class Register extends StatefulWidget {
+  @override
+  _RegisterState createState() => _RegisterState();
 }
 
-class Register extends StatelessWidget {
+class _RegisterState extends State<Register> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -145,42 +147,55 @@ class Register extends StatelessWidget {
                     SizedBox(height: 10),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: RichText(
-                        text: TextSpan(
-                          text: "Already have an account? ",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                          ),
-                          children: [
-                            TextSpan(
-                              text: "Login here",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 18, // Increase font size
-                                decoration: TextDecoration.underline,
-                                fontWeight: FontWeight.bold,
-                              ),
+                      child: TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => Login()),
+                          );
+                        },
+                        style: TextButton.styleFrom(
+                          padding: EdgeInsets.zero,
+                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        ),
+                        child: RichText(
+                          text: TextSpan(
+                            text: "Already have an account? ",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
                             ),
-                          ],
+                            children: [
+                              TextSpan(
+                                text: "Login here",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18, // Increase font size
+                                  decoration: TextDecoration.underline,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
-                    SizedBox(height: 20),
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.02),
                     SizedBox(
-                      height: 48,
-                      width: double.infinity, // Adjust width as needed
+                      height: MediaQuery.of(context).size.height * 0.07,
+                      width: MediaQuery.of(context).size.width * 0.9,
                       child: ElevatedButton(
-                        onPressed: () {
-                          // Add login button functionality here
-                        },
+                        onPressed: () {},
                         style: ElevatedButton.styleFrom(
                           primary: Colors.yellow,
                         ),
                         child: Text(
                           'REGISTER',
-                          style:
-                              TextStyle(color: Color(0xFF17594A), fontSize: 20),
+                          style: TextStyle(
+                              color: Color(0xFF17594A),
+                              fontSize:
+                                  MediaQuery.of(context).size.width * 0.05),
                         ),
                       ),
                     ),
