@@ -37,19 +37,18 @@ class _RegisterState extends State<Register> {
                 ),
               ),
             ),
-            Positioned.fill(
-              child: Align(
-                alignment: Alignment.topCenter,
-                child: Image.asset(
-                  'assets/logo.png',
-                  width: 350,
-                  height: 350,
-                ),
+            Positioned(
+              top: MediaQuery.of(context).size.height / 3 - 320,
+              left: MediaQuery.of(context).size.width / 2 - 175,
+              child: Image.asset(
+                'assets/logo.png',
+                width: 350,
+                height: 350,
               ),
             ),
             Positioned(
-              top: MediaQuery.of(context).size.height /
-                  3, // Adjust the vertical position as needed
+              top: MediaQuery.of(context).size.height / 3 +
+                  25, // Adjust the vertical position as needed
               left: 0,
               right: 0,
               child: Padding(
@@ -63,15 +62,19 @@ class _RegisterState extends State<Register> {
                         'Register',
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize: 28, // Increase font size
+                          fontSize: MediaQuery.of(context).size.width *
+                              0.07, // Increase font size
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
-                    SizedBox(height: 12),
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.01),
                     Container(
-                      padding: EdgeInsets.symmetric(horizontal: 6, vertical: 8),
-                      width: double.infinity, // Adjust width as needed
+                      padding: EdgeInsets.symmetric(
+                          horizontal: MediaQuery.of(context).size.width * 0.02,
+                          vertical: MediaQuery.of(context).size.height * 0.01),
+                      width: MediaQuery.of(context).size.width * 0.9,
+                      height: MediaQuery.of(context).size.height * 0.08,
                       decoration: BoxDecoration(
                         color: Colors.transparent,
                         border: Border.all(color: Colors.white),
@@ -80,17 +83,24 @@ class _RegisterState extends State<Register> {
                       child: TextField(
                         decoration: InputDecoration(
                           hintText: 'Name',
-                          hintStyle: TextStyle(color: Colors.white),
+                          hintStyle: TextStyle(
+                              color: Colors.white,
+                              fontSize:
+                                  MediaQuery.of(context).size.width * 0.05),
                           border: InputBorder.none,
                         ),
-                        style: TextStyle(color: Colors.white, fontSize: 20),
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: MediaQuery.of(context).size.width * 0.05),
                       ),
                     ),
-                    SizedBox(height: 12),
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.01),
                     Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                      width: double.infinity, // Adjust width as needed
+                      padding: EdgeInsets.symmetric(
+                          horizontal: MediaQuery.of(context).size.width * 0.02,
+                          vertical: MediaQuery.of(context).size.height * 0.01),
+                      width: MediaQuery.of(context).size.width * 0.9,
+                      height: MediaQuery.of(context).size.height * 0.08,
                       decoration: BoxDecoration(
                         color: Colors.transparent,
                         border: Border.all(color: Colors.white),
@@ -99,17 +109,24 @@ class _RegisterState extends State<Register> {
                       child: TextField(
                         decoration: InputDecoration(
                           hintText: 'E-mail',
-                          hintStyle:
-                              TextStyle(color: Colors.white, fontSize: 20),
+                          hintStyle: TextStyle(
+                              color: Colors.white,
+                              fontSize:
+                                  MediaQuery.of(context).size.width * 0.05),
                           border: InputBorder.none,
                         ),
-                        style: TextStyle(color: Colors.white),
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: MediaQuery.of(context).size.width * 0.05),
                       ),
                     ),
-                    SizedBox(height: 12),
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.01),
                     Container(
-                      padding: EdgeInsets.symmetric(horizontal: 6, vertical: 8),
-                      width: double.infinity, // Adjust width as needed
+                      padding: EdgeInsets.symmetric(
+                          horizontal: MediaQuery.of(context).size.width * 0.02,
+                          vertical: MediaQuery.of(context).size.height * 0.01),
+                      width: MediaQuery.of(context).size.width * 0.9,
+                      height: MediaQuery.of(context).size.height * 0.08,
                       decoration: BoxDecoration(
                         color: Colors.transparent,
                         border: Border.all(color: Colors.white),
@@ -118,17 +135,24 @@ class _RegisterState extends State<Register> {
                       child: TextField(
                         decoration: InputDecoration(
                           hintText: 'Password',
-                          hintStyle: TextStyle(color: Colors.white),
+                          hintStyle: TextStyle(
+                              color: Colors.white,
+                              fontSize:
+                                  MediaQuery.of(context).size.width * 0.05),
                           border: InputBorder.none,
                         ),
-                        style: TextStyle(color: Colors.white, fontSize: 20),
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: MediaQuery.of(context).size.width * 0.05),
                       ),
                     ),
-                    SizedBox(height: 12),
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.01),
                     Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                      width: double.infinity, // Adjust width as needed
+                      padding: EdgeInsets.symmetric(
+                          horizontal: MediaQuery.of(context).size.width * 0.02,
+                          vertical: MediaQuery.of(context).size.height * 0.01),
+                      width: MediaQuery.of(context).size.width * 0.9,
+                      height: MediaQuery.of(context).size.height * 0.08,
                       decoration: BoxDecoration(
                         color: Colors.transparent,
                         border: Border.all(color: Colors.white),
@@ -137,14 +161,18 @@ class _RegisterState extends State<Register> {
                       child: TextField(
                         decoration: InputDecoration(
                           hintText: 'Confirm password',
-                          hintStyle:
-                              TextStyle(color: Colors.white, fontSize: 20),
+                          hintStyle: TextStyle(
+                              color: Colors.white,
+                              fontSize:
+                                  MediaQuery.of(context).size.width * 0.05),
                           border: InputBorder.none,
                         ),
-                        style: TextStyle(color: Colors.white),
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: MediaQuery.of(context).size.width * 0.05),
                       ),
                     ),
-                    SizedBox(height: 10),
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.02),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: TextButton(
@@ -181,7 +209,6 @@ class _RegisterState extends State<Register> {
                       ),
                     ),
                     SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-                    SizedBox(height: MediaQuery.of(context).size.height * 0.02),
                     SizedBox(
                       height: MediaQuery.of(context).size.height * 0.07,
                       width: MediaQuery.of(context).size.width * 0.9,
@@ -202,7 +229,7 @@ class _RegisterState extends State<Register> {
                   ],
                 ),
               ),
-            ),
+            )
           ],
         ),
       ),

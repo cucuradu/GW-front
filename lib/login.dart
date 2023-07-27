@@ -22,7 +22,7 @@ class Login extends StatelessWidget {
               ),
             ),
             Positioned(
-              top: MediaQuery.of(context).size.height / 3 - 175,
+              top: MediaQuery.of(context).size.height / 3 - 165,
               left: MediaQuery.of(context).size.width / 2 - 175,
               child: Image.asset(
                 'assets/logo.png',
@@ -55,8 +55,8 @@ class Login extends StatelessWidget {
                     SizedBox(height: MediaQuery.of(context).size.height * 0.01),
                     Container(
                       padding: EdgeInsets.symmetric(
-                          horizontal: MediaQuery.of(context).size.width * 0.015,
-                          vertical: MediaQuery.of(context).size.height * 0.02),
+                          horizontal: MediaQuery.of(context).size.width * 0.02,
+                          vertical: MediaQuery.of(context).size.height * 0.01),
                       width: MediaQuery.of(context).size.width * 0.9,
                       height: MediaQuery.of(context).size.height * 0.08,
                       decoration: BoxDecoration(
@@ -78,11 +78,11 @@ class Login extends StatelessWidget {
                             fontSize: MediaQuery.of(context).size.width * 0.05),
                       ),
                     ),
-                    SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.01),
                     Container(
                       padding: EdgeInsets.symmetric(
-                          horizontal: MediaQuery.of(context).size.width * 0.04,
-                          vertical: MediaQuery.of(context).size.height * 0.02),
+                          horizontal: MediaQuery.of(context).size.width * 0.02,
+                          vertical: MediaQuery.of(context).size.height * 0.01),
                       width: MediaQuery.of(context).size.width * 0.9,
                       height: MediaQuery.of(context).size.height * 0.08,
                       decoration: BoxDecoration(
