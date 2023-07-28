@@ -63,7 +63,7 @@ class Homepage extends StatelessWidget {
               color: Colors.white, // Background color
             ),
             Positioned(
-              bottom: MediaQuery.of(context).size.height * 0.62,
+              bottom: MediaQuery.of(context).size.height * 0.61,
               left: MediaQuery.of(context).size.width * 0.04,
               right: MediaQuery.of(context).size.width * 0.04,
               child: ElevatedButton(
@@ -85,6 +85,18 @@ class Homepage extends StatelessWidget {
                 ),
               ),
             ),
+            Positioned(
+              bottom: MediaQuery.of(context).size.height * 0.27,
+              left: MediaQuery.of(context).size.width * 0.04,
+              right: MediaQuery.of(context).size.width * 0.04,
+              child: Container(
+                width: MediaQuery.of(context).size.width * 0.85,
+                height: MediaQuery.of(context).size.height * 0.25,
+                child: Center(
+                  child: Image.asset('assets/nodata.png'),
+                ),
+              ),
+            )
           ],
         ),
       ),
