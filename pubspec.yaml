@@ -66,6 +66,10 @@ flutter:
     - assets/minilogo.png
     - assets/plus.png
     - assets/nodata.png
+    - assets/addbutton.png
+    - assets/flower.png
+    - assets/profile.png
+    - assets/whiteplus.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:
