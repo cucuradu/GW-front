@@ -100,38 +100,27 @@ class Homepage extends StatelessWidget {
             ),
           ],
         ),
-        // Add the FAB here if needed
-        floatingActionButtonAnimator:
-            FloatingActionButtonAnimator.scaling, // Add an animation to the FAB
-        // Adjust the position of the FAB
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        floatingActionButton: Padding(
-          padding: const EdgeInsets.only(bottom: 16.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Padding(
-                padding: EdgeInsets.only(left: 0.0), // Adjust left padding here
-                child: SizedBox(
-                  width: 70, // Adjust the width to make it bigger
-                  height: 70, // Adjust the height to make it bigger
-                  child: FloatingActionButton(
-                    onPressed: () {
-                      // Your left button action goes here
-                    },
-                    elevation: 0,
-                    backgroundColor: Colors.white, // Set the button color here
-                    child: Image.asset(
-                      'assets/flower.png',
-                      height: MediaQuery.of(context).size.height * 0.16,
-                    ),
+        // Add the BottomAppBar here
+        bottomNavigationBar: PreferredSize(
+          preferredSize:
+              Size.fromHeight(MediaQuery.of(context).size.height * 0.08),
+          child: BottomAppBar(
+            color: Colors.blue,
+            shape: CircularNotchedRectangle(),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                FloatingActionButton(
+                  onPressed: () {
+                    // Your left button action goes here
+                  },
+                  backgroundColor: Colors.white, // Set the button color here
+                  child: Image.asset(
+                    'assets/flower.png',
+                    height: MediaQuery.of(context).size.height * 0.16,
                   ),
                 ),
-              ),
-              SizedBox(
-                width: 70, // Adjust the width to make it bigger
-                height: 70, // Adjust the height to make it bigger
-                child: FloatingActionButton(
+                FloatingActionButton(
                   onPressed: () {
                     Navigator.push(
                       context,
@@ -145,27 +134,18 @@ class Homepage extends StatelessWidget {
                     height: MediaQuery.of(context).size.height * 0.07,
                   ),
                 ),
-              ),
-              Padding(
-                padding:
-                    EdgeInsets.only(right: 0.0), // Adjust right padding here
-                child: SizedBox(
-                  width: 70, // Adjust the width to make it bigger
-                  height: 70, // Adjust the height to make it bigger
-                  child: FloatingActionButton(
-                    onPressed: () {
-                      // Your right button action goes here
-                    },
-                    elevation: 0,
-                    backgroundColor: Colors.white, // Set the button color here
-                    child: Image.asset(
-                      'assets/profile.png',
-                      height: MediaQuery.of(context).size.height * 0.16,
-                    ),
+                FloatingActionButton(
+                  onPressed: () {
+                    // Your right button action goes here
+                  },
+                  backgroundColor: Colors.white, // Set the button color here
+                  child: Image.asset(
+                    'assets/profile.png',
+                    height: MediaQuery.of(context).size.height * 0.16,
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
