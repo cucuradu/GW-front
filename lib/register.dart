@@ -3,6 +3,8 @@ import 'homepage.dart';
 import 'login.dart';
 
 class Register extends StatelessWidget {
+  String userName = '';
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -85,6 +87,9 @@ class Register extends StatelessWidget {
                                   MediaQuery.of(context).size.width * 0.05),
                           border: InputBorder.none,
                         ),
+                        onChanged: (text) {
+                          userName = text;
+                        },
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: MediaQuery.of(context).size.width * 0.05),
@@ -211,7 +216,9 @@ class Register extends StatelessWidget {
                         onPressed: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => Homepage()),
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    Homepage(userName: userName)),
                           );
                         },
                         style: ElevatedButton.styleFrom(

@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:gwfront/login.dart';
+import 'register.dart';
 
 class Homepage extends StatelessWidget {
+  String? userName;
+  Homepage({this.userName});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -31,7 +35,7 @@ class Homepage extends StatelessWidget {
               ),
               children: [
                 TextSpan(
-                  text: "John",
+                  text: userName ?? "Name",
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 28,
@@ -57,13 +61,12 @@ class Homepage extends StatelessWidget {
           ],
         ),
         body: Stack(
-          // Use a Stack to position the buttons
           children: [
             Container(
               color: Colors.white, // Background color
             ),
             Positioned(
-              bottom: MediaQuery.of(context).size.height * 0.61,
+              bottom: MediaQuery.of(context).size.height * 0.515,
               left: MediaQuery.of(context).size.width * 0.04,
               right: MediaQuery.of(context).size.width * 0.04,
               child: ElevatedButton(
@@ -87,7 +90,7 @@ class Homepage extends StatelessWidget {
               ),
             ),
             Positioned(
-              bottom: MediaQuery.of(context).size.height * 0.27,
+              bottom: MediaQuery.of(context).size.height * 0.17,
               left: MediaQuery.of(context).size.width * 0.04,
               right: MediaQuery.of(context).size.width * 0.04,
               child: Container(
@@ -100,52 +103,60 @@ class Homepage extends StatelessWidget {
             ),
           ],
         ),
-        // Add the BottomAppBar here
-        bottomNavigationBar: PreferredSize(
-          preferredSize:
-              Size.fromHeight(MediaQuery.of(context).size.height * 0.08),
-          child: BottomAppBar(
-            color: Colors.blue,
-            shape: CircularNotchedRectangle(),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                FloatingActionButton(
+        // Add the custom BottomAppBar here
+        bottomNavigationBar: Container(
+          height: MediaQuery.of(context).size.height *
+              0.097, // Adjust the height here
+          color: Colors.white,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              SizedBox(
+                width: 72,
+                height: 72,
+                child: FloatingActionButton(
                   onPressed: () {
                     // Your left button action goes here
                   },
                   backgroundColor: Colors.white, // Set the button color here
+                  elevation: 0,
                   child: Image.asset(
                     'assets/flower.png',
-                    height: MediaQuery.of(context).size.height * 0.16,
+                    height: 77,
                   ),
                 ),
-                FloatingActionButton(
+              ),
+              SizedBox(
+                width: 75,
+                height: 75,
+                child: FloatingActionButton(
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => Login()),
-                    );
+                    // Your add button action goes here
                   },
                   backgroundColor:
                       Color(0xFF8EAC50), // Set the button color here
                   child: Image.asset(
                     'assets/whiteplus.png',
-                    height: MediaQuery.of(context).size.height * 0.07,
+                    height: 30,
                   ),
                 ),
-                FloatingActionButton(
+              ),
+              SizedBox(
+                width: 72,
+                height: 72,
+                child: FloatingActionButton(
                   onPressed: () {
                     // Your right button action goes here
                   },
                   backgroundColor: Colors.white, // Set the button color here
+                  elevation: 0,
                   child: Image.asset(
                     'assets/profile.png',
-                    height: MediaQuery.of(context).size.height * 0.16,
+                    height: 77,
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
