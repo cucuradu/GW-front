@@ -214,6 +214,7 @@ class Register extends StatelessWidget {
                       width: MediaQuery.of(context).size.width * 0.9,
                       child: ElevatedButton(
                         onPressed: () {
+                          if (userName == '') userName = "Name";
                           Navigator.push(
                             context,
                             MaterialPageRoute(

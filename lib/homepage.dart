@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gwfront/login.dart';
+import 'package:gwfront/sensorspage.dart';
 import 'register.dart';
 
 class Homepage extends StatelessWidget {
@@ -116,7 +117,13 @@ class Homepage extends StatelessWidget {
                 height: 72,
                 child: FloatingActionButton(
                   onPressed: () {
-                    // Your left button action goes here
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => Sensors(
+                                userName: userName,
+                              )),
+                    );
                   },
                   backgroundColor: Colors.white, // Set the button color here
                   elevation: 0,
