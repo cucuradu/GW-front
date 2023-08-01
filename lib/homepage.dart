@@ -66,41 +66,6 @@ class Homepage extends StatelessWidget {
             Container(
               color: Colors.white, // Background color
             ),
-<<<<<<< HEAD
-            Positioned(
-              bottom: MediaQuery.of(context).size.height * 0.515,
-              left: MediaQuery.of(context).size.width * 0.04,
-              right: MediaQuery.of(context).size.width * 0.04,
-              child: ElevatedButton(
-                onPressed: () {
-                  // Your button action goes here
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFFFAE392),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                ),
-                child: SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.85,
-                  height: MediaQuery.of(context).size.height * 0.25,
-                  child: Center(
-                    child: Image.asset('assets/plus.png',
-                        height: 60), // Increase the size of the plus button
-                  ),
-                ),
-              ),
-            ),
-            Positioned(
-              bottom: MediaQuery.of(context).size.height * 0.17,
-              left: MediaQuery.of(context).size.width * 0.04,
-              right: MediaQuery.of(context).size.width * 0.04,
-              child: SizedBox(
-                width: MediaQuery.of(context).size.width * 0.85,
-                height: MediaQuery.of(context).size.height * 0.25,
-                child: Center(
-                  child: Image.asset('assets/nodata.png'),
-=======
             SizedBox(height: MediaQuery.of(context).size.height * 0.035),
             Align(
               alignment: Alignment.bottomCenter,
@@ -144,7 +109,6 @@ class Homepage extends StatelessWidget {
                       ),
                     ),
                   ],
->>>>>>> f7d54d0830e3dd5b072a152adaafa029d8a80c67
                 ),
               ),
             ),

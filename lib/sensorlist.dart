@@ -1,21 +1,48 @@
 import 'package:flutter/material.dart';
 
 class SensorList extends StatelessWidget {
-  const SensorList({super.key});
+  String? sensorName;
+  SensorList({super.key, this.sensorName});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: EdgeInsets.only(
-            left: MediaQuery.of(context).size.width * 0.04,
-            right: MediaQuery.of(context).size.width * 0.04,
-            bottom: MediaQuery.of(context).size.height * 0.035),
+      padding: EdgeInsets.only(
+        left: MediaQuery.of(context).size.width * 0.005,
+        right: MediaQuery.of(context).size.width * 0.005,
+        bottom: MediaQuery.of(context).size.height * 0.015,
+      ),
+      child: ElevatedButton(
+        onPressed: () {
+          // Your button action goes here
+        },
+        style: ElevatedButton.styleFrom(
+          primary: Colors.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          elevation: 10,
+        ),
         child: Container(
-          padding: EdgeInsets.symmetric(
-              horizontal: MediaQuery.of(context).size.width * 0.8,
-              vertical: MediaQuery.of(context).size.height * 0.01),
-          child: Text("Sensor 1"),
-          decoration: BoxDecoration(color: Colors.grey),
-        ));
+          width: MediaQuery.of(context).size.width * 0.92,
+          height: 57,
+          child: Center(
+            child: Padding(
+              padding: EdgeInsets.only(
+                right: MediaQuery.of(context).size.width * 0.6,
+              ),
+              child: Text(
+                sensorName!,
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: MediaQuery.of(context).size.width * 0.055,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }

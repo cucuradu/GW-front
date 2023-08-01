@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(Recomandations());
 }
 
-class MyApp extends StatelessWidget {
+class Recomandations extends StatelessWidget {
   @override
+  _Recomandations createState() => _Recomandations();
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: MyPage(),
+      home: _Recomandations(),
     );
   }
 }
 
-class MyPage extends StatelessWidget {
+class _Recomandations extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
