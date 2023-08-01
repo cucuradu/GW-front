@@ -61,44 +61,55 @@ class Homepage extends StatelessWidget {
             ),
           ],
         ),
-        body: Stack(
+        body: ListView(
+          physics: NeverScrollableScrollPhysics(),
           children: [
             Container(
               color: Colors.white, // Background color
             ),
-            Positioned(
-              bottom: MediaQuery.of(context).size.height * 0.515,
-              left: MediaQuery.of(context).size.width * 0.04,
-              right: MediaQuery.of(context).size.width * 0.04,
-              child: ElevatedButton(
-                onPressed: () {
-                  // Your button action goes here
-                },
-                style: ElevatedButton.styleFrom(
-                  primary: Color(0xFFFAE392),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                ),
-                child: Container(
-                  width: MediaQuery.of(context).size.width * 0.85,
-                  height: MediaQuery.of(context).size.height * 0.25,
-                  child: Center(
-                    child: Image.asset('assets/plus.png',
-                        height: 60), // Increase the size of the plus button
-                  ),
-                ),
-              ),
-            ),
-            Positioned(
-              bottom: MediaQuery.of(context).size.height * 0.17,
-              left: MediaQuery.of(context).size.width * 0.04,
-              right: MediaQuery.of(context).size.width * 0.04,
-              child: Container(
-                width: MediaQuery.of(context).size.width * 0.85,
-                height: MediaQuery.of(context).size.height * 0.25,
-                child: Center(
-                  child: Image.asset('assets/nodata.png'),
+            SizedBox(height: MediaQuery.of(context).size.height * 0.035),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                    horizontal: MediaQuery.of(context).size.height * 0.02),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Sensors(
+                              userName: userName,
+                            ),
+                          ),
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        primary: Color(0xFFFAE392),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                      ),
+                      child: Container(
+                        width: MediaQuery.of(context).size.width * 0.85,
+                        height: MediaQuery.of(context).size.height * 0.25,
+                        child: Center(
+                          child: Image.asset('assets/plus.png', height: 60),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.11),
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.85,
+                      height: MediaQuery.of(context).size.height * 0.25,
+                      child: Center(
+                        child: Image.asset('assets/nodata.png'),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -120,9 +131,10 @@ class Homepage extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => Sensors(
-                                userName: userName,
-                              )),
+                        builder: (context) => Sensors(
+                          userName: userName,
+                        ),
+                      ),
                     );
                   },
                   backgroundColor: Colors.white, // Set the button color here

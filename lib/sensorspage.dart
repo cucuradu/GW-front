@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gwfront/homepage.dart';
 import 'package:gwfront/login.dart';
+import 'package:gwfront/sensorlist.dart';
 import 'register.dart';
 
 class Sensors extends StatefulWidget {
@@ -75,73 +76,87 @@ class _Sensors extends State<Sensors> {
             ),
           ],
         ),
-        body: Stack(
+        body: ListView(
           children: [
             Container(
               color: Colors.white, // Background color
             ),
+            SizedBox(height: MediaQuery.of(context).size.height * 0.035),
             Align(
               alignment: Alignment.bottomCenter,
               child: Padding(
-                padding: EdgeInsets.only(
-                  left: MediaQuery.of(context).size.width * 0.04,
-                  right: MediaQuery.of(context).size.width * 0.04,
-                  bottom: MediaQuery.of(context).size.height * 0.52,
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(20),
-                  child: Image.asset(
-                    'assets/map.png',
-                    fit: BoxFit.cover,
-                    height: MediaQuery.of(context).size.height *
-                        0.25, // Adjust the height here
-                  ),
-                ),
-              ),
-            ),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Padding(
-                padding: EdgeInsets.only(
-                  left: MediaQuery.of(context).size.width * 0.01,
-                  right: MediaQuery.of(context).size.width * 0.5,
-                  bottom: MediaQuery.of(context).size.height * 0.44,
-                ),
-                child: Text(
-                  'Sensors List',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: MediaQuery.of(context).size.width * 0.07,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Padding(
-                padding: EdgeInsets.only(
-                  left: MediaQuery.of(context).size.width * 0.03,
-                  right: MediaQuery.of(context).size.width * 0.03,
-                  bottom: MediaQuery.of(context).size.height * 0.35,
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(20),
-                  child: Container(
-                    width: MediaQuery.of(context).size.width * 0.92,
-                    height: 50,
-                    decoration: BoxDecoration(color: Colors.grey),
-                    child: Center(
-                      child: Text(
-                        'Button',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
+                padding: EdgeInsets.symmetric(
+                    horizontal: MediaQuery.of(context).size.height * 0.02),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: Image.asset(
+                        'assets/map.png',
+                        fit: BoxFit.cover,
+                        height: MediaQuery.of(context).size.height *
+                            0.25, // Adjust the height here
                       ),
                     ),
-                  ),
+                    SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.035),
+                    Text(
+                      'Sensors List',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: MediaQuery.of(context).size.width * 0.07,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.035),
+                    // ClipRRect(
+                    //   borderRadius: BorderRadius.circular(20),
+                    //   child: Container(
+                    //     width: MediaQuery.of(context).size.width * 0.92,
+                    //     height: 50,
+                    //     decoration: BoxDecoration(color: Colors.grey),
+                    //     child: Center(
+                    //       child: Padding(
+                    //         padding: EdgeInsets.only(
+                    //             left: MediaQuery.of(context).size.width * 0.02,
+                    //             right:
+                    //                 MediaQuery.of(context).size.width * 0.68),
+                    //         child: Text(
+                    //           'Sensor 1',
+                    //           style: TextStyle(
+                    //             color: Colors.black,
+                    //             fontSize: 20,
+                    //             fontWeight: FontWeight.bold,
+                    //           ),
+                    //         ),
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
+                    SensorList(),
+                    Text(
+                      'Alerts',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: MediaQuery.of(context).size.width * 0.07,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.035),
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: Container(
+                        decoration: BoxDecoration(color: Color(0xFFFAE392)),
+                        height: MediaQuery.of(context).size.height *
+                            0.25, // Adjust the height here
+                      ),
+                    ),
+                    SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.035),
+                  ],
                 ),
               ),
             ),
