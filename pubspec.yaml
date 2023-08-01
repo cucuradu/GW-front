@@ -71,6 +71,8 @@ flutter:
     - assets/profile.png
     - assets/whiteplus.png
     - assets/map.png
+    - assets/image6.png
+    - assets/backbutton.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:

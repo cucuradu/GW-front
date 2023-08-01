@@ -3,6 +3,8 @@ import 'register.dart';
 import 'homepage.dart';
 
 class Login extends StatelessWidget {
+  const Login({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -119,7 +121,7 @@ class Login extends StatelessWidget {
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: RichText(
-                          text: TextSpan(
+                          text: const TextSpan(
                             text: "Don’t have an account? ",
                             style: TextStyle(
                               color: Colors.white,
@@ -154,12 +156,12 @@ class Login extends StatelessWidget {
                           );
                         },
                         style: ElevatedButton.styleFrom(
-                          primary: Colors.yellow,
+                          backgroundColor: Colors.yellow,
                         ),
                         child: Text(
                           'SIGN IN',
                           style: TextStyle(
-                              color: Color(0xFF17594A),
+                              color: const Color(0xFF17594A),
                               fontSize:
                                   MediaQuery.of(context).size.width * 0.05),
                         ),

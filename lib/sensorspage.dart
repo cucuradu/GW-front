@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:gwfront/homepage.dart';
 import 'package:gwfront/login.dart';
-import 'register.dart';
 
 class Sensors extends StatelessWidget {
   String? userName;
-  Sensors({this.userName});
+  Sensors({super.key, this.userName});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +20,7 @@ class Sensors extends StatelessWidget {
               width: 60,
               height: 60,
               decoration: BoxDecoration(
-                color: Color(0xFF8EAC50),
+                color: const Color(0xFF8EAC50),
                 borderRadius: BorderRadius.circular(15),
               ),
             ),
@@ -29,7 +28,7 @@ class Sensors extends StatelessWidget {
           title: RichText(
             text: TextSpan(
               text: "Hi, ",
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.black,
                 fontSize: 28,
                 fontWeight: FontWeight.normal,
@@ -37,7 +36,7 @@ class Sensors extends StatelessWidget {
               children: [
                 TextSpan(
                   text: userName ?? "Name",
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Colors.black,
                     fontSize: 28,
                     fontWeight: FontWeight.bold,
@@ -51,7 +50,7 @@ class Sensors extends StatelessWidget {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => Login()),
+                  MaterialPageRoute(builder: (context) => const Login()),
                 );
               },
               child: Image.asset(
@@ -136,7 +135,7 @@ class Sensors extends StatelessWidget {
                     // Your add button action goes here
                   },
                   backgroundColor:
-                      Color(0xFF8EAC50), // Set the button color here
+                      const Color(0xFF8EAC50), // Set the button color here
                   child: Image.asset(
                     'assets/whiteplus.png',
                     height: 30,

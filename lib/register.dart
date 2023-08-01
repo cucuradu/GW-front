@@ -5,6 +5,8 @@ import 'login.dart';
 class Register extends StatelessWidget {
   String userName = '';
 
+  Register({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -180,14 +182,14 @@ class Register extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => Login(),
+                            builder: (context) => const Login(),
                           ),
                         );
                       },
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: RichText(
-                          text: TextSpan(
+                          text: const TextSpan(
                             text: "Already have an account? ",
                             style: TextStyle(
                               color: Colors.white,
@@ -223,12 +225,12 @@ class Register extends StatelessWidget {
                           );
                         },
                         style: ElevatedButton.styleFrom(
-                          primary: Colors.yellow,
+                          backgroundColor: Colors.yellow,
                         ),
                         child: Text(
                           'REGISTER',
                           style: TextStyle(
-                              color: Color(0xFF17594A),
+                              color: const Color(0xFF17594A),
                               fontSize:
                                   MediaQuery.of(context).size.width * 0.05),
                         ),

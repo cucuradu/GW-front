@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:gwfront/login.dart';
 import 'package:gwfront/sensorspage.dart';
-import 'register.dart';
 
 class Homepage extends StatelessWidget {
   String? userName;
-  Homepage({this.userName});
+  Homepage({super.key, this.userName});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +20,7 @@ class Homepage extends StatelessWidget {
               width: 60,
               height: 60,
               decoration: BoxDecoration(
-                color: Color(0xFF8EAC50),
+                color: const Color(0xFF8EAC50),
                 borderRadius: BorderRadius.circular(15),
               ),
             ),
@@ -29,7 +28,7 @@ class Homepage extends StatelessWidget {
           title: RichText(
             text: TextSpan(
               text: "Hi, ",
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.black,
                 fontSize: 28,
                 fontWeight: FontWeight.normal,
@@ -37,7 +36,7 @@ class Homepage extends StatelessWidget {
               children: [
                 TextSpan(
                   text: userName ?? "Name",
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Colors.black,
                     fontSize: 28,
                     fontWeight: FontWeight.bold,
@@ -51,7 +50,7 @@ class Homepage extends StatelessWidget {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => Login()),
+                  MaterialPageRoute(builder: (context) => const Login()),
                 );
               },
               child: Image.asset(
@@ -75,12 +74,12 @@ class Homepage extends StatelessWidget {
                   // Your button action goes here
                 },
                 style: ElevatedButton.styleFrom(
-                  primary: Color(0xFFFAE392),
+                  backgroundColor: const Color(0xFFFAE392),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20),
                   ),
                 ),
-                child: Container(
+                child: SizedBox(
                   width: MediaQuery.of(context).size.width * 0.85,
                   height: MediaQuery.of(context).size.height * 0.25,
                   child: Center(
@@ -94,7 +93,7 @@ class Homepage extends StatelessWidget {
               bottom: MediaQuery.of(context).size.height * 0.17,
               left: MediaQuery.of(context).size.width * 0.04,
               right: MediaQuery.of(context).size.width * 0.04,
-              child: Container(
+              child: SizedBox(
                 width: MediaQuery.of(context).size.width * 0.85,
                 height: MediaQuery.of(context).size.height * 0.25,
                 child: Center(
@@ -141,7 +140,7 @@ class Homepage extends StatelessWidget {
                     // Your add button action goes here
                   },
                   backgroundColor:
-                      Color(0xFF8EAC50), // Set the button color here
+                      const Color(0xFF8EAC50), // Set the button color here
                   child: Image.asset(
                     'assets/whiteplus.png',
                     height: 30,
