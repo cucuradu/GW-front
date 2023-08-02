@@ -26,20 +26,24 @@ class SensorList extends StatelessWidget {
         child: Container(
           width: MediaQuery.of(context).size.width * 0.92,
           height: 57,
-          child: Center(
-            child: Padding(
-              padding: EdgeInsets.only(
-                right: MediaQuery.of(context).size.width * 0.6,
-              ),
-              child: Text(
-                sensorName!,
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: MediaQuery.of(context).size.width * 0.055,
-                  fontWeight: FontWeight.bold,
+          child: Row(
+            // Use a Row to align the text to the left
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Padding(
+                padding: EdgeInsets.only(
+                  left: MediaQuery.of(context).size.width * 0.0,
+                ),
+                child: Text(
+                  sensorName!,
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: MediaQuery.of(context).size.width * 0.055,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
-            ),
+            ],
           ),
         ),
       ),

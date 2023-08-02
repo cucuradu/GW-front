@@ -14,17 +14,11 @@ class Sensors extends StatefulWidget {
 class _Sensors extends State<Sensors> {
   String? userName;
   _Sensors(this.userName);
-  List<String> sensors = [
-    'Sensor 1',
-    'Sensor 2',
-    'Sensor 3',
-    'Sensor 4',
-    'Sensor 5'
-  ];
+  List<String> sensors = [];
 
   void addSensor() {
     setState(() {
-      sensors.add("Sensor");
+      sensors.add("Sensor ${sensors.length + 1}");
     });
   }
 
@@ -92,7 +86,8 @@ class _Sensors extends State<Sensors> {
               alignment: Alignment.bottomCenter,
               child: Padding(
                 padding: EdgeInsets.symmetric(
-                    horizontal: MediaQuery.of(context).size.height * 0.02),
+                  horizontal: MediaQuery.of(context).size.height * 0.02,
+                ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -106,7 +101,8 @@ class _Sensors extends State<Sensors> {
                       ),
                     ),
                     SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.035),
+                      height: MediaQuery.of(context).size.height * 0.035,
+                    ),
                     Padding(
                       padding: EdgeInsets.only(
                         right: MediaQuery.of(context).size.width * 0.497,
@@ -122,14 +118,17 @@ class _Sensors extends State<Sensors> {
                       ),
                     ),
                     SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.035),
-                    // ListView.builder(
-                    //     physics: NeverScrollableScrollPhysics(),
-                    //     itemCount: sensors.length,
-                    //     itemBuilder: (context, index) {
-                    //       return SensorList(sensorName: sensors[index]);
-                    //     }),
-                    SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                      height: MediaQuery.of(context).size.height * 0.035,
+                    ),
+                    Column(
+                      children: [
+                        for (int i = 0; i < sensors.length; i++)
+                          SensorList(sensorName: sensors[i]),
+                      ],
+                    ),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.02,
+                    ),
                     Padding(
                       padding: EdgeInsets.only(
                         right: MediaQuery.of(context).size.width * 0.71,
@@ -145,7 +144,8 @@ class _Sensors extends State<Sensors> {
                       ),
                     ),
                     SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.035),
+                      height: MediaQuery.of(context).size.height * 0.035,
+                    ),
                     ClipRRect(
                       borderRadius: BorderRadius.circular(20),
                       child: Container(
@@ -155,14 +155,14 @@ class _Sensors extends State<Sensors> {
                       ),
                     ),
                     SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.035),
+                      height: MediaQuery.of(context).size.height * 0.035,
+                    ),
                   ],
                 ),
               ),
             ),
           ],
         ),
-        // Add the custom BottomAppBar here
         bottomNavigationBar: Container(
           height: MediaQuery.of(context).size.height *
               0.097, // Adjust the height here
@@ -196,11 +196,9 @@ class _Sensors extends State<Sensors> {
                 width: 75,
                 height: 75,
                 child: FloatingActionButton(
-                  onPressed: () {
-                    addSensor();
-                  },
+                  onPressed: addSensor,
                   backgroundColor:
-                      const Color(0xFF8EAC50), // Set the button color here
+                      Color(0xFF8EAC50), // Set the button color here
                   child: Image.asset(
                     'assets/whiteplus.png',
                     height: 30,
