@@ -123,7 +123,10 @@ class _Sensors extends State<Sensors> {
                     Column(
                       children: [
                         for (int i = 0; i < sensors.length; i++)
-                          SensorList(sensorName: sensors[i]),
+                          SensorList(
+                            sensorName: sensors[i],
+                            userName: userName,
+                          ),
                       ],
                     ),
                     SizedBox(

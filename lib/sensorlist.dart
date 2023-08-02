@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:gwfront/sensordetails.dart';
 
 class SensorList extends StatelessWidget {
-  String? sensorName;
-  SensorList({super.key, this.sensorName});
+  String? sensorName, userName;
+  SensorList({super.key, this.sensorName, this.userName});
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +15,13 @@ class SensorList extends StatelessWidget {
       ),
       child: ElevatedButton(
         onPressed: () {
-          // Your button action goes here
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => SensorDetails(
+                      userName: userName,
+                    )),
+          );
         },
         style: ElevatedButton.styleFrom(
           primary: Colors.white,
