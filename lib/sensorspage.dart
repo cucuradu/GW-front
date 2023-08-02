@@ -6,6 +6,7 @@ import 'register.dart';
 
 class Sensors extends StatefulWidget {
   String? userName;
+  List<String>? sensors;
   Sensors({this.userName});
   @override
   _Sensors createState() => _Sensors(userName);
@@ -103,19 +104,25 @@ class _Sensors extends State<Sensors> {
                     SizedBox(
                       height: MediaQuery.of(context).size.height * 0.035,
                     ),
-                    Padding(
-                      padding: EdgeInsets.only(
-                        right: MediaQuery.of(context).size.width * 0.497,
-                        left: MediaQuery.of(context).size.width * 0.01,
-                      ),
-                      child: Text(
-                        'Sensors list',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: MediaQuery.of(context).size.width * 0.07,
-                          fontWeight: FontWeight.bold,
+                    Row(
+                      // Use a Row to align the text to the left
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(
+                            left: MediaQuery.of(context).size.width * 0.0,
+                          ),
+                          child: Text(
+                            "Sensor list",
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize:
+                                  MediaQuery.of(context).size.width * 0.07,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                         ),
-                      ),
+                      ],
                     ),
                     SizedBox(
                       height: MediaQuery.of(context).size.height * 0.035,
@@ -132,19 +139,25 @@ class _Sensors extends State<Sensors> {
                     SizedBox(
                       height: MediaQuery.of(context).size.height * 0.02,
                     ),
-                    Padding(
-                      padding: EdgeInsets.only(
-                        right: MediaQuery.of(context).size.width * 0.71,
-                        left: MediaQuery.of(context).size.width * 0.01,
-                      ),
-                      child: Text(
-                        'Alerts',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: MediaQuery.of(context).size.width * 0.07,
-                          fontWeight: FontWeight.bold,
+                    Row(
+                      // Use a Row to align the text to the left
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(
+                            left: MediaQuery.of(context).size.width * 0.0,
+                          ),
+                          child: Text(
+                            'Alerts',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize:
+                                  MediaQuery.of(context).size.width * 0.07,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                         ),
-                      ),
+                      ],
                     ),
                     SizedBox(
                       height: MediaQuery.of(context).size.height * 0.035,

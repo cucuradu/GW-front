@@ -4,7 +4,8 @@ import 'package:gwfront/sensorspage.dart';
 
 class SensorDetails extends StatelessWidget {
   String? userName;
-  SensorDetails({super.key, this.userName});
+  String? sensorName;
+  SensorDetails({super.key, this.userName, this.sensorName});
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +51,10 @@ class SensorDetails extends StatelessWidget {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const Login()),
+                  MaterialPageRoute(
+                      builder: (context) => Sensors(
+                            userName: userName,
+                          )),
                 );
               },
               child: Image.asset(
@@ -96,13 +100,67 @@ class SensorDetails extends StatelessWidget {
                             left: MediaQuery.of(context).size.width * 0.0,
                           ),
                           child: Text(
-                            'Sensor details',
+                            sensorName ?? "Sensor",
                             style: TextStyle(
                               color: Colors.black,
                               fontSize:
                                   MediaQuery.of(context).size.width * 0.07,
                               fontWeight: FontWeight.bold,
                             ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.035,
+                    ),
+                    Row(
+                      children: [
+                        Image.asset("assets/humidity.png"),
+                        SizedBox(
+                          width: 11,
+                        ),
+                        Text(
+                          "Humidity",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: MediaQuery.of(context).size.width * 0.05,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.02,
+                    ),
+                    Row(
+                      children: [
+                        Image.asset("assets/temperature.png"),
+                        SizedBox(
+                          width: 11,
+                        ),
+                        Text(
+                          "Temperature",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: MediaQuery.of(context).size.width * 0.05,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.02,
+                    ),
+                    Row(
+                      children: [
+                        Image.asset("assets/nutrients.png"),
+                        SizedBox(
+                          width: 11,
+                        ),
+                        Text(
+                          "Nutrients due date",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: MediaQuery.of(context).size.width * 0.05,
                           ),
                         ),
                       ],

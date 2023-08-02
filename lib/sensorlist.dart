@@ -21,6 +21,7 @@ class SensorList extends StatelessWidget {
             MaterialPageRoute(
                 builder: (context) => SensorDetails(
                       userName: userName,
+                      sensorName: sensorName,
                     )),
           );
         },
