@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:gwfront/sensordetails.dart';
 
 class SensorList extends StatelessWidget {
-  String? sensorName, userName;
+  String? sensorName;
+  String? userName;
   SensorList({super.key, this.sensorName, this.userName});
 
   @override

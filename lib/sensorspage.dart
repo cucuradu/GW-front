@@ -109,7 +109,7 @@ class _Sensors extends State<Sensors> {
                         left: MediaQuery.of(context).size.width * 0.01,
                       ),
                       child: Text(
-                        'Sensors List',
+                        'Sensors list',
                         style: TextStyle(
                           color: Colors.black,
                           fontSize: MediaQuery.of(context).size.width * 0.07,

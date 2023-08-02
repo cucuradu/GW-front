@@ -3,8 +3,7 @@ import 'homepage.dart';
 import 'login.dart';
 
 class Register extends StatelessWidget {
-  String userName = '';
-
+  String? userName;
   Register({super.key});
 
   @override
