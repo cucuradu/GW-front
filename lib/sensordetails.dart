@@ -2,11 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:gwfront/login.dart';
 import 'package:gwfront/recomendationspage.dart';
 import 'package:gwfront/sensorspage.dart';
+import 'package:gwfront/recomendationspage.dart'; // Import the RecommendationsPage
 
 class SensorDetails extends StatelessWidget {
   String? userName;
   String? sensorName;
-  SensorDetails({super.key, this.userName, this.sensorName});
+  SensorDetails({this.userName, this.sensorName});
+
+  final List<String> recommendations = [
+    "Recommendation 1",
+    "Recommendation 2",
+    "Recommendation 3",
+    // Add more recommendations here as needed
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -53,9 +61,10 @@ class SensorDetails extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => Sensors(
-                            userName: userName,
-                          )),
+                    builder: (context) => Sensors(
+                      userName: userName,
+                    ),
+                  ),
                 );
               },
               child: Image.asset(
@@ -261,6 +270,17 @@ class SensorDetails extends StatelessWidget {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => RecommendationsPage(),
+                              ),
+                            );
+                          },
+                          child: Text("See More"),
                         ),
                       ],
                     ),

@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
+import 'sensordetails.dart';
 
 void main() {
-  runApp(Recomandations());
+  runApp(MyApp());
 }
 
-class Recomandations extends StatelessWidget {
+class MyApp extends StatelessWidget {
   @override
-  _Recomandations createState() => _Recomandations();
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: _Recomandations(),
+      home: RecommendationsPage(),
     );
   }
 }
 
-class _Recomandations extends StatelessWidget {
+class RecommendationsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,7 +49,11 @@ class _Recomandations extends StatelessWidget {
                       left: 15), // Add space to the left of the small image
                   child: GestureDetector(
                     onTap: () {
-                      // Handle the tap action for the small image
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => SensorDetails()),
+                      );
                     },
                     child: Image.asset(
                       'assets/backbutton.png', // Small image on the left
