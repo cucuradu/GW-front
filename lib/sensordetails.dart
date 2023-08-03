@@ -1,11 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:gwfront/login.dart';
 import 'package:gwfront/sensorspage.dart';
+import 'package:gwfront/recomendationspage.dart'; // Import the RecommendationsPage
 
 class SensorDetails extends StatelessWidget {
   String? userName;
   String? sensorName;
-  SensorDetails({super.key, this.userName, this.sensorName});
+  SensorDetails({this.userName, this.sensorName});
+
+  final List<String> recommendations = [
+    "Recommendation 1",
+    "Recommendation 2",
+    "Recommendation 3",
+    // Add more recommendations here as needed
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -52,9 +60,10 @@ class SensorDetails extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => Sensors(
-                            userName: userName,
-                          )),
+                    builder: (context) => Sensors(
+                      userName: userName,
+                    ),
+                  ),
                 );
               },
               child: Image.asset(
@@ -186,7 +195,61 @@ class SensorDetails extends StatelessWidget {
                             ),
                           ),
                         ),
+                        ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => RecommendationsPage(),
+                              ),
+                            );
+                          },
+                          child: Text("See More"),
+                        ),
                       ],
+                    ),
+
+                    // Horizontally scrollable list of sneak peek recommendations
+                    Container(
+                      height: MediaQuery.of(context).size.height * 0.2,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: recommendations.length,
+                        itemBuilder: (context, index) {
+                          return GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => RecommendationsPage(),
+                                ),
+                              );
+                            },
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8.0),
+                              child: Container(
+                                width: MediaQuery.of(context).size.width * 0.6,
+                                decoration: BoxDecoration(
+                                  color: Colors.blue, // Use any color you like
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    "Sneak Peek:\n" +
+                                        recommendations[
+                                            index], // Display sneak peek here
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 20,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
                     ),
                   ],
                 ),
