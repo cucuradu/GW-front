@@ -132,6 +132,7 @@ class Homepage extends StatelessWidget {
                       MaterialPageRoute(
                         builder: (context) => Sensors(
                           userName: userName,
+                          mySensors: [],
                         ),
                       ),
                     );

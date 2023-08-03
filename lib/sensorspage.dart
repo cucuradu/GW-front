@@ -1,27 +1,83 @@
+import 'dart:convert';
+import 'dart:ffi';
 import 'package:flutter/material.dart';
 import 'package:gwfront/homepage.dart';
 import 'package:gwfront/login.dart';
 import 'package:gwfront/sensorlist.dart';
+import 'package:http/http.dart' as http;
+import 'package:json_annotation/json_annotation.dart';
 import 'register.dart';
+
+class SensorObject {
+  int? id;
+  String? name;
+  bool? humidity;
+  Float? temperature;
+  Float? nitrogen;
+  Float? phosphorous;
+  Float? potassium;
+
+  SensorObject(
+      {required this.id,
+      required this.name,
+      required this.humidity,
+      required this.temperature,
+      required this.nitrogen,
+      required this.phosphorous,
+      required this.potassium});
+
+  factory SensorObject.fromJson(Map<String, dynamic> json) {
+    return SensorObject(
+        id: json['id'],
+        name: json['name'],
+        humidity: json['humidity'],
+        temperature: json['temperature'],
+        nitrogen: json["nitrogen"],
+        phosphorous: json["phosphorus"],
+        potassium: json["potassium"]);
+  }
+}
+
+Future<List<dynamic>> fetchData() async {
+  final response =
+      await http.get(Uri.parse('http://192.168.0.125:8000/sensors/'));
+
+  if (response.statusCode == 200) {
+    final List<dynamic> jsonData = json.decode(response.body);
+    List<SensorObject> mySensors =
+        jsonData.map((data) => SensorObject.fromJson(data)).toList();
+    return mySensors;
+  } else {
+    // Error fetching data
+
+    print('Request failed with status: ${response.statusCode}');
+    return [];
+  }
+}
 
 class Sensors extends StatefulWidget {
   String? userName;
-  List<String>? sensors;
-  Sensors({this.userName});
+  List<dynamic>? mySensors;
+  Sensors({this.userName, this.mySensors});
   @override
-  _Sensors createState() => _Sensors(userName);
+  _Sensors createState() => _Sensors();
 }
 
 class _Sensors extends State<Sensors> {
   String? userName;
-  _Sensors(this.userName);
-  List<String> sensors = [];
+  late Future<List<dynamic>>? sensors;
 
-  void addSensor() {
-    setState(() {
-      sensors.add("Sensor ${sensors.length + 1}");
-    });
+  @override
+  void initState() {
+    super.initState();
+    sensors = fetchData();
   }
+
+  // void addSensor() {
+  //   setState(() {
+  //     sensors.add("Sensor ${sensors.length + 1}");
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -129,11 +185,12 @@ class _Sensors extends State<Sensors> {
                     ),
                     Column(
                       children: [
-                        for (int i = 0; i < sensors.length; i++)
-                          SensorList(
-                            sensorName: sensors[i],
-                            userName: userName,
-                          ),
+                        //Text(sensors!.map((sensor) => sensor.name))
+                        // for (int i = 0; i < sensors.length; i++)
+                        //   SensorList(
+                        //     sensorName: sensors[i],
+                        //     userName: userName,
+                        //   ),
                       ],
                     ),
                     SizedBox(
@@ -212,7 +269,7 @@ class _Sensors extends State<Sensors> {
                 width: 75,
                 height: 75,
                 child: FloatingActionButton(
-                  onPressed: addSensor,
+                  onPressed: () {},
                   backgroundColor:
                       Color(0xFF8EAC50), // Set the button color here
                   child: Image.asset(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gwfront/login.dart';
+import 'package:gwfront/recomendationspage.dart';
 import 'package:gwfront/sensorspage.dart';
 
 class SensorDetails extends StatelessWidget {
@@ -65,7 +66,6 @@ class SensorDetails extends StatelessWidget {
           ],
         ),
         body: ListView(
-          physics: NeverScrollableScrollPhysics(),
           children: [
             Container(
               color: Colors.white, // Background color
@@ -127,6 +127,14 @@ class SensorDetails extends StatelessWidget {
                             fontSize: MediaQuery.of(context).size.width * 0.05,
                           ),
                         ),
+                        Spacer(),
+                        Text(
+                          "True",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: MediaQuery.of(context).size.width * 0.05,
+                          ),
+                        ),
                       ],
                     ),
                     SizedBox(
@@ -145,6 +153,14 @@ class SensorDetails extends StatelessWidget {
                             fontSize: MediaQuery.of(context).size.width * 0.05,
                           ),
                         ),
+                        Spacer(),
+                        Text(
+                          "°C",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: MediaQuery.of(context).size.width * 0.05,
+                          ),
+                        ),
                       ],
                     ),
                     SizedBox(
@@ -157,7 +173,67 @@ class SensorDetails extends StatelessWidget {
                           width: 11,
                         ),
                         Text(
-                          "Nutrients due date",
+                          "Nitrogen",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: MediaQuery.of(context).size.width * 0.05,
+                          ),
+                        ),
+                        Spacer(),
+                        Text(
+                          "mg/kg",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: MediaQuery.of(context).size.width * 0.05,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.02,
+                    ),
+                    Row(
+                      children: [
+                        Image.asset("assets/nutrients.png"),
+                        SizedBox(
+                          width: 11,
+                        ),
+                        Text(
+                          "Phosphorus",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: MediaQuery.of(context).size.width * 0.05,
+                          ),
+                        ),
+                        Spacer(),
+                        Text(
+                          "mg/kg",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: MediaQuery.of(context).size.width * 0.05,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.02,
+                    ),
+                    Row(
+                      children: [
+                        Image.asset("assets/nutrients.png"),
+                        SizedBox(
+                          width: 11,
+                        ),
+                        Text(
+                          "Potassium",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: MediaQuery.of(context).size.width * 0.05,
+                          ),
+                        ),
+                        Spacer(),
+                        Text(
+                          "mg/kg",
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: MediaQuery.of(context).size.width * 0.05,
@@ -187,6 +263,40 @@ class SensorDetails extends StatelessWidget {
                           ),
                         ),
                       ],
+                    ),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.035,
+                    ),
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: Container(
+                        height: MediaQuery.of(context).size.height * 0.25,
+                        width: MediaQuery.of(context).size.width * 0.7,
+                        decoration: BoxDecoration(
+                          color: Color(0xFFFAE392),
+                        ),
+                        child: Align(
+                          alignment: Alignment.bottomLeft,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              // Navigator.push(
+                              //   context,
+                              //   MaterialPageRoute(
+                              //     builder: (context) => Recomandations(),
+                              //   ),
+                              // );
+                            },
+                            style: ElevatedButton.styleFrom(
+                              primary: Color(0xFFFAE392),
+                              elevation: 0, // No shadow
+                            ),
+                            child: Image.asset("assets/ReadMore.png"),
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.035,
                     ),
                   ],
                 ),
