@@ -1,44 +1,43 @@
 import 'dart:convert';
-import 'dart:ffi';
 import 'package:flutter/material.dart';
-import 'package:gwfront/homepage.dart';
-import 'package:gwfront/login.dart';
 import 'package:gwfront/sensorlist.dart';
 import 'package:http/http.dart' as http;
-import 'package:json_annotation/json_annotation.dart';
-import 'register.dart';
+import 'homepage.dart';
+import 'login.dart';
 
 class SensorObject {
   int? id;
   String? name;
   bool? humidity;
-  Float? temperature;
-  Float? nitrogen;
-  Float? phosphorous;
-  Float? potassium;
+  double? temperature;
+  double? nitrogen;
+  double? phosphorous;
+  double? potassium;
 
-  SensorObject(
-      {required this.id,
-      required this.name,
-      required this.humidity,
-      required this.temperature,
-      required this.nitrogen,
-      required this.phosphorous,
-      required this.potassium});
+  SensorObject({
+    required this.id,
+    required this.name,
+    required this.humidity,
+    required this.temperature,
+    required this.nitrogen,
+    required this.phosphorous,
+    required this.potassium,
+  });
 
   factory SensorObject.fromJson(Map<String, dynamic> json) {
     return SensorObject(
-        id: json['id'],
-        name: json['name'],
-        humidity: json['humidity'],
-        temperature: json['temperature'],
-        nitrogen: json["nitrogen"],
-        phosphorous: json["phosphorus"],
-        potassium: json["potassium"]);
+      id: json['id'],
+      name: json['name'],
+      humidity: json['humidity'],
+      temperature: json['temperature'],
+      nitrogen: json["nitrogen"],
+      phosphorous: json["phosphorus"],
+      potassium: json["potassium"],
+    );
   }
 }
 
-Future<List<dynamic>> fetchData() async {
+Future<List<SensorObject>> fetchData() async {
   final response =
       await http.get(Uri.parse('http://192.168.0.125:8000/sensors/'));
 
@@ -49,7 +48,6 @@ Future<List<dynamic>> fetchData() async {
     return mySensors;
   } else {
     // Error fetching data
-
     print('Request failed with status: ${response.statusCode}');
     return [];
   }
@@ -57,27 +55,80 @@ Future<List<dynamic>> fetchData() async {
 
 class Sensors extends StatefulWidget {
   String? userName;
-  List<dynamic>? mySensors;
+  List<SensorObject>? mySensors;
   Sensors({this.userName, this.mySensors});
   @override
-  _Sensors createState() => _Sensors();
+  _Sensors createState() => _Sensors(userName: userName);
 }
 
 class _Sensors extends State<Sensors> {
   String? userName;
-  late Future<List<dynamic>>? sensors;
+  List<SensorObject>? mySensorsList;
+
+  _Sensors({this.userName});
 
   @override
   void initState() {
     super.initState();
-    sensors = fetchData();
+    mySensorsList = widget.mySensors;
+    if (mySensorsList == null) {
+      fetchData().then((sensors) {
+        setState(() {
+          mySensorsList = sensors;
+        });
+      });
+    }
   }
 
-  // void addSensor() {
-  //   setState(() {
-  //     sensors.add("Sensor ${sensors.length + 1}");
-  //   });
-  // }
+  void addSensor(SensorObject newSensor) {
+    setState(() {
+      mySensorsList!.add(newSensor);
+    });
+  }
+
+  void _showAddDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Add Sensor"),
+          content: TextField(
+            onChanged: (value) {
+              // String? sensorName = value;
+            },
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                // Here, you can create a new SensorObject instance with the entered data
+                SensorObject newSensor = SensorObject(
+                  id: 1, // Provide the ID here as per your requirement
+                  name:
+                      "New Sensor", // Example name, you can replace it with the actual input from the TextField
+                  humidity: true,
+                  temperature: 25.0,
+                  nitrogen: 10.0,
+                  phosphorous: 5.0,
+                  potassium: 3.0,
+                );
+
+                addSensor(
+                    newSensor); // Call the addSensor function to add the new sensor to the list
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: Text("Add"),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: Text("Cancel"),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -185,12 +236,12 @@ class _Sensors extends State<Sensors> {
                     ),
                     Column(
                       children: [
-                        //Text(sensors!.map((sensor) => sensor.name))
-                        // for (int i = 0; i < sensors.length; i++)
-                        //   SensorList(
-                        //     sensorName: sensors[i],
-                        //     userName: userName,
-                        //   ),
+                        if (mySensorsList != null)
+                          for (var sensor in mySensorsList!)
+                            SensorList(
+                              sensorName: sensor.name ?? "Unknown",
+                              userName: userName,
+                            ),
                       ],
                     ),
                     SizedBox(
@@ -269,13 +320,11 @@ class _Sensors extends State<Sensors> {
                 width: 75,
                 height: 75,
                 child: FloatingActionButton(
-                  onPressed: () {},
+                  onPressed:
+                      _showAddDialog, // Call the _showAddDialog function when the button is pressed
                   backgroundColor:
                       Color(0xFF8EAC50), // Set the button color here
-                  child: Image.asset(
-                    'assets/whiteplus.png',
-                    height: 30,
-                  ),
+                  child: Icon(Icons.add),
                 ),
               ),
               SizedBox(
