@@ -4,6 +4,7 @@ import 'package:gwfront/sensorlist.dart';
 import 'package:http/http.dart' as http;
 import 'homepage.dart';
 import 'login.dart';
+import 'dart:convert';
 
 class SensorObject {
   int? id;
@@ -54,6 +55,7 @@ Future<List<SensorObject>> fetchData() async {
 }
 
 class Sensors extends StatefulWidget {
+
   String? userName;
   List<SensorObject>? mySensors;
   Sensors({this.userName, this.mySensors});
@@ -64,12 +66,27 @@ class Sensors extends StatefulWidget {
 class _Sensors extends State<Sensors> {
   String? userName;
   List<SensorObject>? mySensorsList;
-
+  List sensor_data = [];
   _Sensors({this.userName});
+
+  void getData() async {
+    final url = Uri.parse('http://192.168.100.29:8000/sensors/'); // Replace with your Django server URL
+    final response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      // Successful response, handle the data
+      sensor_data = jsonDecode(response.body);
+    } else {
+      // Handle errors
+      print('Request failed with status: ${response.statusCode}');
+
+    }
+  }
 
   @override
   void initState() {
     super.initState();
+    getData();
     mySensorsList = widget.mySensors;
     if (mySensorsList == null) {
       fetchData().then((sensors) {
@@ -79,6 +96,7 @@ class _Sensors extends State<Sensors> {
       });
     }
   }
+
 
   void addSensor(SensorObject newSensor) {
     setState(() {
@@ -129,6 +147,7 @@ class _Sensors extends State<Sensors> {
       },
     );
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -236,12 +255,7 @@ class _Sensors extends State<Sensors> {
                     ),
                     Column(
                       children: [
-                        if (mySensorsList != null)
-                          for (var sensor in mySensorsList!)
-                            SensorList(
-                              sensorName: sensor.name ?? "Unknown",
-                              userName: userName,
-                            ),
+                        Text(sensor_data.isNotEmpty ? sensor_data[0]['name'] : 'Nothing at the moment:(')
                       ],
                     ),
                     SizedBox(
@@ -321,10 +335,12 @@ class _Sensors extends State<Sensors> {
                 height: 75,
                 child: FloatingActionButton(
                   onPressed:
-                      _showAddDialog, // Call the _showAddDialog function when the button is pressed
+                    () {
+
+                    },// Call the _showAddDialog function when the button is pressed
                   backgroundColor:
-                      Color(0xFF8EAC50), // Set the button color here
-                  child: Icon(Icons.add),
+                      const Color(0xFF8EAC50), // Set the button color here
+                  child: const Icon(Icons.add),
                 ),
               ),
               SizedBox(
