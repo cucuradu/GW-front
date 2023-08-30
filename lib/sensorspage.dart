@@ -69,20 +69,6 @@ class _Sensors extends State<Sensors> {
   List sensor_data = [];
   _Sensors({this.userName});
 
-  void getData() async {
-    final url = Uri.parse('http://192.168.100.29:8000/sensors/'); // Replace with your Django server URL
-    final response = await http.get(url);
-
-    if (response.statusCode == 200) {
-      // Successful response, handle the data
-      sensor_data = jsonDecode(response.body);
-    } else {
-      // Handle errors
-      print('Request failed with status: ${response.statusCode}');
-
-    }
-  }
-
   @override
   void initState() {
     super.initState();
@@ -97,6 +83,21 @@ class _Sensors extends State<Sensors> {
     }
   }
 
+  void getData() async {
+    final url = Uri.parse('http://192.168.100.29:8000/sensors/'); // Replace with your Django server URL
+    final response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      // Successful response, handle the data
+      setState(() {
+        sensor_data = jsonDecode(response.body);
+      });
+    } else {
+      // Handle errors
+      print('Request failed with status: ${response.statusCode}');
+
+    }
+  }
 
   void addSensor(SensorObject newSensor) {
     setState(() {
