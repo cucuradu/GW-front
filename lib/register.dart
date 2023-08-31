@@ -3,7 +3,6 @@ import 'homepage.dart';
 import 'login.dart';
 
 class Register extends StatelessWidget {
-  String? userName;
   Register({super.key});
 
   @override
@@ -88,9 +87,6 @@ class Register extends StatelessWidget {
                                   MediaQuery.of(context).size.width * 0.05),
                           border: InputBorder.none,
                         ),
-                        onChanged: (text) {
-                          userName = text;
-                        },
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: MediaQuery.of(context).size.width * 0.05),
@@ -215,12 +211,9 @@ class Register extends StatelessWidget {
                       width: MediaQuery.of(context).size.width * 0.9,
                       child: ElevatedButton(
                         onPressed: () {
-                          if (userName == '') userName = "Name";
                           Navigator.push(
                             context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    Homepage(userName: userName)),
+                            MaterialPageRoute(builder: (context) => Homepage()),
                           );
                         },
                         style: ElevatedButton.styleFrom(

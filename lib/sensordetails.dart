@@ -5,9 +5,8 @@ import 'package:gwfront/sensorspage.dart';
 import 'package:gwfront/recomendationspage.dart'; // Import the RecommendationsPage
 
 class SensorDetails extends StatelessWidget {
-  String? userName;
   String? sensorName;
-  SensorDetails({this.userName, this.sensorName});
+  SensorDetails({this.sensorName});
 
   final List<String> recommendations = [
     "Recommendation 1",
@@ -45,7 +44,7 @@ class SensorDetails extends StatelessWidget {
               ),
               children: [
                 TextSpan(
-                  text: userName ?? "Name",
+                  text: "Name",
                   style: const TextStyle(
                     color: Colors.black,
                     fontSize: 28,
@@ -61,9 +60,7 @@ class SensorDetails extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => Sensors(
-                      userName: userName,
-                    ),
+                    builder: (context) => Sensors(),
                   ),
                 );
               },

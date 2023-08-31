@@ -3,8 +3,7 @@ import 'package:gwfront/login.dart';
 import 'package:gwfront/sensorspage.dart';
 
 class Homepage extends StatelessWidget {
-  String? userName;
-  Homepage({super.key, this.userName});
+  Homepage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +34,7 @@ class Homepage extends StatelessWidget {
               ),
               children: [
                 TextSpan(
-                  text: userName ?? "Name",
+                  text: "Name",
                   style: const TextStyle(
                     color: Colors.black,
                     fontSize: 28,
@@ -80,9 +79,7 @@ class Homepage extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => Sensors(
-                              userName: userName,
-                            ),
+                            builder: (context) => Sensors(),
                           ),
                         );
                       },
@@ -131,7 +128,6 @@ class Homepage extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                         builder: (context) => Sensors(
-                          userName: userName,
                           mySensors: [],
                         ),
                       ),

@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:gwfront/sensordetails.dart';
 
-
 class SensorList extends StatelessWidget {
   String? sensorName;
-  String? userName;
-  SensorList({super.key, this.sensorName, this.userName});
+  SensorList({super.key, this.sensorName});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +19,6 @@ class SensorList extends StatelessWidget {
             context,
             MaterialPageRoute(
                 builder: (context) => SensorDetails(
-                      userName: userName,
                       sensorName: sensorName,
                     )),
           );

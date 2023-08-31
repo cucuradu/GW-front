@@ -55,19 +55,16 @@ Future<List<SensorObject>> fetchData() async {
 }
 
 class Sensors extends StatefulWidget {
-
-  String? userName;
   List<SensorObject>? mySensors;
-  Sensors({this.userName, this.mySensors});
+  Sensors({this.mySensors});
   @override
-  _Sensors createState() => _Sensors(userName: userName);
+  _Sensors createState() => _Sensors();
 }
 
 class _Sensors extends State<Sensors> {
-  String? userName;
   List<SensorObject>? mySensorsList;
   List sensor_data = [];
-  _Sensors({this.userName});
+  _Sensors();
 
   @override
   void initState() {
@@ -84,7 +81,8 @@ class _Sensors extends State<Sensors> {
   }
 
   void getData() async {
-    final url = Uri.parse('http://192.168.100.29:8000/sensors/'); // Replace with your Django server URL
+    final url = Uri.parse(
+        'http://192.168.100.29:8000/sensors/'); // Replace with your Django server URL
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
@@ -95,7 +93,6 @@ class _Sensors extends State<Sensors> {
     } else {
       // Handle errors
       print('Request failed with status: ${response.statusCode}');
-
     }
   }
 
@@ -149,7 +146,6 @@ class _Sensors extends State<Sensors> {
     );
   }
 
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -179,7 +175,7 @@ class _Sensors extends State<Sensors> {
               ),
               children: [
                 TextSpan(
-                  text: userName ?? "Name",
+                  text: "Name",
                   style: const TextStyle(
                     color: Colors.black,
                     fontSize: 28,
@@ -257,7 +253,9 @@ class _Sensors extends State<Sensors> {
                     Column(
                       children: [
                         if (sensor_data.isNotEmpty)
-                          ...sensor_data.map((sensor) => Text(sensor['name'])).toList(),
+                          ...sensor_data
+                              .map((sensor) => Text(sensor['name']))
+                              .toList(),
                         if (sensor_data.isEmpty)
                           const Text('No sensor data available.')
                       ],
@@ -320,9 +318,7 @@ class _Sensors extends State<Sensors> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => Homepage(
-                          userName: userName,
-                        ),
+                        builder: (context) => Homepage(),
                       ),
                     );
                   },
@@ -339,9 +335,7 @@ class _Sensors extends State<Sensors> {
                 height: 75,
                 child: FloatingActionButton(
                   onPressed:
-                    () {
-
-                    },// Call the _showAddDialog function when the button is pressed
+                      () {}, // Call the _showAddDialog function when the button is pressed
                   backgroundColor:
                       const Color(0xFF8EAC50), // Set the button color here
                   child: const Icon(Icons.add),
