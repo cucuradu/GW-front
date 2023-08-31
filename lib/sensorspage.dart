@@ -256,7 +256,10 @@ class _Sensors extends State<Sensors> {
                     ),
                     Column(
                       children: [
-                        Text(sensor_data.isNotEmpty ? sensor_data[0]['name'] : 'Nothing at the moment:(')
+                        if (sensor_data.isNotEmpty)
+                          ...sensor_data.map((sensor) => Text(sensor['name'])).toList(),
+                        if (sensor_data.isEmpty)
+                          const Text('No sensor data available.')
                       ],
                     ),
                     SizedBox(
