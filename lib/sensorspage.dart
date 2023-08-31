@@ -254,7 +254,8 @@ class _Sensors extends State<Sensors> {
                       children: [
                         if (sensor_data.isNotEmpty)
                           ...sensor_data
-                              .map((sensor) => Text(sensor['name']))
+                              .map((sensor) =>
+                                  SensorList(sensorName: sensor['name']))
                               .toList(),
                         if (sensor_data.isEmpty)
                           const Text('No sensor data available.')
