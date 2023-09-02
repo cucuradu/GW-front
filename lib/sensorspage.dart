@@ -66,6 +66,22 @@ class _Sensors extends State<Sensors> {
   List sensor_data = [];
   _Sensors();
 
+  void getData() async {
+    final url = Uri.parse(
+        'http://192.168.100.29:8000/apiRest/recommendations/'); // Replace with your Django server URL
+    final response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      // Successful response, handle the data
+      setState(() {
+        sensor_data = jsonDecode(response.body);
+      });
+    } else {
+      // Handle errors
+      print('Request failed with status: ${response.statusCode}');
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -77,22 +93,6 @@ class _Sensors extends State<Sensors> {
           mySensorsList = sensors;
         });
       });
-    }
-  }
-
-  void getData() async {
-    final url = Uri.parse(
-        'http://192.168.100.29:8000/sensors/'); // Replace with your Django server URL
-    final response = await http.get(url);
-
-    if (response.statusCode == 200) {
-      // Successful response, handle the data
-      setState(() {
-        sensor_data = jsonDecode(response.body);
-      });
-    } else {
-      // Handle errors
-      print('Request failed with status: ${response.statusCode}');
     }
   }
 
@@ -166,9 +166,9 @@ class _Sensors extends State<Sensors> {
             ),
           ),
           title: RichText(
-            text: TextSpan(
+            text: const TextSpan(
               text: "Hi, ",
-              style: const TextStyle(
+              style: TextStyle(
                 color: Colors.black,
                 fontSize: 28,
                 fontWeight: FontWeight.normal,
@@ -176,7 +176,7 @@ class _Sensors extends State<Sensors> {
               children: [
                 TextSpan(
                   text: "Name",
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: Colors.black,
                     fontSize: 28,
                     fontWeight: FontWeight.bold,
@@ -252,15 +252,10 @@ class _Sensors extends State<Sensors> {
                     ),
                     Column(
                       children: [
-                        if (sensor_data.isNotEmpty)
-                          ...sensor_data
-                              .map((sensor) => Text(sensor['name']))
-                              .toList(),
-                        //...sensor_data
-                        //  .map((sensor) => SensorList(sensorName:sensor['name']))
-                        //  .toList(),
+                        for (final sensor in sensor_data)
+                          Text(sensor['name'] ?? 'N/A'),
                         if (sensor_data.isEmpty)
-                          const Text('No sensor data available.')
+                          const Text('No sensor data available.'),
                       ],
                     ),
                     SizedBox(
@@ -295,6 +290,28 @@ class _Sensors extends State<Sensors> {
                         decoration: BoxDecoration(color: Color(0xFFFAE392)),
                         height: MediaQuery.of(context).size.height *
                             0.25, // Adjust the height here
+                        child: ListView.builder(
+                            itemCount: sensor_data.length,
+                            itemBuilder: (context, index) {
+                              final sensor = sensor_data[index];
+                              final sensorName = sensor["name"] ?? 'N/A';
+                              final temperature = sensor['temperature'] ?? 'N/A';
+                              final nitrogen = sensor['nitrogen'] ?? 'N/A';
+                              final phosphorus = sensor['phosphorus'] ?? 'N/A';
+                              final potassium = sensor['potassium'] ?? 'N/A';
+
+
+                              return ListTile(
+                                title: Text('Sensor Name: $sensorName'),
+                                subtitle: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text('Temperature: $temperature'),
+                                  ],
+                                ),
+                              );
+                            },
+                        ),
                       ),
                     ),
                     SizedBox(
