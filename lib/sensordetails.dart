@@ -6,7 +6,18 @@ import 'package:gwfront/recomendationspage.dart'; // Import the RecommendationsP
 
 class SensorDetails extends StatelessWidget {
   String? sensorName;
-  SensorDetails({this.sensorName});
+  String? humidity;
+  String? temperature;
+  String? nitrogen;
+  String? phosphorous;
+  String? potassium;
+  SensorDetails(
+      {this.sensorName,
+      this.humidity,
+      this.temperature,
+      this.nitrogen,
+      this.phosphorous,
+      this.potassium});
 
   final List<String> recommendations = [
     "Recommendation 1",
@@ -135,7 +146,7 @@ class SensorDetails extends StatelessWidget {
                         ),
                         Spacer(),
                         Text(
-                          "True",
+                          humidity ?? "?",
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: MediaQuery.of(context).size.width * 0.05,
@@ -160,6 +171,16 @@ class SensorDetails extends StatelessWidget {
                           ),
                         ),
                         Spacer(),
+                        Text(
+                          temperature ?? "?",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: MediaQuery.of(context).size.width * 0.05,
+                          ),
+                        ),
+                        SizedBox(
+                          width: 11,
+                        ),
                         Text(
                           "°C",
                           style: TextStyle(
@@ -187,6 +208,16 @@ class SensorDetails extends StatelessWidget {
                         ),
                         Spacer(),
                         Text(
+                          nitrogen ?? "?",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: MediaQuery.of(context).size.width * 0.05,
+                          ),
+                        ),
+                        SizedBox(
+                          width: 11,
+                        ),
+                        Text(
                           "mg/kg",
                           style: TextStyle(
                             color: Colors.black,
@@ -213,6 +244,16 @@ class SensorDetails extends StatelessWidget {
                         ),
                         Spacer(),
                         Text(
+                          phosphorous ?? "?",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: MediaQuery.of(context).size.width * 0.05,
+                          ),
+                        ),
+                        SizedBox(
+                          width: 11,
+                        ),
+                        Text(
                           "mg/kg",
                           style: TextStyle(
                             color: Colors.black,
@@ -238,6 +279,16 @@ class SensorDetails extends StatelessWidget {
                           ),
                         ),
                         Spacer(),
+                        Text(
+                          potassium ?? "?",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: MediaQuery.of(context).size.width * 0.05,
+                          ),
+                        ),
+                        SizedBox(
+                          width: 11,
+                        ),
                         Text(
                           "mg/kg",
                           style: TextStyle(

@@ -40,7 +40,7 @@ class SensorObject {
 
 Future<List<SensorObject>> fetchData() async {
   final response =
-      await http.get(Uri.parse('http://192.168.0.125:8000/sensors/'));
+      await http.get(Uri.parse('http://http://127.0.0.1:8000/sensors/'));
 
   if (response.statusCode == 200) {
     final List<dynamic> jsonData = json.decode(response.body);
@@ -68,7 +68,7 @@ class _Sensors extends State<Sensors> {
 
   void getData() async {
     final url = Uri.parse(
-        'http://192.168.100.29:8000/apiRest/recommendations/'); // Replace with your Django server URL
+        'http://192.168.1.210:8000/apiRest/recommendations/'); // Replace with your Django server URL
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
@@ -252,8 +252,23 @@ class _Sensors extends State<Sensors> {
                     ),
                     Column(
                       children: [
-                        for (final sensor in sensor_data)
-                          Text(sensor['name'] ?? 'N/A'),
+                        for (final sensor in sensor_data.reversed)
+                          SensorList(
+                            sensorName: sensor['sensor_data']['name'] ?? 'N/A',
+                            humidity: "True",
+                            temperature: sensor['sensor_data']['temperature']
+                                    .toString() ??
+                                'N/A',
+                            nitrogen:
+                                sensor['sensor_data']['nitrogen'].toString() ??
+                                    'N/A',
+                            phosphorous: sensor['sensor_data']['phosphorus']
+                                    .toString() ??
+                                'N/A',
+                            potassium:
+                                sensor['sensor_data']['potassium'].toString() ??
+                                    'N/A',
+                          ),
                         if (sensor_data.isEmpty)
                           const Text('No sensor data available.'),
                       ],
@@ -291,26 +306,33 @@ class _Sensors extends State<Sensors> {
                         height: MediaQuery.of(context).size.height *
                             0.25, // Adjust the height here
                         child: ListView.builder(
-                            itemCount: sensor_data.length,
-                            itemBuilder: (context, index) {
-                              final sensor = sensor_data[index];
-                              final sensorName = sensor["name"] ?? 'N/A';
-                              final temperature = sensor['temperature'] ?? 'N/A';
-                              final nitrogen = sensor['nitrogen'] ?? 'N/A';
-                              final phosphorus = sensor['phosphorus'] ?? 'N/A';
-                              final potassium = sensor['potassium'] ?? 'N/A';
-
-
-                              return ListTile(
-                                title: Text('Sensor Name: $sensorName'),
-                                subtitle: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text('Temperature: $temperature'),
-                                  ],
-                                ),
-                              );
-                            },
+                          itemCount: sensor_data.length,
+                          itemBuilder: (context, index) {
+                            final sensor = sensor_data[index]["sensor_data"];
+                            final sensorName = sensor["name"] ?? 'N/A';
+                            final temperature = sensor['temperature'] ?? 'N/A';
+                            final nitrogen = sensor['nitrogen'] ?? 'N/A';
+                            final phosphorus = sensor['phosphorus'] ?? 'N/A';
+                            final potassium = sensor['potassium'] ?? 'N/A';
+                            final recommendation =
+                                sensor_data[index]["recommendation"];
+                            final temperatureRecommendation =
+                                recommendation["temperature_recommendation"] ??
+                                    'N/A';
+                            final nutrientRecommendation =
+                                recommendation["nutrient_recommendation"] ?? [];
+                            return ListTile(
+                              title: Text('Sensor Name: $sensorName'),
+                              subtitle: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text('- $temperatureRecommendation'),
+                                  for (var nutrient in nutrientRecommendation)
+                                    Text('- $nutrient')
+                                ],
+                              ),
+                            );
+                          },
                         ),
                       ),
                     ),
