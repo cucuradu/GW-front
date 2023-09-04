@@ -253,7 +253,7 @@ class _Sensors extends State<Sensors> {
                     ),
                     Column(
                       children: [
-                        for (final sensor in sensor_data)
+                        for (final sensor in sensor_data.reversed)
                           SensorList( sensorName: sensor['sensor_data']['name'] ?? 'N/A'),
                         if (sensor_data.isEmpty)
                           const Text('No sensor data available.'),
