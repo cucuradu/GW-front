@@ -73,6 +73,7 @@ class _Sensors extends State<Sensors> {
 
     if (response.statusCode == 200) {
       // Successful response, handle the data
+      print('Response body: ${response.body}');
       setState(() {
         sensor_data = jsonDecode(response.body);
       });
@@ -253,7 +254,7 @@ class _Sensors extends State<Sensors> {
                     Column(
                       children: [
                         for (final sensor in sensor_data)
-                          Text(sensor['name'] ?? 'N/A'),
+                          SensorList( sensorName: sensor['sensor_data']['name'] ?? 'N/A'),
                         if (sensor_data.isEmpty)
                           const Text('No sensor data available.'),
                       ],
@@ -293,20 +294,25 @@ class _Sensors extends State<Sensors> {
                         child: ListView.builder(
                             itemCount: sensor_data.length,
                             itemBuilder: (context, index) {
-                              final sensor = sensor_data[index];
+                              final sensor = sensor_data[index]["sensor_data"];
                               final sensorName = sensor["name"] ?? 'N/A';
                               final temperature = sensor['temperature'] ?? 'N/A';
                               final nitrogen = sensor['nitrogen'] ?? 'N/A';
                               final phosphorus = sensor['phosphorus'] ?? 'N/A';
                               final potassium = sensor['potassium'] ?? 'N/A';
 
+                              final recommendation = sensor_data[index]["recommendation"];
+                              final temperatureRecommendation = recommendation["temperature_recommendation"] ?? 'N/A';
+                              final nutrientRecommendation = recommendation["nutrient_recommendation"] ?? [];
 
                               return ListTile(
                                 title: Text('Sensor Name: $sensorName'),
                                 subtitle: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text('Temperature: $temperature'),
+                                    Text('- $temperatureRecommendation'),
+                                    for (var nutrient in nutrientRecommendation)
+                                      Text('- $nutrient'),
                                   ],
                                 ),
                               );
