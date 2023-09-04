@@ -73,6 +73,7 @@ class _Sensors extends State<Sensors> {
 
     if (response.statusCode == 200) {
       // Successful response, handle the data
+      print('Response body: ${response.body}');
       setState(() {
         sensor_data = jsonDecode(response.body);
       });
