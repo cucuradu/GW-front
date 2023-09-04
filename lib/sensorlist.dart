@@ -3,7 +3,19 @@ import 'package:gwfront/sensordetails.dart';
 
 class SensorList extends StatelessWidget {
   String? sensorName;
-  SensorList({super.key, this.sensorName});
+  String? humidity;
+  String? temperature;
+  String? nitrogen;
+  String? phosphorous;
+  String? potassium;
+  SensorList(
+      {super.key,
+      this.sensorName,
+      this.humidity,
+      this.temperature,
+      this.nitrogen,
+      this.phosphorous,
+      this.potassium});
 
   @override
   Widget build(BuildContext context) {
@@ -20,6 +32,11 @@ class SensorList extends StatelessWidget {
             MaterialPageRoute(
                 builder: (context) => SensorDetails(
                       sensorName: sensorName,
+                      humidity: humidity,
+                      temperature: temperature,
+                      nitrogen: nitrogen,
+                      phosphorous: phosphorous,
+                      potassium: potassium,
                     )),
           );
         },
