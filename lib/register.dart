@@ -1,9 +1,40 @@
 import 'package:flutter/material.dart';
 import 'homepage.dart';
 import 'login.dart';
+import 'sensorspage.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
-class Register extends StatelessWidget {
-  Register({super.key});
+class Register extends StatefulWidget {
+  Register({Key? key}) : super(key: key);
+
+  @override
+  _RegisterState createState() => _RegisterState();
+}
+
+class _RegisterState extends State<Register> {
+  List sensor_data = [];
+
+  void getData() async {
+    final url = Uri.parse(
+        'http://192.168.1.210:8000/apiRest/recommendations/'); // Replace with your Django server URL
+    final response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      // Successful response, handle the data
+      setState(() {
+        sensor_data = jsonDecode(response.body);
+      });
+    } else {
+      print('Request failed with status: ${response.statusCode}');
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getData();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -173,11 +204,11 @@ class Register extends StatelessWidget {
                     SizedBox(height: MediaQuery.of(context).size.height * 0.02),
                     InkWell(
                       onTap: () {
-                        // Navigate to the Register page here
+                        // Navigate to the Login page here
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const Login(),
+                            builder: (context) => Login(),
                           ),
                         );
                       },
@@ -211,10 +242,20 @@ class Register extends StatelessWidget {
                       width: MediaQuery.of(context).size.width * 0.9,
                       child: ElevatedButton(
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => Homepage()),
-                          );
+                          if (sensor_data.isEmpty) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => Homepage()),
+                            );
+                          } else {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => Sensors(),
+                              ),
+                            );
+                          }
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.yellow,

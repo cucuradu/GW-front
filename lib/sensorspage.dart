@@ -191,7 +191,7 @@ class _Sensors extends State<Sensors> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const Login()),
+                  MaterialPageRoute(builder: (context) => Login()),
                 );
               },
               child: Image.asset(
@@ -253,7 +253,7 @@ class _Sensors extends State<Sensors> {
                     ),
                     Column(
                       children: [
-                        for (final sensor in sensor_data.reversed)
+                        for (final sensor in sensor_data)
                           SensorList(
                             sensorName: sensor['sensor_data']['name'] ?? 'N/A',
                             humidity: "True",
@@ -270,8 +270,7 @@ class _Sensors extends State<Sensors> {
                                 sensor['sensor_data']['potassium'].toString() ??
                                     'N/A',
                           ),
-                        if (sensor_data.isEmpty)
-                          const Text('No sensor data available.'),
+                        if (sensor_data.isEmpty) const Text('Loading...'),
                       ],
                     ),
                     SizedBox(
