@@ -68,7 +68,7 @@ class _Sensors extends State<Sensors> {
 
   void getData() async {
     final url = Uri.parse(
-        'http://192.168.1.210:8000/apiRest/recommendations/'); // Replace with your Django server URL
+        'http://192.168.100.29:8000/apiRest/recommendations/'); // Replace with your Django server URL
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
@@ -254,17 +254,13 @@ class _Sensors extends State<Sensors> {
                     Column(
                       children: [
                         for (final sensor in sensor_data.reversed)
-
-                          SensorList( sensorName: sensor['sensor_data']['name'] ?? 'N/A'),
-
                           SensorList(
                             sensorName: sensor['sensor_data']['name'] ?? 'N/A',
                             humidity: "True",
                             temperature: sensor['sensor_data']['temperature']
-                                    .toString() ??
-                                'N/A',
-                            nitrogen:
-                                sensor['sensor_data']['nitrogen'].toString() ??
+                                .toString() ??
+                              'N/A',
+                            nitrogen: sensor['sensor_data']['nitrogen'].toString() ??
                                     'N/A',
                             phosphorous: sensor['sensor_data']['phosphorus']
                                     .toString() ??
