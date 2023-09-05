@@ -1,9 +1,41 @@
 import 'package:flutter/material.dart';
 import 'register.dart';
 import 'homepage.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
-class Login extends StatelessWidget {
-  const Login({super.key});
+import 'sensorspage.dart';
+
+class Login extends StatefulWidget {
+  Login({Key? key}) : super(key: key);
+
+  @override
+  _LoginState createState() => _LoginState();
+}
+
+class _LoginState extends State<Login> {
+  List sensor_data = [];
+
+  void getData() async {
+    final url = Uri.parse(
+        'http://192.168.1.210:8000/apiRest/recommendations/'); // Replace with your Django server URL
+    final response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      // Successful response, handle the data
+      setState(() {
+        sensor_data = jsonDecode(response.body);
+      });
+    } else {
+      print('Request failed with status: ${response.statusCode}');
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getData();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -148,10 +180,20 @@ class Login extends StatelessWidget {
                       width: MediaQuery.of(context).size.width * 0.9,
                       child: ElevatedButton(
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => Homepage()),
-                          );
+                          if (sensor_data.isEmpty) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => Homepage()),
+                            );
+                          } else {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => Sensors(),
+                              ),
+                            );
+                          }
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.yellow,
