@@ -147,7 +147,12 @@ class Homepage extends StatelessWidget {
                 height: 75,
                 child: FloatingActionButton(
                   onPressed: () {
-                    // Your add button action goes here
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => NewSensor(),
+                      ),
+                    );
                   },
                   backgroundColor:
                       const Color(0xFF8EAC50), // Set the button color here

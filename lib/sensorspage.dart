@@ -7,6 +7,7 @@ import 'login.dart';
 import 'dart:convert';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'test_map_page.dart';
+import 'newsensor.dart';
 
 class SensorObject {
   int? id;
@@ -205,7 +206,9 @@ class _Sensors extends State<Sensors> {
         ),
         body: Column(
           children: [
-            SizedBox(height: MediaQuery.of(context).size.height * 0.025,),
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.025,
+            ),
             Container(
               height: MediaQuery.of(context).size.width * 0.50,
               width: MediaQuery.of(context).size.width * 0.9,
@@ -240,8 +243,7 @@ class _Sensors extends State<Sensors> {
               ),
             ),
             Expanded(
-              child:
-              ListView(
+              child: ListView(
                 children: [
                   Container(
                     color: Colors.white, // Background color
@@ -272,7 +274,8 @@ class _Sensors extends State<Sensors> {
                                   style: TextStyle(
                                     color: Colors.black,
                                     fontSize:
-                                        MediaQuery.of(context).size.width * 0.07,
+                                        MediaQuery.of(context).size.width *
+                                            0.07,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
@@ -286,20 +289,23 @@ class _Sensors extends State<Sensors> {
                             children: [
                               for (final sensor in sensor_data)
                                 SensorList(
-                                  sensorName: sensor['sensor_data']['name'] ?? 'N/A',
+                                  sensorName:
+                                      sensor['sensor_data']['name'] ?? 'N/A',
                                   humidity: "True",
-                                  temperature: sensor['sensor_data']['temperature']
+                                  temperature: sensor['sensor_data']
+                                              ['temperature']
                                           .toString() ??
                                       'N/A',
-                                  nitrogen:
-                                      sensor['sensor_data']['nitrogen'].toString() ??
-                                          'N/A',
-                                  phosphorous: sensor['sensor_data']['phosphorus']
+                                  nitrogen: sensor['sensor_data']['nitrogen']
                                           .toString() ??
                                       'N/A',
-                                  potassium:
-                                      sensor['sensor_data']['potassium'].toString() ??
-                                          'N/A',
+                                  phosphorous: sensor['sensor_data']
+                                              ['phosphorus']
+                                          .toString() ??
+                                      'N/A',
+                                  potassium: sensor['sensor_data']['potassium']
+                                          .toString() ??
+                                      'N/A',
                                 ),
                               if (sensor_data.isEmpty) const Text('Loading...'),
                             ],
@@ -320,7 +326,8 @@ class _Sensors extends State<Sensors> {
                                   style: TextStyle(
                                     color: Colors.black,
                                     fontSize:
-                                        MediaQuery.of(context).size.width * 0.07,
+                                        MediaQuery.of(context).size.width *
+                                            0.07,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
@@ -333,32 +340,41 @@ class _Sensors extends State<Sensors> {
                           ClipRRect(
                             borderRadius: BorderRadius.circular(20),
                             child: Container(
-                              decoration: BoxDecoration(color: Color(0xFFFAE392)),
+                              decoration:
+                                  BoxDecoration(color: Color(0xFFFAE392)),
                               height: MediaQuery.of(context).size.height *
                                   0.25, // Adjust the height here
                               child: ListView.builder(
                                 itemCount: sensor_data.length,
                                 itemBuilder: (context, index) {
-                                  final sensor = sensor_data[index]["sensor_data"];
+                                  final sensor =
+                                      sensor_data[index]["sensor_data"];
                                   final sensorName = sensor["name"] ?? 'N/A';
-                                  final temperature = sensor['temperature'] ?? 'N/A';
+                                  final temperature =
+                                      sensor['temperature'] ?? 'N/A';
                                   final nitrogen = sensor['nitrogen'] ?? 'N/A';
-                                  final phosphorus = sensor['phosphorus'] ?? 'N/A';
-                                  final potassium = sensor['potassium'] ?? 'N/A';
+                                  final phosphorus =
+                                      sensor['phosphorus'] ?? 'N/A';
+                                  final potassium =
+                                      sensor['potassium'] ?? 'N/A';
                                   final recommendation =
                                       sensor_data[index]["recommendation"];
                                   final temperatureRecommendation =
-                                      recommendation["temperature_recommendation"] ??
+                                      recommendation[
+                                              "temperature_recommendation"] ??
                                           'N/A';
-                                  final nutrientRecommendation =
-                                      recommendation["nutrient_recommendation"] ?? [];
+                                  final nutrientRecommendation = recommendation[
+                                          "nutrient_recommendation"] ??
+                                      [];
                                   return ListTile(
                                     title: Text('Sensor Name: $sensorName'),
                                     subtitle: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text('- $temperatureRecommendation'),
-                                        for (var nutrient in nutrientRecommendation)
+                                        for (var nutrient
+                                            in nutrientRecommendation)
                                           Text('- $nutrient')
                                       ],
                                     ),
@@ -377,9 +393,8 @@ class _Sensors extends State<Sensors> {
                 ],
               ),
             ),
-          ],  
+          ],
         ),
-        
         bottomNavigationBar: Container(
           height: MediaQuery.of(context).size.height *
               0.097, // Adjust the height here
@@ -411,8 +426,14 @@ class _Sensors extends State<Sensors> {
                 width: 75,
                 height: 75,
                 child: FloatingActionButton(
-                  onPressed:
-                      () {}, // Call the _showAddDialog function when the button is pressed
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => NewSensor(),
+                      ),
+                    );
+                  }, // Call the _showAddDialog function when the button is pressed
                   backgroundColor:
                       const Color(0xFF8EAC50), // Set the button color here
                   child: const Icon(Icons.add),
@@ -442,13 +463,13 @@ class _Sensors extends State<Sensors> {
 }
 
 Set<Marker> _createMarkers() {
-    // Create a set of markers to display on the map
-    return {
-      Marker(
-        markerId: MarkerId('marker1'),
-        position: LatLng(37.7749, -122.4194), // Marker position
-        infoWindow: InfoWindow(title: 'Marker 1'), // Marker info window
-      ),
-      // Add more markers as needed
-    };
-  }
+  // Create a set of markers to display on the map
+  return {
+    Marker(
+      markerId: MarkerId('marker1'),
+      position: LatLng(37.7749, -122.4194), // Marker position
+      infoWindow: InfoWindow(title: 'Marker 1'), // Marker info window
+    ),
+    // Add more markers as needed
+  };
+}
