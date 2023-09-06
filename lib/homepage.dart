@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gwfront/login.dart';
+import 'package:gwfront/newsensor.dart';
 import 'package:gwfront/sensorspage.dart';
 
 class Homepage extends StatelessWidget {
@@ -79,7 +80,7 @@ class Homepage extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => Sensors(),
+                            builder: (context) => NewSensor(),
                           ),
                         );
                       },
