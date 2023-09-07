@@ -206,49 +206,53 @@ class _Sensors extends State<Sensors> {
         ),
         body: Column(
           children: [
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.025,
-            ),
-            Container(
-              height: MediaQuery.of(context).size.width * 0.50,
-              width: MediaQuery.of(context).size.width * 0.9,
-              child: Stack(
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(20),
-                    child: GoogleMap(
-                      initialCameraPosition: CameraPosition(
-                        target: LatLng(37.7749, -122.4194),
-                        zoom: 12.0,
-                      ),
-                      mapType: MapType.satellite,
-                      markers: _createMarkers(),
-                    ),
-                  ),
-                  Positioned(
-                    bottom: 10,
-                    right: 10,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => MapScreen(),
-                          ),
-                        );
-                      },
-                      child: Text('Go to Another Page'),
-                    ),
-                  ),
-                ],
-              ),
-            ),
             Expanded(
               child: ListView(
                 children: [
                   Container(
                     color: Colors.white, // Background color
                   ),
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.035),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.025,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: MediaQuery.of(context).size.height * 0.02),
+                    child: Container(
+                      height: MediaQuery.of(context).size.height * 0.25,
+                      width: MediaQuery.of(context).size.width * 0.8,
+                      child: Stack(
+                        children: [
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(20),
+                            child: GoogleMap(
+                              initialCameraPosition: CameraPosition(
+                                target: LatLng(37.7749, -122.4194),
+                                zoom: 12.0,
+                              ),
+                              mapType: MapType.satellite,
+                              markers: _createMarkers(),
+                            ),
+                          ),
+                          Positioned(
+                            top: 10,
+                            right: 10,
+                            child: ElevatedButton(
+                              onPressed: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => MapScreen(),
+                                  ),
+                                );
+                              },
+                              child: Text('View map'),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.009),
                   Align(
                     alignment: Alignment.bottomCenter,
                     child: Padding(
