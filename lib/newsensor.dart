@@ -12,6 +12,7 @@ class _NewSensorState extends State<NewSensor> {
   TextEditingController NameController = TextEditingController();
   String? SensorID;
   String? SensorName;
+  String? SensorPlant;
 
   @override
   Widget build(BuildContext context) {
@@ -238,6 +239,7 @@ class _NewSensorState extends State<NewSensor> {
                   setState(() {
                     SensorID = IDcontroller.text;
                     SensorName = NameController.text;
+                    SensorPlant = selectedItem;
                   });
                   Navigator.push(
                     context,
