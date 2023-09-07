@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import 'sensorspage.dart';
+import 'package:gwfront/sensorspage.dart';
 
 class NewSensor extends StatefulWidget {
   @override
@@ -9,6 +8,10 @@ class NewSensor extends StatefulWidget {
 
 class _NewSensorState extends State<NewSensor> {
   String selectedItem = 'Tomato'; // Default selected item
+  TextEditingController IDcontroller = TextEditingController();
+  TextEditingController NameController = TextEditingController();
+  String? SensorID;
+  String? SensorName;
 
   @override
   Widget build(BuildContext context) {
@@ -98,13 +101,13 @@ class _NewSensorState extends State<NewSensor> {
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: MediaQuery.of(context).size.width *
-                                0.07, // Increase font size
+                                0.09, // Increase font size
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                       ),
                       SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.07),
+                          height: MediaQuery.of(context).size.height * 0.084),
                       Container(
                         padding: EdgeInsets.symmetric(
                             horizontal:
@@ -119,6 +122,7 @@ class _NewSensorState extends State<NewSensor> {
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: TextField(
+                          controller: IDcontroller,
                           decoration: InputDecoration(
                             hintText: 'Sensor ID',
                             hintStyle: TextStyle(
@@ -149,6 +153,7 @@ class _NewSensorState extends State<NewSensor> {
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: TextField(
+                          controller: NameController,
                           decoration: InputDecoration(
                             hintText: 'Sensor name',
                             hintStyle: TextStyle(
@@ -186,6 +191,16 @@ class _NewSensorState extends State<NewSensor> {
                               selectedItem = newValue!;
                             });
                           },
+                          icon: Icon(
+                            Icons
+                                .arrow_drop_down, // Set the dropdown arrow to white
+                            color: Colors.white,
+                          ),
+                          underline: Container(
+                            // Remove the underline by providing an empty container
+                            height: 0,
+                            color: Colors.transparent,
+                          ),
                           items: <String>[
                             'Tomato',
                             'Cucumber',
@@ -216,10 +231,14 @@ class _NewSensorState extends State<NewSensor> {
           floatingActionButton: Align(
             alignment: Alignment.bottomCenter,
             child: SizedBox(
-              width: 100,
-              height: 100,
+              width: 75,
+              height: 75,
               child: FloatingActionButton(
                 onPressed: () {
+                  setState(() {
+                    SensorID = IDcontroller.text;
+                    SensorName = NameController.text;
+                  });
                   Navigator.push(
                     context,
                     MaterialPageRoute(
