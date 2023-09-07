@@ -3,6 +3,8 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:gwfront/sensorspage.dart';
 
+List sensor_id = [];
+
 class NewSensor extends StatefulWidget {
   @override
   _NewSensorState createState() => _NewSensorState();
@@ -17,6 +19,7 @@ class _NewSensorState extends State<NewSensor> {
   String? SensorPlant;
 
   List sensor_data = [];
+
 
   void getData() async {
     final url = Uri.parse('http://192.168.100.29:8000/apiRest/recommendations/'); // Replace with your Django server URL
@@ -310,6 +313,10 @@ class _NewSensorState extends State<NewSensor> {
                                   }
 
                                   updateData();
+
+                                  sensor_id.add(SensorID);
+
+                                  print('ADDED ID -- $sensor_id');
 
                                   Navigator.push(
                                     context,

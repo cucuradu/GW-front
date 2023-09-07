@@ -18,6 +18,8 @@ class SensorObject {
   double? phosphorous;
   double? potassium;
 
+
+
   SensorObject({
     required this.id,
     required this.name,
@@ -67,8 +69,9 @@ class Sensors extends StatefulWidget {
 class _Sensors extends State<Sensors> {
   List<SensorObject>? mySensorsList;
   List sensor_data = [];
-  _Sensors();
 
+
+  _Sensors();
   void getData() async {
     final url = Uri.parse('http://192.168.100.29:8000/apiRest/recommendations/'); // Replace with your Django server URL
     final response = await http.get(url);
@@ -290,27 +293,29 @@ class _Sensors extends State<Sensors> {
                           ),
                           Column(
                             children: [
-                              for (final sensor in sensor_data)
-                                SensorList(
-                                  sensorName:
-                                      sensor['sensor_data']['name'] ?? 'N/A',
-                                  humidity: "True",
-                                  temperature: sensor['sensor_data']
-                                              ['temperature']
-                                          .toString() ??
-                                      'N/A',
-                                  nitrogen: sensor['sensor_data']['nitrogen']
-                                          .toString() ??
-                                      'N/A',
-                                  phosphorous: sensor['sensor_data']
-                                              ['phosphorus']
-                                          .toString() ??
-                                      'N/A',
-                                  potassium: sensor['sensor_data']['potassium']
-                                          .toString() ??
-                                      'N/A',
-                                ),
-                              if (sensor_data.isEmpty) const Text('Loading...'),
+                              for (final sensorid in sensor_id)
+                                for (final sensor in sensor_data)
+                                  if (sensorid == sensor['sensor_data']['id'])
+                                    SensorList(
+                                      sensorName:
+                                          sensor['sensor_data']['name'] ?? 'N/A',
+                                      humidity: "True",
+                                      temperature: sensor['sensor_data']
+                                                  ['temperature']
+                                              .toString() ??
+                                          'N/A',
+                                      nitrogen: sensor['sensor_data']['nitrogen']
+                                              .toString() ??
+                                          'N/A',
+                                      phosphorous: sensor['sensor_data']
+                                                  ['phosphorus']
+                                              .toString() ??
+                                          'N/A',
+                                      potassium: sensor['sensor_data']['potassium']
+                                              .toString() ??
+                                          'N/A',
+                                    ),
+                                    if (sensor_data.isEmpty) const Text('Loading...'),
                             ],
                           ),
                           SizedBox(
@@ -347,47 +352,49 @@ class _Sensors extends State<Sensors> {
                                   BoxDecoration(color: Color(0xFFFAE392)),
                               height: MediaQuery.of(context).size.height *
                                   0.25, // Adjust the height here
-                              child: ListView.builder(
-                                itemCount: sensor_data.length,
-                                itemBuilder: (context, index) {
-                                  final sensor = sensor_data[index];
-                                  final sensorData = sensor["sensor_data"];
-                                  final sensorName = sensorData["name"] ?? 'N/A';
+                                child: ListView.builder(
+                                  itemCount: sensor_data.length,
+                                  itemBuilder: (context, index) {
+                                    final sensor = sensor_data[index];
+                                    final sensorData = sensor["sensor_data"];
+                                    final sensorName = sensorData["name"] ?? 'N/A';
 
-                                  if (sensorName == 'sensorName') {
-                                    return Container(); // Return an empty container, effectively skipping this sensor
-                                  }
-
-                                  final recommendation = sensor["recommendation"];
-                                  String temperatureRecommendation = 'N/A';
-                                  List<String> nutrientRecommendation = [];
-
-                                  if (recommendation is Map<String, dynamic>) {
-                                    temperatureRecommendation = recommendation["temperature_recommendation"] ?? 'N/A';
-                                    final nutrientRecommendationList = recommendation["nutrient_recommendation"];
-                                    if (nutrientRecommendationList is List) {
-                                      nutrientRecommendation = nutrientRecommendationList.cast<String>();
+                                    if (sensorName == 'sensorName') {
+                                      return Container(); // Return an empty container, effectively skipping this sensor
                                     }
-                                  } else if (recommendation is String) {
-                                    // If recommendation is a string, use it directly as temperature recommendation
-                                    temperatureRecommendation = recommendation;
-                                  }
 
-                                  return ListTile(
-                                    title: Text('Sensor Name: $sensorName'),
-                                    subtitle: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text('- $temperatureRecommendation'),
-                                        if (nutrientRecommendation.isNotEmpty)
-                                          for (var nutrient in nutrientRecommendation)
-                                            Text('- $nutrient')
-                                      ],
-                                    ),
-                                  );
-                                },
-                              ),
+                                    final recommendation = sensor["recommendation"];
+                                    String temperatureRecommendation = 'N/A';
+                                    List<String> nutrientRecommendation = [];
+
+                                    if (recommendation is Map<String, dynamic>) {
+                                      temperatureRecommendation = recommendation["temperature_recommendation"] ?? 'N/A';
+                                      final nutrientRecommendationList = recommendation["nutrient_recommendation"];
+                                      if (nutrientRecommendationList is List) {
+                                        nutrientRecommendation = nutrientRecommendationList.cast<String>();
+                                      }
+                                    } else if (recommendation is String) {
+                                      // If recommendation is a string, use it directly as temperature recommendation
+                                      temperatureRecommendation = recommendation;
+                                    }
+                                    for (final sensorid in sensor_id)
+                                      for (final sensor in sensor_data)
+                                        if (sensorid == sensor['sensor_data']['id'])
+                                          return ListTile(
+                                            title: Text('Sensor Name: $sensorName'),
+                                            subtitle: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text('- $temperatureRecommendation'),
+                                                if (nutrientRecommendation.isNotEmpty)
+                                                  for (var nutrient in nutrientRecommendation)
+                                                    Text('- $nutrient')
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                ),
                             ),
                           ),
                           SizedBox(
