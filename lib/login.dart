@@ -17,8 +17,8 @@ class _LoginState extends State<Login> {
   List sensor_data = [];
 
   void getData() async {
-    final url = Uri.parse(
-        'http://192.168.100.29:8000/apiRest/recommendations/'); // Replace with your Django server URL
+    final url = Uri.parse('http://192.168.100.29:8000/apiRest/recommendations/'); // Replace with your Django server URL
+
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
