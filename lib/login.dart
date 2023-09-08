@@ -3,6 +3,7 @@ import 'register.dart';
 import 'homepage.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:gwfront/newsensor.dart';
 
 import 'sensorspage.dart';
 
@@ -17,6 +18,7 @@ class _LoginState extends State<Login> {
   List sensor_data = [];
 
   void getData() async {
+
     final url = Uri.parse('http://192.168.0.125:8000/apiRest/recommendations/'); // Replace with your Django server URL
 
     final response = await http.get(url);
@@ -66,24 +68,26 @@ class _LoginState extends State<Login> {
               ),
             ),
             Positioned(
-              top: MediaQuery.of(context).size.height / 3 +
-                  200, // Adjust the vertical position as needed
+              top: MediaQuery.of(context).size.height / 2 + 20,
               left: 0,
               right: 0,
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 15),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
+                child: ListView(
+                  shrinkWrap: true,
+                  physics: BouncingScrollPhysics(),
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: Text(
-                        'Login',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: MediaQuery.of(context).size.width *
-                              0.07, // Responsive font size
-                          fontWeight: FontWeight.bold,
+                    Center(
+                      // Wrap with Center widget
+                      child: Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Text(
+                          'Login',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: MediaQuery.of(context).size.width * 0.07,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     ),
@@ -150,26 +154,28 @@ class _LoginState extends State<Login> {
                           ),
                         );
                       },
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: RichText(
-                          text: const TextSpan(
-                            text: "Don’t have an account? ",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 18,
-                            ),
-                            children: [
-                              TextSpan(
-                                text: "Register here",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 18, // Increase font size
-                                  decoration: TextDecoration.underline,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                      child: Center(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: RichText(
+                            text: const TextSpan(
+                              text: "Don’t have an account? ",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
                               ),
-                            ],
+                              children: [
+                                TextSpan(
+                                  text: "Register here",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 18, // Increase font size
+                                    decoration: TextDecoration.underline,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
@@ -180,7 +186,7 @@ class _LoginState extends State<Login> {
                       width: MediaQuery.of(context).size.width * 0.9,
                       child: ElevatedButton(
                         onPressed: () {
-                          if (sensor_data.isEmpty) {
+                          if (sensor_id.isEmpty) {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -207,6 +213,7 @@ class _LoginState extends State<Login> {
                         ),
                       ),
                     ),
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.7),
                   ],
                 ),
               ),

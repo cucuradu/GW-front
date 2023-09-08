@@ -20,7 +20,6 @@ class _NewSensorState extends State<NewSensor> {
 
   List sensor_data = [];
 
-
   void getData() async {
     final url = Uri.parse('http://192.168.0.125:8000/apiRest/recommendations/'); // Replace with your Django server URL
     final response = await http.get(url);
@@ -305,9 +304,12 @@ class _NewSensorState extends State<NewSensor> {
                                   });
 
                                   for (int i = 0; i < sensor_data.length; i++) {
-                                    if (sensor_data[i]["sensor_data"]["id"] == SensorID){
-                                      sensor_data[i]["sensor_data"]["name"] = SensorName;
-                                      sensor_data[i]["sensor_data"]["plant"] = SensorPlant;
+                                    if (sensor_data[i]["sensor_data"]["id"] ==
+                                        SensorID) {
+                                      sensor_data[i]["sensor_data"]["name"] =
+                                          SensorName;
+                                      sensor_data[i]["sensor_data"]["plant"] =
+                                          SensorPlant;
                                       break;
                                     }
                                   }
@@ -359,6 +361,5 @@ class _NewSensorState extends State<NewSensor> {
         ),
       ),
     );
-
   }
 }
