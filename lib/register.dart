@@ -4,6 +4,7 @@ import 'login.dart';
 import 'sensorspage.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'newsensor.dart';
 
 class Register extends StatefulWidget {
   Register({Key? key}) : super(key: key);
@@ -16,7 +17,8 @@ class _RegisterState extends State<Register> {
   List sensor_data = [];
 
   void getData() async {
-    final url = Uri.parse('http://192.168.100.29:8000/apiRest/recommendations/'); // Replace with your Django server URL
+    final url = Uri.parse(
+        'http://192.168.0.185:8000/apiRest/recommendations/'); // Replace with your Django server URL
 
     final response = await http.get(url);
 
@@ -76,24 +78,27 @@ class _RegisterState extends State<Register> {
               ),
             ),
             Positioned(
-              top: MediaQuery.of(context).size.height / 3 +
-                  25, // Adjust the vertical position as needed
+              top: MediaQuery.of(context).size.height / 2 - 140,
+              bottom: MediaQuery.of(context).size.height * 0.00,
               left: 0,
               right: 0,
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 15),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
+                child: ListView(
+                  // Wrap with ListView
+                  shrinkWrap: true,
+                  physics: BouncingScrollPhysics(),
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: Text(
-                        'Register',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: MediaQuery.of(context).size.width *
-                              0.07, // Increase font size
-                          fontWeight: FontWeight.bold,
+                    Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Text(
+                          'Register',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: MediaQuery.of(context).size.width * 0.07,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     ),
@@ -202,36 +207,38 @@ class _RegisterState extends State<Register> {
                       ),
                     ),
                     SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-                    InkWell(
-                      onTap: () {
-                        // Navigate to the Login page here
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => Login(),
-                          ),
-                        );
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: RichText(
-                          text: const TextSpan(
-                            text: "Already have an account? ",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 18,
+                    Center(
+                      child: InkWell(
+                        onTap: () {
+                          // Navigate to the Login page here
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => Login(),
                             ),
-                            children: [
-                              TextSpan(
-                                text: "Login here",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 18, // Increase font size
-                                  decoration: TextDecoration.underline,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                          );
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: RichText(
+                            text: const TextSpan(
+                              text: "Already have an account? ",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
                               ),
-                            ],
+                              children: [
+                                TextSpan(
+                                  text: "Login here",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 18,
+                                    decoration: TextDecoration.underline,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
@@ -242,7 +249,7 @@ class _RegisterState extends State<Register> {
                       width: MediaQuery.of(context).size.width * 0.9,
                       child: ElevatedButton(
                         onPressed: () {
-                          if (sensor_data.isEmpty) {
+                          if (sensor_id.isEmpty) {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
