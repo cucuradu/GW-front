@@ -460,7 +460,8 @@ class _Sensors extends State<Sensors> {
                         context,
                         PageTransition(
                             child: NewSensor(),
-                            type: PageTransitionType.bottomToTop));
+                            type: PageTransitionType.bottomToTop,
+                            duration: Duration(milliseconds: 500)));
                   }, // Call the _showAddDialog function when the button is pressed
                   backgroundColor:
                       const Color(0xFF8EAC50), // Set the button color here

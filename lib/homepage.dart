@@ -79,11 +79,11 @@ class Homepage extends StatelessWidget {
                     ElevatedButton(
                       onPressed: () {
                         Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => NewSensor(),
-                          ),
-                        );
+                            context,
+                            PageTransition(
+                                child: NewSensor(),
+                                type: PageTransitionType.bottomToTop,
+                                duration: Duration(milliseconds: 500)));
                       },
                       style: ElevatedButton.styleFrom(
                         primary: Color(0xFFFAE392),
@@ -152,7 +152,8 @@ class Homepage extends StatelessWidget {
                         context,
                         PageTransition(
                             child: NewSensor(),
-                            type: PageTransitionType.bottomToTop));
+                            type: PageTransitionType.bottomToTop,
+                            duration: Duration(milliseconds: 500)));
                   },
                   backgroundColor:
                       const Color(0xFF8EAC50), // Set the button color here

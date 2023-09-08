@@ -326,8 +326,9 @@ class _NewSensorState extends State<NewSensor> {
                                       context,
                                       PageTransition(
                                           child: Sensors(),
-                                          type:
-                                              PageTransitionType.topToBottom));
+                                          type: PageTransitionType.topToBottom,
+                                          duration:
+                                              Duration(milliseconds: 500)));
                                 },
                                 style: ButtonStyle(
                                   backgroundColor: MaterialStateProperty.all(

@@ -39,7 +39,8 @@ class SensorList extends StatelessWidget {
                     phosphorous: phosphorous,
                     potassium: potassium,
                   ),
-                  type: PageTransitionType.rightToLeft));
+                  type: PageTransitionType.rightToLeftWithFade,
+                  duration: Duration(seconds: 2)));
         },
         style: ElevatedButton.styleFrom(
           primary: Colors.white,
