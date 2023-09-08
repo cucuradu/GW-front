@@ -4,7 +4,6 @@ import 'homepage.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:gwfront/newsensor.dart';
-
 import 'sensorspage.dart';
 
 class Login extends StatefulWidget {
@@ -16,6 +15,10 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   List sensor_data = [];
+  TextEditingController email = TextEditingController();
+  TextEditingController pass = TextEditingController();
+  String? emailText;
+  String? passwordText;
 
   void getData() async {
     final url = Uri.parse(
@@ -186,6 +189,10 @@ class _LoginState extends State<Login> {
                       width: MediaQuery.of(context).size.width * 0.9,
                       child: ElevatedButton(
                         onPressed: () {
+                          setState(() {
+                            emailText = email.text;
+                            passwordText = pass.text;
+                          });
                           if (sensor_id.isEmpty) {
                             Navigator.push(
                               context,
