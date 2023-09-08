@@ -15,6 +15,14 @@ class Register extends StatefulWidget {
 
 class _RegisterState extends State<Register> {
   List sensor_data = [];
+  TextEditingController name = TextEditingController();
+  TextEditingController email = TextEditingController();
+  TextEditingController pass = TextEditingController();
+  TextEditingController confirm = TextEditingController();
+  String? nameText;
+  String? emailText;
+  String? passwordText;
+  String? confirmText;
 
   void getData() async {
     final url = Uri.parse(
@@ -115,6 +123,7 @@ class _RegisterState extends State<Register> {
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: TextField(
+                        controller: name,
                         decoration: InputDecoration(
                           hintText: 'Name',
                           hintStyle: TextStyle(
@@ -141,6 +150,7 @@ class _RegisterState extends State<Register> {
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: TextField(
+                        controller: email,
                         decoration: InputDecoration(
                           hintText: 'E-mail',
                           hintStyle: TextStyle(
@@ -167,6 +177,7 @@ class _RegisterState extends State<Register> {
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: TextField(
+                        controller: pass,
                         decoration: InputDecoration(
                           hintText: 'Password',
                           hintStyle: TextStyle(
@@ -193,6 +204,7 @@ class _RegisterState extends State<Register> {
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: TextField(
+                        controller: confirm,
                         decoration: InputDecoration(
                           hintText: 'Confirm password',
                           hintStyle: TextStyle(
@@ -249,6 +261,12 @@ class _RegisterState extends State<Register> {
                       width: MediaQuery.of(context).size.width * 0.9,
                       child: ElevatedButton(
                         onPressed: () {
+                          setState(() {
+                            nameText = name.text;
+                            emailText = email.text;
+                            passwordText = pass.text;
+                            confirmText = confirm.text;
+                          });
                           if (sensor_id.isEmpty) {
                             Navigator.push(
                               context,
