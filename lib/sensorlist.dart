@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gwfront/sensordetails.dart';
+import 'package:page_transition/page_transition.dart';
 
 class SensorList extends StatelessWidget {
   String? sensorName;
@@ -28,17 +29,17 @@ class SensorList extends StatelessWidget {
       child: ElevatedButton(
         onPressed: () {
           Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => SensorDetails(
-                      sensorName: sensorName,
-                      humidity: humidity,
-                      temperature: temperature,
-                      nitrogen: nitrogen,
-                      phosphorous: phosphorous,
-                      potassium: potassium,
-                    )),
-          );
+              context,
+              PageTransition(
+                  child: SensorDetails(
+                    sensorName: sensorName,
+                    humidity: humidity,
+                    temperature: temperature,
+                    nitrogen: nitrogen,
+                    phosphorous: phosphorous,
+                    potassium: potassium,
+                  ),
+                  type: PageTransitionType.rightToLeft));
         },
         style: ElevatedButton.styleFrom(
           primary: Colors.white,

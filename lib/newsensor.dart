@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:gwfront/sensorspage.dart';
+import 'package:page_transition/page_transition.dart';
 
 List sensor_id = [];
 
@@ -322,11 +323,11 @@ class _NewSensorState extends State<NewSensor> {
                                   print('ADDED ID -- $sensor_id');
 
                                   Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => Sensors(),
-                                    ),
-                                  );
+                                      context,
+                                      PageTransition(
+                                          child: Sensors(),
+                                          type:
+                                              PageTransitionType.topToBottom));
                                 },
                                 style: ButtonStyle(
                                   backgroundColor: MaterialStateProperty.all(

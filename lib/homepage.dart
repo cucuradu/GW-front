@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gwfront/login.dart';
 import 'package:gwfront/newsensor.dart';
 import 'package:gwfront/sensorspage.dart';
+import 'package:page_transition/page_transition.dart';
 
 class Homepage extends StatelessWidget {
   Homepage({super.key});
@@ -148,11 +149,10 @@ class Homepage extends StatelessWidget {
                 child: FloatingActionButton(
                   onPressed: () {
                     Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => NewSensor(),
-                      ),
-                    );
+                        context,
+                        PageTransition(
+                            child: NewSensor(),
+                            type: PageTransitionType.bottomToTop));
                   },
                   backgroundColor:
                       const Color(0xFF8EAC50), // Set the button color here

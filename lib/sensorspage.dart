@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:gwfront/sensorlist.dart';
 import 'package:http/http.dart' as http;
+import 'package:page_transition/page_transition.dart';
 import 'homepage.dart';
 import 'login.dart';
 import 'dart:convert';
@@ -456,11 +457,10 @@ class _Sensors extends State<Sensors> {
                 child: FloatingActionButton(
                   onPressed: () {
                     Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => NewSensor(),
-                      ),
-                    );
+                        context,
+                        PageTransition(
+                            child: NewSensor(),
+                            type: PageTransitionType.bottomToTop));
                   }, // Call the _showAddDialog function when the button is pressed
                   backgroundColor:
                       const Color(0xFF8EAC50), // Set the button color here
