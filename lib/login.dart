@@ -6,6 +6,8 @@ import 'dart:convert';
 import 'package:gwfront/newsensor.dart';
 import 'sensorspage.dart';
 
+List user_data = [];
+
 class Login extends StatefulWidget {
   Login({Key? key}) : super(key: key);
 
@@ -193,6 +195,7 @@ class _LoginState extends State<Login> {
                             emailText = email.text;
                             passwordText = pass.text;
                           });
+
                           if (sensor_id.isEmpty) {
                             Navigator.push(
                               context,
