@@ -22,8 +22,7 @@ class _NewSensorState extends State<NewSensor> {
   List sensor_data = [];
 
   void getData() async {
-    final url = Uri.parse(
-        'http://192.168.0.185:8000/apiRest/recommendations/'); // Replace with your Django server URL
+    final url = Uri.parse('http://192.168.0.125:8000/apiRest/recommendations/'); // Replace with your Django server URL
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
@@ -39,7 +38,7 @@ class _NewSensorState extends State<NewSensor> {
   }
 
   void updateData() async {
-    final String apiUrl = 'http://192.168.0.185:8000/api/update_sensors/';
+    final String apiUrl = 'http://192.168.0.125:8000/api/update_sensors/';
 
     String sensorDataListJson = jsonEncode(sensor_data);
 

@@ -7,6 +7,8 @@ import 'dart:convert';
 import 'package:gwfront/newsensor.dart';
 import 'sensorspage.dart';
 
+List user_data = [];
+
 class Login extends StatefulWidget {
   Login({Key? key}) : super(key: key);
 
@@ -22,8 +24,8 @@ class _LoginState extends State<Login> {
   String? passwordText;
 
   void getData() async {
-    final url = Uri.parse(
-        'http://192.168.0.185:8000/apiRest/recommendations/'); // Replace with your Django server URL
+
+    final url = Uri.parse('http://192.168.0.125:8000/apiRest/recommendations/'); // Replace with your Django server URL
 
     final response = await http.get(url);
 
@@ -194,6 +196,7 @@ class _LoginState extends State<Login> {
                             emailText = email.text;
                             passwordText = pass.text;
                           });
+
                           if (sensor_id.isEmpty) {
                             Navigator.push(
                                 context,

@@ -71,8 +71,8 @@ class _Sensors extends State<Sensors> {
 
   _Sensors();
   void getData() async {
-    final url = Uri.parse(
-        'http://192.168.0.185:8000/apiRest/recommendations/'); // Replace with your Django server URL
+    final url = Uri.parse('http://192.168.0.125:8000/apiRest/recommendations/'); // Replace with your Django server URL
+
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
