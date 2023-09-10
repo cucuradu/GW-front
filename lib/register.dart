@@ -225,11 +225,11 @@ class _RegisterState extends State<Register> {
                         onTap: () {
                           // Navigate to the Login page here
                           Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => Login(),
-                            ),
-                          );
+                              context,
+                              PageTransition(
+                                  child: Login(),
+                                  type: PageTransitionType.fade,
+                                  duration: Duration(milliseconds: 500)));
                         },
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
@@ -273,13 +273,17 @@ class _RegisterState extends State<Register> {
                                 context,
                                 PageTransition(
                                     child: Homepage(),
-                                    type: PageTransitionType.rightToLeft));
+                                    type:
+                                        PageTransitionType.rightToLeftWithFade,
+                                    duration: Duration(milliseconds: 500)));
                           } else {
                             Navigator.push(
                                 context,
                                 PageTransition(
                                     child: Sensors(),
-                                    type: PageTransitionType.rightToLeft));
+                                    type:
+                                        PageTransitionType.rightToLeftWithFade,
+                                    duration: Duration(milliseconds: 500)));
                           }
                         },
                         style: ElevatedButton.styleFrom(

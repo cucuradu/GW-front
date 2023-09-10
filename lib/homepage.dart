@@ -127,13 +127,11 @@ class Homepage extends StatelessWidget {
                 child: FloatingActionButton(
                   onPressed: () {
                     Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => Sensors(
-                          mySensors: [],
-                        ),
-                      ),
-                    );
+                        context,
+                        PageTransition(
+                            child: Sensors(),
+                            type: PageTransitionType.rightToLeftWithFade,
+                            duration: Duration(milliseconds: 500)));
                   },
                   backgroundColor: Colors.white, // Set the button color here
                   elevation: 0,

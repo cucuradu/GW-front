@@ -222,34 +222,29 @@ class _Sensors extends State<Sensors> {
                     child: Container(
                       height: MediaQuery.of(context).size.height * 0.25,
                       width: MediaQuery.of(context).size.width * 0.8,
-                      child: Stack(
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(20),
-                            child: GoogleMap(
-                              initialCameraPosition: CameraPosition(
-                                target: LatLng(37.7749, -122.4194),
-                                zoom: 12.0,
-                              ),
-                              mapType: MapType.satellite,
-                              markers: _createMarkers(),
+                      child: GestureDetector(
+                        behavior: HitTestBehavior.opaque,
+                        onTap: () {
+                          // Handle tap events on the map here
+                          // You can open a new screen, show details, or perform any interaction
+                          // For example, open a map screen
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => MapScreen(),
                             ),
-                          ),
-                          Positioned(
-                            top: 10,
-                            right: 10,
-                            child: ElevatedButton(
-                              onPressed: () {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) => MapScreen(),
-                                  ),
-                                );
-                              },
-                              child: Text('View map'),
+                          );
+                        },
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(20),
+                          child: GoogleMap(
+                            initialCameraPosition: CameraPosition(
+                              target: LatLng(37.7749, -122.4194),
+                              zoom: 12.0,
                             ),
+                            mapType: MapType.satellite,
+                            markers: _createMarkers(),
                           ),
-                        ],
+                        ),
                       ),
                     ),
                   ),
@@ -437,13 +432,14 @@ class _Sensors extends State<Sensors> {
                 child: FloatingActionButton(
                   onPressed: () {
                     Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => Homepage(),
-                      ),
-                    );
+                        context,
+                        PageTransition(
+                            child: Sensors(),
+                            type: PageTransitionType.rightToLeftWithFade,
+                            duration: Duration(milliseconds: 500)));
                   },
-                  backgroundColor: Colors.white, // Set the button color here
+                  backgroundColor:
+                      Color.fromARGB(21, 0, 0, 0), // Set the button color here
                   elevation: 0,
                   child: Image.asset(
                     'assets/flower.png',

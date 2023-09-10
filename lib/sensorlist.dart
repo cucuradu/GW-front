@@ -40,7 +40,7 @@ class SensorList extends StatelessWidget {
                     potassium: potassium,
                   ),
                   type: PageTransitionType.rightToLeftWithFade,
-                  duration: Duration(seconds: 2)));
+                  duration: Duration(seconds: 1)));
         },
         style: ElevatedButton.styleFrom(
           primary: Colors.white,
