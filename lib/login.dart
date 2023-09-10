@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:page_transition/page_transition.dart';
 import 'register.dart';
 import 'homepage.dart';
 import 'package:http/http.dart' as http;
@@ -153,11 +154,11 @@ class _LoginState extends State<Login> {
                       onTap: () {
                         // Navigate to the Register page here
                         Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => Register(),
-                          ),
-                        );
+                            context,
+                            PageTransition(
+                                child: Register(),
+                                type: PageTransitionType.fade,
+                                duration: Duration(milliseconds: 500)));
                       },
                       child: Center(
                         child: Padding(
@@ -198,17 +199,20 @@ class _LoginState extends State<Login> {
 
                           if (sensor_id.isEmpty) {
                             Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => Homepage()),
-                            );
+                                context,
+                                PageTransition(
+                                    child: Homepage(),
+                                    type:
+                                        PageTransitionType.rightToLeftWithFade,
+                                    duration: Duration(milliseconds: 500)));
                           } else {
                             Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => Sensors(),
-                              ),
-                            );
+                                context,
+                                PageTransition(
+                                    child: Sensors(),
+                                    type:
+                                        PageTransitionType.rightToLeftWithFade,
+                                    duration: Duration(milliseconds: 500)));
                           }
                         },
                         style: ElevatedButton.styleFrom(

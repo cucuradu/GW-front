@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:gwfront/login.dart';
 import 'package:gwfront/recomendationspage.dart';
 import 'package:gwfront/sensorspage.dart';
-import 'package:gwfront/recomendationspage.dart'; // Import the RecommendationsPage
+import 'package:gwfront/recomendationspage.dart';
+import 'package:page_transition/page_transition.dart';
+
+import 'newsensor.dart'; // Import the RecommendationsPage
 
 class SensorDetails extends StatelessWidget {
   String? sensorName;
@@ -371,6 +374,68 @@ class SensorDetails extends StatelessWidget {
               ),
             ),
           ],
+        ),
+        bottomNavigationBar: Container(
+          height: MediaQuery.of(context).size.height *
+              0.097, // Adjust the height here
+          color: Colors.white,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              SizedBox(
+                width: 72,
+                height: 72,
+                child: FloatingActionButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        PageTransition(
+                            child: Sensors(),
+                            type: PageTransitionType.leftToRightWithFade,
+                            duration: Duration(milliseconds: 500)));
+                  },
+                  backgroundColor: Colors.white, // Set the button color here
+                  elevation: 0,
+                  child: Image.asset(
+                    'assets/flower.png',
+                    height: 77,
+                  ),
+                ),
+              ),
+              SizedBox(
+                width: 75,
+                height: 75,
+                child: FloatingActionButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        PageTransition(
+                            child: NewSensor(),
+                            type: PageTransitionType.bottomToTop,
+                            duration: Duration(milliseconds: 500)));
+                  }, // Call the _showAddDialog function when the button is pressed
+                  backgroundColor:
+                      const Color(0xFF8EAC50), // Set the button color here
+                  child: const Icon(Icons.add),
+                ),
+              ),
+              SizedBox(
+                width: 72,
+                height: 72,
+                child: FloatingActionButton(
+                  onPressed: () {
+                    // Your right button action goes here
+                  },
+                  backgroundColor: Colors.white, // Set the button color here
+                  elevation: 0,
+                  child: Image.asset(
+                    'assets/profile.png',
+                    height: 77,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:page_transition/page_transition.dart';
 import 'homepage.dart';
 import 'login.dart';
 import 'sensorspage.dart';
@@ -223,11 +224,11 @@ class _RegisterState extends State<Register> {
                         onTap: () {
                           // Navigate to the Login page here
                           Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => Login(),
-                            ),
-                          );
+                              context,
+                              PageTransition(
+                                  child: Login(),
+                                  type: PageTransitionType.fade,
+                                  duration: Duration(milliseconds: 500)));
                         },
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
@@ -268,17 +269,20 @@ class _RegisterState extends State<Register> {
                           });
                           if (sensor_id.isEmpty) {
                             Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => Homepage()),
-                            );
+                                context,
+                                PageTransition(
+                                    child: Homepage(),
+                                    type:
+                                        PageTransitionType.rightToLeftWithFade,
+                                    duration: Duration(milliseconds: 500)));
                           } else {
                             Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => Sensors(),
-                              ),
-                            );
+                                context,
+                                PageTransition(
+                                    child: Sensors(),
+                                    type:
+                                        PageTransitionType.rightToLeftWithFade,
+                                    duration: Duration(milliseconds: 500)));
                           }
                         },
                         style: ElevatedButton.styleFrom(
