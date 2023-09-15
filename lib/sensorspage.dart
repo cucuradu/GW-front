@@ -71,7 +71,7 @@ class _Sensors extends State<Sensors> {
 
   _Sensors();
   void getData() async {
-    final url = Uri.parse('http://192.168.0.125:8000/apiRest/recommendations/'); // Replace with your Django server URL
+    final url = Uri.parse('http://192.168.100.29:8000/apiRest/recommendations/'); // Replace with your Django server URL
 
     final response = await http.get(url);
 
@@ -354,11 +354,12 @@ class _Sensors extends State<Sensors> {
                                 itemBuilder: (context, index) {
                                   final sensor = sensor_data[index];
                                   final sensorData = sensor["sensor_data"];
+                                  final sensorId = sensorData["id"];
                                   final sensorName =
                                       sensorData["name"] ?? 'N/A';
 
-                                  if (sensorName == 'sensorName') {
-                                    return Container(); // Return an empty container, effectively skipping this sensor
+                                  if (!sensor_id.contains(sensorId)){
+                                    return Container();
                                   }
 
                                   final recommendation =
@@ -382,27 +383,24 @@ class _Sensors extends State<Sensors> {
                                     // If recommendation is a string, use it directly as temperature recommendation
                                     temperatureRecommendation = recommendation;
                                   }
-                                  for (final sensorid in sensor_id)
-                                    for (final sensor in sensor_data)
-                                      if (sensorid ==
-                                          sensor['sensor_data']['id'])
-                                        return ListTile(
-                                          title:
-                                              Text('Sensor Name: $sensorName'),
-                                          subtitle: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                  '- $temperatureRecommendation'),
-                                              if (nutrientRecommendation
-                                                  .isNotEmpty)
-                                                for (var nutrient
-                                                    in nutrientRecommendation)
-                                                  Text('- $nutrient')
-                                            ],
-                                          ),
-                                        );
+
+                                  return ListTile(
+                                    title:
+                                    Text('Sensor Name: $sensorName'),
+                                    subtitle: Column(
+                                      crossAxisAlignment:
+                                      CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                            '- $temperatureRecommendation'),
+                                        if (nutrientRecommendation
+                                            .isNotEmpty)
+                                          for (var nutrient
+                                          in nutrientRecommendation)
+                                            Text('- $nutrient')
+                                      ],
+                                    ),
+                                  );
                                 },
                               ),
                             ),
