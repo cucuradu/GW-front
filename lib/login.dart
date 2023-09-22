@@ -7,7 +7,29 @@ import 'dart:convert';
 import 'package:gwfront/newsensor.dart';
 import 'sensorspage.dart';
 
-List user_data = [];
+Map<String, dynamic> userData = {
+  "email": "user_email@example.com",
+  "password": "user_password",
+};
+
+void checkUser() async {
+  final String apiUrl = 'http://192.168.100.29:8000/api/authenticate/';
+
+  String userDataJson = jsonEncode(userData);
+
+  final response = await http.post(
+    Uri.parse(apiUrl),
+    headers: {'Content-Type': 'application/json'},
+    body: userDataJson,
+  );
+
+  if (response.statusCode == 200) {
+    print('POST request successful');
+  } else {
+    print('POST request failed with status code: ${response.statusCode}');
+  }
+}
+
 
 class Login extends StatefulWidget {
   Login({Key? key}) : super(key: key);
@@ -17,32 +39,14 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  List sensor_data = [];
   TextEditingController email = TextEditingController();
   TextEditingController pass = TextEditingController();
   String? emailText;
   String? passwordText;
 
-  void getData() async {
-
-    final url = Uri.parse('http://192.168.0.125:8000/apiRest/recommendations/'); // Replace with your Django server URL
-
-    final response = await http.get(url);
-
-    if (response.statusCode == 200) {
-      // Successful response, handle the data
-      setState(() {
-        sensor_data = jsonDecode(response.body);
-      });
-    } else {
-      print('Request failed with status: ${response.statusCode}');
-    }
-  }
-
   @override
   void initState() {
     super.initState();
-    getData();
   }
 
   @override
@@ -195,6 +199,14 @@ class _LoginState extends State<Login> {
                           setState(() {
                             emailText = email.text;
                             passwordText = pass.text;
+
+                            userData["email"] = emailText;
+                            userData["password"] = passwordText;
+
+                            print("USER DATA: $userData");
+
+                            checkUser();
+
                           });
 
                           if (sensor_id.isEmpty) {
