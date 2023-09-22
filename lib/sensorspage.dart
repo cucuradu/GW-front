@@ -71,7 +71,8 @@ class _Sensors extends State<Sensors> {
 
   _Sensors();
   void getData() async {
-    final url = Uri.parse('http://192.168.0.125:8000/apiRest/recommendations/'); // Replace with your Django server URL
+    final url = Uri.parse(
+        'http://192.168.1.210:8000/apiRest/recommendations/'); // Replace with your Django server URL
 
     final response = await http.get(url);
 
@@ -207,166 +208,214 @@ class _Sensors extends State<Sensors> {
         ),
         body: Column(
           children: [
-            SizedBox(height: MediaQuery.of(context).size.height * 0.009),
-            Padding(
-              padding: EdgeInsets.symmetric(
-                  horizontal: MediaQuery.of(context).size.height * 0.02,
-                  vertical: MediaQuery.of(context).size.height * 0),
-              child: Container(
-                height: MediaQuery.of(context).size.height * 0.25,
-                width: MediaQuery.of(context).size.width * 1,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(20),
-                  child: GoogleMap(
-                    initialCameraPosition: CameraPosition(
-                      target: LatLng(37.7749, -122.4194),
-                      zoom: 12.0,
-                    ),
-                    mapType: MapType.satellite,
-                    markers: _createMarkers(),
+            Expanded(
+              child: ListView(
+                children: [
+                  Container(
+                    color: Colors.white, // Background color
                   ),
-                ),
-              ),
-            ),
-            //SizedBox(height: MediaQuery.of(context).size.height * 0.002),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: MediaQuery.of(context).size.height * 0.02,
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.02,
-                    ),
-                    Row(
-                      // Use a Row to align the text to the left
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(
-                            left: MediaQuery.of(context).size.width * 0.0,
-                          ),
-                          child: Text(
-                            "Sensor list",
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize:
-                                  MediaQuery.of(context).size.width * 0.07,
-                              fontWeight: FontWeight.bold,
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.025,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: MediaQuery.of(context).size.height * 0.02),
+                    child: Container(
+                      height: MediaQuery.of(context).size.height * 0.25,
+                      width: MediaQuery.of(context).size.width * 0.8,
+                      child: GestureDetector(
+                        behavior: HitTestBehavior.opaque,
+                        onTap: () {
+                          // Handle tap events on the map here
+                          // You can open a new screen, show details, or perform any interaction
+                          // For example, open a map screen
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => MapScreen(),
                             ),
+                          );
+                        },
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(20),
+                          child: GoogleMap(
+                            initialCameraPosition: CameraPosition(
+                              target: LatLng(37.7749, -122.4194),
+                              zoom: 12.0,
+                            ),
+                            mapType: MapType.satellite,
+                            markers: _createMarkers(),
                           ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.035,
-                    ),
-                    Column(
-                      children: [
-                        for (final sensorid in sensor_id)
-                          for (final sensor in sensor_data)
-                            if (sensorid == sensor['sensor_data']['id'])
-                              SensorList(
-                                sensorName:
-                                    sensor['sensor_data']['name'] ?? 'N/A',
-                                humidity: "True",
-                                temperature: sensor['sensor_data']
-                                            ['temperature']
-                                        .toString() ??
-                                    'N/A',
-                                nitrogen: sensor['sensor_data']['nitrogen']
-                                        .toString() ??
-                                    'N/A',
-                                phosphorous: sensor['sensor_data']['phosphorus']
-                                        .toString() ??
-                                    'N/A',
-                                potassium: sensor['sensor_data']['potassium']
-                                        .toString() ??
-                                    'N/A',
-                              ),
-                        if (sensor_data.isEmpty) const Text('Loading...'),
-                      ],
-                    ),
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.1,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Alerts',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: MediaQuery.of(context).size.width * 0.07,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.02,
-                    ),
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(20),
-                      child: Container(
-                        decoration: BoxDecoration(color: Color(0xFFFAE392)),
-                        height: MediaQuery.of(context).size.height *
-                            0.23, // Adjust the height here
-                        child: ListView.builder(
-                          itemCount: sensor_data.length,
-                          itemBuilder: (context, index) {
-                            final sensor = sensor_data[index];
-                            final sensorData = sensor["sensor_data"];
-                            final sensorName = sensorData["name"] ?? 'N/A';
-
-                            if (sensorName == 'sensorName') {
-                              return Container(); // Return an empty container, effectively skipping this sensor
-                            }
-
-                            final recommendation = sensor["recommendation"];
-                            String temperatureRecommendation = 'N/A';
-                            List<String> nutrientRecommendation = [];
-
-                            if (recommendation is Map<String, dynamic>) {
-                              temperatureRecommendation = recommendation[
-                                      "temperature_recommendation"] ??
-                                  'N/A';
-                              final nutrientRecommendationList =
-                                  recommendation["nutrient_recommendation"];
-                              if (nutrientRecommendationList is List) {
-                                nutrientRecommendation =
-                                    nutrientRecommendationList.cast<String>();
-                              }
-                            } else if (recommendation is String) {
-                              // If recommendation is a string, use it directly as temperature recommendation
-                              temperatureRecommendation = recommendation;
-                            }
-                            for (final sensorid in sensor_id)
-                              for (final sensor in sensor_data)
-                                if (sensorid == sensor['sensor_data']['id'])
-                                  return ListTile(
-                                    title: Text('Sensor Name: $sensorName'),
-                                    subtitle: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text('- $temperatureRecommendation'),
-                                        if (nutrientRecommendation.isNotEmpty)
-                                          for (var nutrient
-                                              in nutrientRecommendation)
-                                            Text('- $nutrient')
-                                      ],
-                                    ),
-                                  );
-                          },
                         ),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.009),
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: MediaQuery.of(context).size.height * 0.02,
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.035,
+                          ),
+                          Row(
+                            // Use a Row to align the text to the left
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.only(
+                                  left: MediaQuery.of(context).size.width * 0.0,
+                                ),
+                                child: Text(
+                                  "Sensor list",
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize:
+                                        MediaQuery.of(context).size.width *
+                                            0.07,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.035,
+                          ),
+                          Column(
+                            children: [
+                              for (final sensorid in sensor_id)
+                                for (final sensor in sensor_data)
+                                  if (sensorid == sensor['sensor_data']['id'])
+                                    SensorList(
+                                      sensorName: sensor['sensor_data']
+                                              ['name'] ??
+                                          'N/A',
+                                      humidity: "True",
+                                      temperature: sensor['sensor_data']
+                                                  ['temperature']
+                                              .toString() ??
+                                          'N/A',
+                                      nitrogen: sensor['sensor_data']
+                                                  ['nitrogen']
+                                              .toString() ??
+                                          'N/A',
+                                      phosphorous: sensor['sensor_data']
+                                                  ['phosphorus']
+                                              .toString() ??
+                                          'N/A',
+                                      potassium: sensor['sensor_data']
+                                                  ['potassium']
+                                              .toString() ??
+                                          'N/A',
+                                    ),
+                              if (sensor_data.isEmpty) const Text('Loading...'),
+                            ],
+                          ),
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.02,
+                          ),
+                          Row(
+                            // Use a Row to align the text to the left
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.only(
+                                  left: MediaQuery.of(context).size.width * 0.0,
+                                ),
+                                child: Text(
+                                  'Alerts',
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize:
+                                        MediaQuery.of(context).size.width *
+                                            0.07,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.035,
+                          ),
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(20),
+                            child: Container(
+                              decoration:
+                                  BoxDecoration(color: Color(0xFFFAE392)),
+                              height: MediaQuery.of(context).size.height *
+                                  0.25, // Adjust the height here
+                              child: ListView.builder(
+                                itemCount: sensor_data.length,
+                                itemBuilder: (context, index) {
+                                  final sensor = sensor_data[index];
+                                  final sensorData = sensor["sensor_data"];
+                                  final sensorName =
+                                      sensorData["name"] ?? 'N/A';
+
+                                  if (sensorName == 'sensorName') {
+                                    return Container(); // Return an empty container, effectively skipping this sensor
+                                  }
+
+                                  final recommendation =
+                                      sensor["recommendation"];
+                                  String temperatureRecommendation = 'N/A';
+                                  List<String> nutrientRecommendation = [];
+
+                                  if (recommendation is Map<String, dynamic>) {
+                                    temperatureRecommendation = recommendation[
+                                            "temperature_recommendation"] ??
+                                        'N/A';
+                                    final nutrientRecommendationList =
+                                        recommendation[
+                                            "nutrient_recommendation"];
+                                    if (nutrientRecommendationList is List) {
+                                      nutrientRecommendation =
+                                          nutrientRecommendationList
+                                              .cast<String>();
+                                    }
+                                  } else if (recommendation is String) {
+                                    // If recommendation is a string, use it directly as temperature recommendation
+                                    temperatureRecommendation = recommendation;
+                                  }
+                                  for (final sensorid in sensor_id)
+                                    for (final sensor in sensor_data)
+                                      if (sensorid ==
+                                          sensor['sensor_data']['id'])
+                                        return ListTile(
+                                          title:
+                                              Text('Sensor Name: $sensorName'),
+                                          subtitle: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                  '- $temperatureRecommendation'),
+                                              if (nutrientRecommendation
+                                                  .isNotEmpty)
+                                                for (var nutrient
+                                                    in nutrientRecommendation)
+                                                  Text('- $nutrient')
+                                            ],
+                                          ),
+                                        );
+                                },
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.035,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ],
@@ -382,7 +431,14 @@ class _Sensors extends State<Sensors> {
                 width: 72,
                 height: 72,
                 child: FloatingActionButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        PageTransition(
+                            child: Sensors(),
+                            type: PageTransitionType.rightToLeftWithFade,
+                            duration: Duration(milliseconds: 500)));
+                  },
                   backgroundColor:
                       Color.fromARGB(21, 0, 0, 0), // Set the button color here
                   elevation: 0,
