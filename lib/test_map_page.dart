@@ -2,6 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 
+void main() {
+  runApp(MaterialApp(
+    home: MapScreen(),
+  ));
+}
+
 class MapScreen extends StatefulWidget {
   @override
   _MapScreenState createState() => _MapScreenState();
@@ -10,19 +16,12 @@ class MapScreen extends StatefulWidget {
 class _MapScreenState extends State<MapScreen> {
   GoogleMapController? mapController;
   Set<Marker> markers = Set();
+  Set<Circle> circles = Set();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Google Maps Example'),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.location_on),
-            onPressed: _getMarkerLocation,
-          ),
-        ],
-      ),
+      
       body: Stack(
         children: [
           GoogleMap(
@@ -31,14 +30,16 @@ class _MapScreenState extends State<MapScreen> {
             },
             initialCameraPosition: CameraPosition(
               target: LatLng(37.7749, -122.4194), // San Francisco's coordinates
-              zoom: 12.0,
+              zoom: 20.0,
             ),
             markers: markers,
+            circles: circles,
             onTap: (LatLng location) {
-              _addMarker(location);
+              _addMarker(location, 5); // Default value is 3, replace with your value
             },
             mapType: MapType.hybrid,
           ),
+
           Positioned(
             top: 16,
             left: 16,
@@ -52,7 +53,7 @@ class _MapScreenState extends State<MapScreen> {
     );
   }
 
-  void _addMarker(LatLng location) {
+  void _addMarker(LatLng location, int value) {
     final Marker newMarker = Marker(
       markerId: MarkerId(location.toString()),
       position: location,
@@ -62,12 +63,22 @@ class _MapScreenState extends State<MapScreen> {
       ),
     );
 
-    _addMarkerToSet(newMarker);
+    final Circle circle = Circle(
+      circleId: CircleId(location.toString() + '_circle'),
+      center: location,
+      radius: 10, // Adjust the radius as needed (in meters)
+      fillColor: calculateColor(value).withOpacity(0.3),
+      strokeWidth: 2,
+      strokeColor: calculateColor(value),
+    );
+
+    _addMarkerToSet(newMarker, circle);
   }
 
-  void _addMarkerToSet(Marker marker) {
+  void _addMarkerToSet(Marker marker, Circle circle) {
     setState(() {
       markers.add(marker);
+      circles.add(circle);
     });
   }
 
@@ -99,10 +110,10 @@ class _MapScreenState extends State<MapScreen> {
     LatLng userLocation = LatLng(locationData.latitude!, locationData.longitude!);
 
     print("User Location: ${userLocation.latitude}, ${userLocation.longitude}");
-    
-    _addMarker(userLocation); // Add a marker for the user's location
-    
-    mapController?.animateCamera(CameraUpdate.newLatLng(userLocation));
+
+    _addMarker(userLocation, 5 );
+
+    mapController?.animateCamera(CameraUpdate.newLatLngZoom(userLocation, 18.0));
   }
 
   void _getMarkerLocation() {
@@ -117,7 +128,7 @@ class _MapScreenState extends State<MapScreen> {
                 title: Text('Marker ${index + 1}'),
                 onTap: () {
                   _showMarkerLocation(markers.elementAt(index));
-                  Navigator.pop(context); // Close the bottom sheet
+                  Navigator.pop(context);
                 },
               );
             },
@@ -134,6 +145,29 @@ class _MapScreenState extends State<MapScreen> {
 
     print("Selected Marker Location: ${markerLocation.latitude}, ${markerLocation.longitude}");
   }
-}
 
-void main() => runApp(MaterialApp(home: MapScreen()));
+  Color calculateColor(int value) {
+    if (value == 0) {
+      // Red
+      return Colors.red;
+    } else if (value == 1) {
+      // Slightly different shade of red
+      return Color(0xFFFF3333); // You can adjust the hex color code
+    } else if (value == 2) {
+      // Orange
+      return Colors.orange;
+    } else if (value == 3) {
+      // Yellow
+      return Colors.yellow;
+    } else if (value == 4) {
+      // Yellow inclined to green
+      return Color(0xFFCCFF33); // You can adjust the hex color code
+    } else if (value == 5) {
+      // Green
+      return Colors.green;
+    } else {
+      // Default to red for values outside the range (0 to 5)
+      return Colors.red;
+    }
+  }
+}
