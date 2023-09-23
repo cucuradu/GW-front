@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gwfront/test_map_page.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:gwfront/sensorspage.dart';
@@ -21,9 +22,11 @@ class _NewSensorState extends State<NewSensor> {
 
   List sensor_data = [];
 
+  final MapScreen map = new MapScreen();
+
   void getData() async {
     final url = Uri.parse(
-        'http://192.168.100.29:8000/apiRest/recommendations/'); // Replace with your Django server URL
+        'http://192.168.68.114:8000/apiRest/recommendations/'); // Replace with your Django server URL
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
@@ -39,7 +42,7 @@ class _NewSensorState extends State<NewSensor> {
   }
 
   void updateData() async {
-    final String apiUrl = 'http://192.168.100.29:8000/api/update_sensors/';
+    final String apiUrl = 'http://192.168.68.114:8000/api/update_sensors/';
 
     String sensorDataListJson = jsonEncode(sensor_data);
 
@@ -323,6 +326,8 @@ class _NewSensorState extends State<NewSensor> {
                                   print('ADDED ID -- $sensor_id');
 
                                   getData();
+
+                                  //Map._getUserLocation();
 
                                   Navigator.push(
                                       context,

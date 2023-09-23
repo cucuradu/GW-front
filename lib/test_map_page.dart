@@ -16,9 +16,10 @@ class _MapScreenState extends State<MapScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: const Color(0xFF8EAC50),
         actions: [
           IconButton(
-            icon: Icon(Icons.location_on),
+            icon: Icon(Icons.location_on, color: const Color(0xFF8EAC50)),
             onPressed: _getMarkerLocation,
           ),
         ],
@@ -174,4 +175,17 @@ class _MapScreenState extends State<MapScreen> {
       return Colors.red;
     }
   }
+}
+
+Set<Marker> _createMarkers() {
+  // Create a set of markers to display on the map
+  return {
+    Marker(
+      markerId: MarkerId('marker1'),
+      position:
+          LatLng(46.80187718142852, 23.621918470312753), // Marker position
+      infoWindow: InfoWindow(title: 'Marker 1'), // Marker info window
+    ),
+    // Add more markers as needed
+  };
 }

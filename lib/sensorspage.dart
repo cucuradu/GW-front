@@ -73,7 +73,7 @@ class _Sensors extends State<Sensors> {
   _Sensors();
   void getData() async {
     final url = Uri.parse(
-        'http://192.168.100.29:8000/apiRest/recommendations/'); // Replace with your Django server URL
+        'http://192.168.68.114:8000/apiRest/recommendations/'); // Replace with your Django server URL
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
@@ -241,6 +241,9 @@ class _Sensors extends State<Sensors> {
                             ),
                           );
                         },
+                        style: ElevatedButton.styleFrom(
+                          primary: Color(0xFF8EAC50),
+                        ),
                         child: Text('View map'),
                       ),
                     ),
@@ -499,7 +502,8 @@ Set<Marker> _createMarkers() {
   return {
     Marker(
       markerId: MarkerId('marker1'),
-      position: LatLng(37.7749, -122.4194), // Marker position
+      position:
+          LatLng(46.80187718142852, 23.621918470312753), // Marker position
       infoWindow: InfoWindow(title: 'Marker 1'), // Marker info window
     ),
     // Add more markers as needed
