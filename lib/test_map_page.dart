@@ -2,11 +2,50 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 
-void main() {
-  runApp(MaterialApp(
-    home: MapScreen(),
-  ));
-}
+
+void _getUserLocation() async {
+    Location location = Location();
+    bool serviceEnabled;
+    PermissionStatus permissionGranted;
+    LocationData locationData;
+
+    serviceEnabled = await location.serviceEnabled();
+    if (!serviceEnabled) {
+      serviceEnabled = await location.requestService();
+      if (!serviceEnabled) {
+        print("Location services are disabled, and user did not enable them.");
+        return;
+      }
+    }
+
+    permissionGranted = await location.hasPermission();
+    if (permissionGranted == PermissionStatus.denied) {
+      permissionGranted = await location.requestPermission();
+      if (permissionGranted != PermissionStatus.granted) {
+        print("Location permissions are denied.");
+        return;
+      }
+    }
+
+    locationData = await location.getLocation();
+    LatLng userLocation = LatLng(locationData.latitude!, locationData.longitude!);
+
+    print("User Location: ${userLocation.latitude}, ${userLocation.longitude}");
+
+    _addMarker(userLocation, 5 );
+
+    mapController?.animateCamera(CameraUpdate.newLatLngZoom(userLocation, 18.0));
+  }
+
+  void _addMarker(LatLng location, int value) {
+    final Marker newMarker = Marker(
+      markerId: MarkerId(location.toString()),
+      position: location,
+      infoWindow: InfoWindow(
+        title: 'Marker Location',
+        snippet: '${location.latitude}, ${location.longitude}',
+      ),
+    );
 
 class MapScreen extends StatefulWidget {
   @override
@@ -60,15 +99,7 @@ class _MapScreenState extends State<MapScreen> {
     );
   }
 
-  void _addMarker(LatLng location, int value) {
-    final Marker newMarker = Marker(
-      markerId: MarkerId(location.toString()),
-      position: location,
-      infoWindow: InfoWindow(
-        title: 'Marker Location',
-        snippet: '${location.latitude}, ${location.longitude}',
-      ),
-    );
+  
 
     final Circle circle = Circle(
       circleId: CircleId(location.toString() + '_circle'),
@@ -89,39 +120,7 @@ class _MapScreenState extends State<MapScreen> {
     });
   }
 
-  void _getUserLocation() async {
-    Location location = Location();
-    bool serviceEnabled;
-    PermissionStatus permissionGranted;
-    LocationData locationData;
-
-    serviceEnabled = await location.serviceEnabled();
-    if (!serviceEnabled) {
-      serviceEnabled = await location.requestService();
-      if (!serviceEnabled) {
-        print("Location services are disabled, and user did not enable them.");
-        return;
-      }
-    }
-
-    permissionGranted = await location.hasPermission();
-    if (permissionGranted == PermissionStatus.denied) {
-      permissionGranted = await location.requestPermission();
-      if (permissionGranted != PermissionStatus.granted) {
-        print("Location permissions are denied.");
-        return;
-      }
-    }
-
-    locationData = await location.getLocation();
-    LatLng userLocation = LatLng(locationData.latitude!, locationData.longitude!);
-
-    print("User Location: ${userLocation.latitude}, ${userLocation.longitude}");
-
-    _addMarker(userLocation, 5 );
-
-    mapController?.animateCamera(CameraUpdate.newLatLngZoom(userLocation, 18.0));
-  }
+  
 
   void _getMarkerLocation() {
     if (markers.isNotEmpty) {
