@@ -21,7 +21,14 @@ class _MapScreenState extends State<MapScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
+      appBar: AppBar(
+        actions: [
+          IconButton(
+            icon: Icon(Icons.location_on),
+            onPressed: _getMarkerLocation,
+          ),
+        ],
+      ),
       body: Stack(
         children: [
           GoogleMap(
@@ -29,8 +36,8 @@ class _MapScreenState extends State<MapScreen> {
               mapController = controller;
             },
             initialCameraPosition: CameraPosition(
-              target: LatLng(37.7749, -122.4194), // San Francisco's coordinates
-              zoom: 20.0,
+              target: LatLng(46.77945, 23.61126), // San Francisco's coordinates
+              zoom: 18.5,
             ),
             markers: markers,
             circles: circles,
