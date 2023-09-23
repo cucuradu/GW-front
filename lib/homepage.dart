@@ -37,7 +37,7 @@ class Homepage extends StatelessWidget {
               ),
               children: [
                 TextSpan(
-                  text: "Name",
+                  text: "Alex",
                   style: const TextStyle(
                     color: Colors.black,
                     fontSize: 28,

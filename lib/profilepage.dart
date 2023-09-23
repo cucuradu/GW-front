@@ -42,7 +42,7 @@ class _Profile extends State<Profile> {
                 ),
                 children: [
                   TextSpan(
-                    text: "Name",
+                    text: "Alex",
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 28,
@@ -82,7 +82,7 @@ class _Profile extends State<Profile> {
                   height: MediaQuery.of(context).size.height *
                       0.03), // Spațiu între imagine și text
               Text(
-                'Name',
+                'Alex',
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: MediaQuery.of(context).size.width *

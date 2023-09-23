@@ -181,7 +181,7 @@ class _Sensors extends State<Sensors> {
               ),
               children: [
                 TextSpan(
-                  text: "Name",
+                  text: "Alex",
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 28,
@@ -224,7 +224,7 @@ class _Sensors extends State<Sensors> {
                       child: GoogleMap(
                         initialCameraPosition: CameraPosition(
                           target: LatLng(46.77945, 23.61126),
-                          zoom: 12.0,
+                          zoom: 10.0,
                         ),
                         mapType: MapType.satellite,
                         markers: _createMarkers(),
