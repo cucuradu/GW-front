@@ -19,7 +19,7 @@ class _MapScreenState extends State<MapScreen> {
         backgroundColor: const Color(0xFF8EAC50),
         actions: [
           IconButton(
-            icon: Icon(Icons.location_on, color: const Color(0xFF8EAC50)),
+            icon: Icon(Icons.location_on),
             onPressed: _getMarkerLocation,
           ),
         ],
@@ -47,7 +47,10 @@ class _MapScreenState extends State<MapScreen> {
             left: 16,
             child: FloatingActionButton(
               onPressed: _getUserLocation,
-              child: Icon(Icons.my_location),
+              child: Icon(
+                Icons.my_location,
+              ),
+              backgroundColor: const Color(0xFF8EAC50),
             ),
           ),
         ],

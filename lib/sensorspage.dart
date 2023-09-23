@@ -503,7 +503,7 @@ Set<Marker> _createMarkers() {
     Marker(
       markerId: MarkerId('marker1'),
       position:
-          LatLng(46.80187718142852, 23.621918470312753), // Marker position
+          LatLng(46.801912668838504, 23.621980721229484), // Marker position
       infoWindow: InfoWindow(title: 'Marker 1'), // Marker info window
     ),
     // Add more markers as needed
