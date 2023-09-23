@@ -15,6 +15,8 @@ Map<String, dynamic> userData = {
 String userEmail = "asdasca@gmail.com";
 String passwd = "1212";
 
+int responseCode = 0;
+
 void checkUser() async {
   final String apiUrl = 'http://192.168.100.29:8000/api/authenticate/';
 
@@ -26,13 +28,14 @@ void checkUser() async {
     body: userDataJson,
   );
 
+  responseCode = response.statusCode;
+
   if (response.statusCode == 200) {
     print('POST request successful');
   } else {
     print('POST request failed with status code: ${response.statusCode}');
   }
 }
-
 
 class Login extends StatefulWidget {
   Login({Key? key}) : super(key: key);
@@ -117,6 +120,7 @@ class _LoginState extends State<Login> {
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: TextField(
+                        controller: email,
                         decoration: InputDecoration(
                           hintText: 'E-mail',
                           hintStyle: TextStyle(
@@ -143,6 +147,7 @@ class _LoginState extends State<Login> {
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: TextField(
+                        controller: pass,
                         decoration: InputDecoration(
                           hintText: 'Password',
                           hintStyle: TextStyle(
@@ -203,16 +208,13 @@ class _LoginState extends State<Login> {
                             emailText = email.text;
                             passwordText = pass.text;
 
-                            print("EMAIL: $emailText");
-                            print("PASSWORD: $passwordText");
+                            userData["email"] = emailText;
+                            userData["password"] = passwordText;
 
-                            userData["email"] = userEmail;
-                            userData["password"] = passwd;
-
-                            print("USER DATA: $userData");
+                            //if responseCode == 200 atunci sa treaca pe urmatoare
+                            //pagina, else sa ramana pe pagina de login
 
                             checkUser();
-
                           });
 
                           if (sensor_id.isEmpty) {

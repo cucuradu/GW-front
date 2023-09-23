@@ -152,7 +152,6 @@ class _Sensors extends State<Sensors> {
     );
   }
 
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
