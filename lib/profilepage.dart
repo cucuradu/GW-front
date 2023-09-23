@@ -86,7 +86,7 @@ class _Profile extends State<Profile> {
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: MediaQuery.of(context).size.width *
-                      0.075, // Ajustați dimensiunea fontului după preferințele dvs.
+                      0.1, // Ajustați dimensiunea fontului după preferințele dvs.
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -97,6 +97,16 @@ class _Profile extends State<Profile> {
                 thickness: 1,
                 indent: 20,
                 endIndent: 20,
+              ),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+              Text(
+                'E-mail',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: MediaQuery.of(context).size.width *
+                      0.07, // Ajustați dimensiunea fontului după preferințele dvs.
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ],
           ),
@@ -116,14 +126,14 @@ class _Profile extends State<Profile> {
                         Navigator.push(
                             context,
                             PageTransition(
-                                child: Sensors(),
+                                child: Homepage(),
                                 type: PageTransitionType.leftToRightWithFade,
                                 duration: Duration(milliseconds: 500)));
                       } else {
                         Navigator.push(
                             context,
                             PageTransition(
-                                child: Homepage(),
+                                child: Sensors(),
                                 type: PageTransitionType.leftToRightWithFade,
                                 duration: Duration(milliseconds: 500)));
                       }

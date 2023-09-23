@@ -4,7 +4,8 @@ import 'package:gwfront/recomendationspage.dart';
 import 'package:gwfront/sensorspage.dart';
 import 'package:gwfront/recomendationspage.dart';
 import 'package:page_transition/page_transition.dart';
-
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'test_map_page.dart';
 import 'newsensor.dart'; // Import the RecommendationsPage
 
 class SensorDetails extends StatelessWidget {
@@ -85,296 +86,349 @@ class SensorDetails extends StatelessWidget {
             ),
           ],
         ),
-        body: ListView(
-          children: [
-            Container(
-              color: Colors.white, // Background color
-            ),
-            SizedBox(height: MediaQuery.of(context).size.height * 0.035),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Padding(
-                padding: EdgeInsets.symmetric(
-                    horizontal: MediaQuery.of(context).size.height * 0.02),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(20),
-                      child: Image.asset(
-                        'assets/map.png',
-                        fit: BoxFit.cover,
-                        height: MediaQuery.of(context).size.height *
-                            0.25, // Adjust the height here
-                      ),
+        body: Column(children: [
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.025,
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(
+                horizontal: MediaQuery.of(context).size.height * 0.02),
+            child: Container(
+              height: MediaQuery.of(context).size.height * 0.25,
+              width: MediaQuery.of(context).size.width * 1,
+              child: GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: () {
+                  // Handle tap events on the map here
+                  // You can open a new screen, show details, or perform any interaction
+                  // For example, open a map screen
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => MapScreen(),
                     ),
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.035,
+                  );
+                },
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: GoogleMap(
+                    initialCameraPosition: CameraPosition(
+                      target: LatLng(37.7749, -122.4194),
+                      zoom: 12.0,
                     ),
-                    Row(
-                      // Use a Row to align the text to the left
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(
-                            left: MediaQuery.of(context).size.width * 0.0,
-                          ),
-                          child: Text(
-                            sensorName ?? "Sensor",
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize:
-                                  MediaQuery.of(context).size.width * 0.07,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.035,
-                    ),
-                    Row(
-                      children: [
-                        Image.asset("assets/humidity.png"),
-                        SizedBox(
-                          width: 11,
-                        ),
-                        Text(
-                          "Humidity",
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: MediaQuery.of(context).size.width * 0.05,
-                          ),
-                        ),
-                        Spacer(),
-                        Text(
-                          humidity ?? "?",
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: MediaQuery.of(context).size.width * 0.05,
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.02,
-                    ),
-                    Row(
-                      children: [
-                        Image.asset("assets/temperature.png"),
-                        SizedBox(
-                          width: 11,
-                        ),
-                        Text(
-                          "Temperature",
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: MediaQuery.of(context).size.width * 0.05,
-                          ),
-                        ),
-                        Spacer(),
-                        Text(
-                          temperature ?? "?",
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: MediaQuery.of(context).size.width * 0.05,
-                          ),
-                        ),
-                        SizedBox(
-                          width: 11,
-                        ),
-                        Text(
-                          "°C",
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: MediaQuery.of(context).size.width * 0.05,
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.02,
-                    ),
-                    Row(
-                      children: [
-                        Image.asset("assets/nutrients.png"),
-                        SizedBox(
-                          width: 11,
-                        ),
-                        Text(
-                          "Nitrogen",
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: MediaQuery.of(context).size.width * 0.05,
-                          ),
-                        ),
-                        Spacer(),
-                        Text(
-                          nitrogen ?? "?",
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: MediaQuery.of(context).size.width * 0.05,
-                          ),
-                        ),
-                        SizedBox(
-                          width: 11,
-                        ),
-                        Text(
-                          "mg/kg",
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: MediaQuery.of(context).size.width * 0.05,
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.02,
-                    ),
-                    Row(
-                      children: [
-                        Image.asset("assets/nutrients.png"),
-                        SizedBox(
-                          width: 11,
-                        ),
-                        Text(
-                          "Phosphorus",
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: MediaQuery.of(context).size.width * 0.05,
-                          ),
-                        ),
-                        Spacer(),
-                        Text(
-                          phosphorous ?? "?",
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: MediaQuery.of(context).size.width * 0.05,
-                          ),
-                        ),
-                        SizedBox(
-                          width: 11,
-                        ),
-                        Text(
-                          "mg/kg",
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: MediaQuery.of(context).size.width * 0.05,
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.02,
-                    ),
-                    Row(
-                      children: [
-                        Image.asset("assets/nutrients.png"),
-                        SizedBox(
-                          width: 11,
-                        ),
-                        Text(
-                          "Potassium",
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: MediaQuery.of(context).size.width * 0.05,
-                          ),
-                        ),
-                        Spacer(),
-                        Text(
-                          potassium ?? "?",
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: MediaQuery.of(context).size.width * 0.05,
-                          ),
-                        ),
-                        SizedBox(
-                          width: 11,
-                        ),
-                        Text(
-                          "mg/kg",
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: MediaQuery.of(context).size.width * 0.05,
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.035,
-                    ),
-                    Row(
-                      // Use a Row to align the text to the left
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(
-                            left: MediaQuery.of(context).size.width * 0.0,
-                          ),
-                          child: Text(
-                            'Recommendations',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize:
-                                  MediaQuery.of(context).size.width * 0.07,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                        ElevatedButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => RecommendationsPage(),
-                              ),
-                            );
-                          },
-                          child: Text("See More"),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.035,
-                    ),
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(20),
-                      child: Container(
-                        height: MediaQuery.of(context).size.height * 0.25,
-                        width: MediaQuery.of(context).size.width * 0.7,
-                        decoration: BoxDecoration(
-                          color: Color(0xFFFAE392),
-                        ),
-                        child: Align(
-                          alignment: Alignment.bottomLeft,
-                          child: ElevatedButton(
-                            onPressed: () {
-                              // Navigator.push(
-                              //   context,
-                              //   MaterialPageRoute(
-                              //     builder: (context) => Recomandations(),
-                              //   ),
-                              // );
-                            },
-                            style: ElevatedButton.styleFrom(
-                              primary: Color(0xFFFAE392),
-                              elevation: 0, // No shadow
-                            ),
-                            child: Image.asset("assets/ReadMore.png"),
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.035,
-                    ),
-                  ],
+                    mapType: MapType.satellite,
+                    markers: _createMarkers(),
+                  ),
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+          SizedBox(height: MediaQuery.of(context).size.height * 0.025),
+          Divider(
+            height: 3,
+            color: Colors.grey,
+            thickness: 1,
+            indent: 20,
+            endIndent: 20,
+          ),
+          SizedBox(height: MediaQuery.of(context).size.height * 0.01),
+          Expanded(
+            child: ListView(
+              physics: BouncingScrollPhysics(),
+              children: [
+                Container(
+                  color: Colors.white, // Background color
+                ),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.015),
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: MediaQuery.of(context).size.height * 0.02),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.015,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(
+                                left: MediaQuery.of(context).size.width * 0.0,
+                              ),
+                              child: Text(
+                                sensorName ?? "Sensor",
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize:
+                                      MediaQuery.of(context).size.width * 0.07,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.035,
+                        ),
+                        Row(
+                          children: [
+                            Image.asset("assets/humidity.png"),
+                            SizedBox(
+                              width: 11,
+                            ),
+                            Text(
+                              "Humidity",
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize:
+                                    MediaQuery.of(context).size.width * 0.05,
+                              ),
+                            ),
+                            Spacer(),
+                            Text(
+                              humidity ?? "?",
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize:
+                                    MediaQuery.of(context).size.width * 0.05,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.02,
+                        ),
+                        Row(
+                          children: [
+                            Image.asset("assets/temperature.png"),
+                            SizedBox(
+                              width: 11,
+                            ),
+                            Text(
+                              "Temperature",
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize:
+                                    MediaQuery.of(context).size.width * 0.05,
+                              ),
+                            ),
+                            Spacer(),
+                            Text(
+                              temperature ?? "?",
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize:
+                                    MediaQuery.of(context).size.width * 0.05,
+                              ),
+                            ),
+                            SizedBox(
+                              width: 11,
+                            ),
+                            Text(
+                              "°C",
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize:
+                                    MediaQuery.of(context).size.width * 0.05,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.02,
+                        ),
+                        Row(
+                          children: [
+                            Image.asset("assets/nutrients.png"),
+                            SizedBox(
+                              width: 11,
+                            ),
+                            Text(
+                              "Nitrogen",
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize:
+                                    MediaQuery.of(context).size.width * 0.05,
+                              ),
+                            ),
+                            Spacer(),
+                            Text(
+                              nitrogen ?? "?",
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize:
+                                    MediaQuery.of(context).size.width * 0.05,
+                              ),
+                            ),
+                            SizedBox(
+                              width: 11,
+                            ),
+                            Text(
+                              "mg/kg",
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize:
+                                    MediaQuery.of(context).size.width * 0.05,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.02,
+                        ),
+                        Row(
+                          children: [
+                            Image.asset("assets/nutrients.png"),
+                            SizedBox(
+                              width: 11,
+                            ),
+                            Text(
+                              "Phosphorus",
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize:
+                                    MediaQuery.of(context).size.width * 0.05,
+                              ),
+                            ),
+                            Spacer(),
+                            Text(
+                              phosphorous ?? "?",
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize:
+                                    MediaQuery.of(context).size.width * 0.05,
+                              ),
+                            ),
+                            SizedBox(
+                              width: 11,
+                            ),
+                            Text(
+                              "mg/kg",
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize:
+                                    MediaQuery.of(context).size.width * 0.05,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.02,
+                        ),
+                        Row(
+                          children: [
+                            Image.asset("assets/nutrients.png"),
+                            SizedBox(
+                              width: 11,
+                            ),
+                            Text(
+                              "Potassium",
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize:
+                                    MediaQuery.of(context).size.width * 0.05,
+                              ),
+                            ),
+                            Spacer(),
+                            Text(
+                              potassium ?? "?",
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize:
+                                    MediaQuery.of(context).size.width * 0.05,
+                              ),
+                            ),
+                            SizedBox(
+                              width: 11,
+                            ),
+                            Text(
+                              "mg/kg",
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize:
+                                    MediaQuery.of(context).size.width * 0.05,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.035,
+                        ),
+                        Row(
+                          // Use a Row to align the text to the left
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(
+                                left: MediaQuery.of(context).size.width * 0.0,
+                              ),
+                              child: Text(
+                                'Recommendations',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize:
+                                      MediaQuery.of(context).size.width * 0.07,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                            ElevatedButton(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => RecommendationsPage(),
+                                  ),
+                                );
+                              },
+                              child: Text("See More"),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.035,
+                        ),
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(20),
+                          child: Container(
+                            height: MediaQuery.of(context).size.height * 0.25,
+                            width: MediaQuery.of(context).size.width * 0.7,
+                            decoration: BoxDecoration(
+                              color: Color(0xFFFAE392),
+                            ),
+                            child: Align(
+                              alignment: Alignment.bottomLeft,
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  // Navigator.push(
+                                  //   context,
+                                  //   MaterialPageRoute(
+                                  //     builder: (context) => Recomandations(),
+                                  //   ),
+                                  // );
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  primary: Color(0xFFFAE392),
+                                  elevation: 0, // No shadow
+                                ),
+                                child: Image.asset("assets/ReadMore.png"),
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.035,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ]),
         bottomNavigationBar: Container(
           height: MediaQuery.of(context).size.height *
               0.097, // Adjust the height here
@@ -440,4 +494,16 @@ class SensorDetails extends StatelessWidget {
       ),
     );
   }
+}
+
+Set<Marker> _createMarkers() {
+  // Create a set of markers to display on the map
+  return {
+    Marker(
+      markerId: MarkerId('marker1'),
+      position: LatLng(37.7749, -122.4194), // Marker position
+      infoWindow: InfoWindow(title: 'Marker 1'), // Marker info window
+    ),
+    // Add more markers as needed
+  };
 }
