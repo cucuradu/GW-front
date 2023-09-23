@@ -12,6 +12,9 @@ Map<String, dynamic> userData = {
   "password": "user_password",
 };
 
+String userEmail = "asdasca@gmail.com";
+String passwd = "1212";
+
 void checkUser() async {
   final String apiUrl = 'http://192.168.100.29:8000/api/authenticate/';
 
@@ -200,8 +203,11 @@ class _LoginState extends State<Login> {
                             emailText = email.text;
                             passwordText = pass.text;
 
-                            userData["email"] = emailText;
-                            userData["password"] = passwordText;
+                            print("EMAIL: $emailText");
+                            print("PASSWORD: $passwordText");
+
+                            userData["email"] = userEmail;
+                            userData["password"] = passwd;
 
                             print("USER DATA: $userData");
 
