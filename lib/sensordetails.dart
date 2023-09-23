@@ -59,7 +59,7 @@ class SensorDetails extends StatelessWidget {
               ),
               children: [
                 TextSpan(
-                  text: "Name",
+                  text: "Alex",
                   style: const TextStyle(
                     color: Colors.black,
                     fontSize: 28,
@@ -112,8 +112,8 @@ class SensorDetails extends StatelessWidget {
                   borderRadius: BorderRadius.circular(20),
                   child: GoogleMap(
                     initialCameraPosition: CameraPosition(
-                      target: LatLng(37.7749, -122.4194),
-                      zoom: 12.0,
+                      target: LatLng(46.77945, 23.61126),
+                      zoom: 10.0,
                     ),
                     mapType: MapType.satellite,
                     markers: _createMarkers(),
