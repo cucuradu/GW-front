@@ -33,7 +33,6 @@ void checkUser() async {
   }
 }
 
-
 class Login extends StatefulWidget {
   Login({Key? key}) : super(key: key);
 
@@ -117,6 +116,7 @@ class _LoginState extends State<Login> {
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: TextField(
+                        controller: email,
                         decoration: InputDecoration(
                           hintText: 'E-mail',
                           hintStyle: TextStyle(
@@ -143,6 +143,7 @@ class _LoginState extends State<Login> {
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: TextField(
+                        controller: pass,
                         decoration: InputDecoration(
                           hintText: 'Password',
                           hintStyle: TextStyle(
@@ -212,7 +213,6 @@ class _LoginState extends State<Login> {
                             print("USER DATA: $userData");
 
                             checkUser();
-
                           });
 
                           if (sensor_id.isEmpty) {
