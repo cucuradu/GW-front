@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gwfront/login.dart';
 import 'package:gwfront/newsensor.dart';
+import 'package:gwfront/profilepage.dart';
 import 'package:gwfront/sensorspage.dart';
 import 'package:page_transition/page_transition.dart';
 
@@ -20,8 +21,8 @@ class Homepage extends StatelessWidget {
             child: Container(
               width: 60,
               height: 60,
+              child: Image.asset('assets/profileimg.png'),
               decoration: BoxDecoration(
-                color: const Color(0xFF8EAC50),
                 borderRadius: BorderRadius.circular(15),
               ),
             ),
@@ -166,7 +167,12 @@ class Homepage extends StatelessWidget {
                 height: 72,
                 child: FloatingActionButton(
                   onPressed: () {
-                    // Your right button action goes here
+                    Navigator.push(
+                        context,
+                        PageTransition(
+                            child: Profile(),
+                            type: PageTransitionType.rightToLeftWithFade,
+                            duration: Duration(milliseconds: 500)));
                   },
                   backgroundColor: Colors.white, // Set the button color here
                   elevation: 0,

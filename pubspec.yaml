@@ -82,6 +82,7 @@ flutter:
     - assets/temperature.png
     - assets/nutrients.png
     - assets/ReadMore.png
+    - assets/profileimg.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:

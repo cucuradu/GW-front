@@ -76,8 +76,8 @@ class _NewSensorState extends State<NewSensor> {
             child: Container(
               width: 60,
               height: 60,
+              child: Image.asset('assets/profileimg.png'),
               decoration: BoxDecoration(
-                color: const Color(0xFF8EAC50),
                 borderRadius: BorderRadius.circular(15),
               ),
             ),

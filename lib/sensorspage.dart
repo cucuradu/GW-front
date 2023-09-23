@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:gwfront/profilepage.dart';
 import 'package:gwfront/sensorlist.dart';
 import 'package:http/http.dart' as http;
 import 'package:page_transition/page_transition.dart';
@@ -165,8 +166,8 @@ class _Sensors extends State<Sensors> {
             child: Container(
               width: 60,
               height: 60,
+              child: Image.asset('assets/profileimg.png'),
               decoration: BoxDecoration(
-                color: const Color(0xFF8EAC50),
                 borderRadius: BorderRadius.circular(15),
               ),
             ),
@@ -208,48 +209,57 @@ class _Sensors extends State<Sensors> {
         ),
         body: Column(
           children: [
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.025,
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(
+                  horizontal: MediaQuery.of(context).size.height * 0.02),
+              child: Container(
+                height: MediaQuery.of(context).size.height * 0.25,
+                width: MediaQuery.of(context).size.width * 1,
+                child: GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTap: () {
+                    // Handle tap events on the map here
+                    // You can open a new screen, show details, or perform any interaction
+                    // For example, open a map screen
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => MapScreen(),
+                      ),
+                    );
+                  },
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: GoogleMap(
+                      initialCameraPosition: CameraPosition(
+                        target: LatLng(37.7749, -122.4194),
+                        zoom: 12.0,
+                      ),
+                      mapType: MapType.satellite,
+                      markers: _createMarkers(),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(height: MediaQuery.of(context).size.height * 0.025),
+            Divider(
+              height: 3,
+              color: Colors.grey,
+              thickness: 1,
+              indent: 20,
+              endIndent: 20,
+            ),
+            SizedBox(height: MediaQuery.of(context).size.height * 0.01),
             Expanded(
               child: ListView(
+                physics: BouncingScrollPhysics(),
                 children: [
                   Container(
                     color: Colors.white, // Background color
                   ),
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.025,
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: MediaQuery.of(context).size.height * 0.02),
-                    child: Container(
-                      height: MediaQuery.of(context).size.height * 0.25,
-                      width: MediaQuery.of(context).size.width * 0.8,
-                      child: GestureDetector(
-                        behavior: HitTestBehavior.opaque,
-                        onTap: () {
-                          // Handle tap events on the map here
-                          // You can open a new screen, show details, or perform any interaction
-                          // For example, open a map screen
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => MapScreen(),
-                            ),
-                          );
-                        },
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(20),
-                          child: GoogleMap(
-                            initialCameraPosition: CameraPosition(
-                              target: LatLng(37.7749, -122.4194),
-                              zoom: 12.0,
-                            ),
-                            mapType: MapType.satellite,
-                            markers: _createMarkers(),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.009),
                   Align(
                     alignment: Alignment.bottomCenter,
                     child: Padding(
@@ -260,7 +270,7 @@ class _Sensors extends State<Sensors> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.035,
+                            height: MediaQuery.of(context).size.height * 0.015,
                           ),
                           Row(
                             // Use a Row to align the text to the left
@@ -426,16 +436,8 @@ class _Sensors extends State<Sensors> {
                 width: 72,
                 height: 72,
                 child: FloatingActionButton(
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        PageTransition(
-                            child: Sensors(),
-                            type: PageTransitionType.rightToLeftWithFade,
-                            duration: Duration(milliseconds: 500)));
-                  },
-                  backgroundColor:
-                      Color.fromARGB(21, 0, 0, 0), // Set the button color here
+                  onPressed: () {},
+                  backgroundColor: Colors.white, // Set the button color here
                   elevation: 0,
                   child: Image.asset(
                     'assets/flower.png',
@@ -465,7 +467,12 @@ class _Sensors extends State<Sensors> {
                 height: 72,
                 child: FloatingActionButton(
                   onPressed: () {
-                    // Your right button action goes here
+                    Navigator.push(
+                        context,
+                        PageTransition(
+                            child: Profile(),
+                            type: PageTransitionType.rightToLeftWithFade,
+                            duration: Duration(milliseconds: 500)));
                   },
                   backgroundColor: Colors.white, // Set the button color here
                   elevation: 0,
