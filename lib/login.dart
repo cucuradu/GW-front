@@ -12,13 +12,10 @@ Map<String, dynamic> userData = {
   "password": "user_password",
 };
 
-String userEmail = "asdasca@gmail.com";
-String passwd = "1212";
-
 int responseCode = 0;
 
 void checkUser() async {
-  final String apiUrl = 'http://192.168.68.114:8000/api/authenticate/';
+  final String apiUrl = 'http://192.168.0.125:8000/api/authenticate/';
 
   String userDataJson = jsonEncode(userData);
 
