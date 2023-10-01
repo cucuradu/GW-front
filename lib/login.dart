@@ -12,10 +12,12 @@ Map<String, dynamic> userData = {
   "password": "user_password",
 };
 
+int userId = 0;
+
 int responseCode = 0;
 
 void checkUser() async {
-  final String apiUrl = 'http://192.168.0.125:8000/api/authenticate/';
+  final String apiUrl = 'http://192.168.100.29:8000/api/authenticate/';
 
   String userDataJson = jsonEncode(userData);
 
@@ -33,6 +35,7 @@ void checkUser() async {
     print('POST request failed with status code: ${response.statusCode}');
   }
 }
+
 
 class Login extends StatefulWidget {
   Login({Key? key}) : super(key: key);
@@ -214,6 +217,8 @@ class _LoginState extends State<Login> {
                             checkUser();
                           });
                           if (responseCode == 200) {
+                            userId = userData["id"];
+                            print("USER ID: $userId");
                             if (sensor_id.isEmpty) {
                               Navigator.push(
                                   context,

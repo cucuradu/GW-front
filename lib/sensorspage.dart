@@ -75,7 +75,7 @@ class _Sensors extends State<Sensors> {
 
   void getData() async {
     final url = Uri.parse(
-        'http://192.168.0.125:8000/apiRest/recommendations/'); // Replace with your Django server URL
+        'http://192.168.100.29:8000/apiRest/recommendations/'); // Replace with your Django server URL
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
@@ -129,6 +129,7 @@ class _Sensors extends State<Sensors> {
     super.initState();
     startFetching();
     getData();
+    print("FETCHING DATA: $sensor_data");
     mySensorsList = widget.mySensors;
     if (mySensorsList == null) {
       fetchData().then((sensors) {
@@ -188,6 +189,7 @@ class _Sensors extends State<Sensors> {
       },
     );
   }
+
 
   @override
   Widget build(BuildContext context) {
