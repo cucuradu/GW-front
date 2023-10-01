@@ -14,7 +14,10 @@ Map<String, dynamic> userData = {
 
 int userId = 0;
 
+
 int responseCode = 0;
+
+
 
 void checkUser() async {
   final String apiUrl = 'http://192.168.100.29:8000/api/authenticate/';
@@ -208,6 +211,7 @@ class _LoginState extends State<Login> {
                             emailText = email.text;
                             passwordText = pass.text;
 
+
                             userData["email"] = emailText;
                             userData["password"] = passwordText;
 
@@ -217,17 +221,15 @@ class _LoginState extends State<Login> {
                             checkUser();
                           });
                           if (responseCode == 200) {
-                            userId = userData["id"];
-                            print("USER ID: $userId");
-                            if (sensor_id.isEmpty) {
-                              Navigator.push(
-                                  context,
-                                  PageTransition(
-                                      child: Homepage(),
-                                      type: PageTransitionType
-                                          .rightToLeftWithFade,
-                                      duration: Duration(milliseconds: 500)));
-                            } else {
+                             // if (usersSensors.isEmpty) {
+                             //   Navigator.push(
+                             //       context,
+                             //       PageTransition(
+                             //           child: Homepage(),
+                             //           type: PageTransitionType
+                             //               .rightToLeftWithFade,
+                             //           duration: Duration(milliseconds: 500)));
+                             //}else{
                               Navigator.push(
                                   context,
                                   PageTransition(
@@ -235,7 +237,7 @@ class _LoginState extends State<Login> {
                                       type: PageTransitionType
                                           .rightToLeftWithFade,
                                       duration: Duration(milliseconds: 500)));
-                            }
+                          //}
                           }
                         },
                         style: ElevatedButton.styleFrom(

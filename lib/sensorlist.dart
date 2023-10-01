@@ -9,6 +9,7 @@ class SensorList extends StatelessWidget {
   String? nitrogen;
   String? phosphorous;
   String? potassium;
+  int? problems;
   SensorList(
       {super.key,
       this.sensorName,
@@ -16,7 +17,8 @@ class SensorList extends StatelessWidget {
       this.temperature,
       this.nitrogen,
       this.phosphorous,
-      this.potassium});
+      this.potassium,
+      this.problems});
 
   @override
   Widget build(BuildContext context) {
@@ -69,6 +71,30 @@ class SensorList extends StatelessWidget {
                   ),
                 ),
               ),
+              if (problems == 0)
+                CircleAvatar(
+                  backgroundColor: Colors.green,
+                  child: Icon(
+                    Icons.check,
+                    color: Colors.white,
+                  ),
+                )
+              else if (problems == 1)
+                CircleAvatar(
+                  backgroundColor: Colors.yellow,
+                  child: Icon(
+                    Icons.close,
+                    color: Colors.white,
+                  ),
+                )
+              else
+                CircleAvatar(
+                  backgroundColor: Colors.red,
+                  child: Icon(
+                    Icons.close,
+                    color: Colors.white,
+                  ),
+                )
             ],
           ),
         ),

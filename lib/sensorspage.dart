@@ -6,14 +6,14 @@ import 'package:http/http.dart' as http;
 import 'package:page_transition/page_transition.dart';
 import 'homepage.dart';
 import 'login.dart';
-import 'dart:convert';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'test_map_page.dart';
 import 'newsensor.dart';
 import 'dart:async';
 
+Map<String, dynamic> usersSensors = {};
+
 class SensorObject {
-  int? id;
   String? name;
   bool? humidity;
   double? temperature;
@@ -22,7 +22,6 @@ class SensorObject {
   double? potassium;
 
   SensorObject({
-    required this.id,
     required this.name,
     required this.humidity,
     required this.temperature,
@@ -33,7 +32,6 @@ class SensorObject {
 
   factory SensorObject.fromJson(Map<String, dynamic> json) {
     return SensorObject(
-      id: json['id'],
       name: json['name'],
       humidity: json['humidity'],
       temperature: json['temperature'],
@@ -46,7 +44,7 @@ class SensorObject {
 
 Future<List<SensorObject>> fetchData() async {
   final response =
-      await http.get(Uri.parse('http://http://192.168.68.114:8000/sensors/'));
+      await http.get(Uri.parse('http://http:///172.20.10.4:8000/sensors/'));
 
   if (response.statusCode == 200) {
     final List<dynamic> jsonData = json.decode(response.body);
@@ -70,8 +68,27 @@ class Sensors extends StatefulWidget {
 class _Sensors extends State<Sensors> {
   List<SensorObject>? mySensorsList;
   List sensor_data = [];
-
+  List sensorsForUser = [];
   _Sensors();
+
+  void getUserData() async {
+    final url = Uri.parse(
+        'http://192.168.100.29:8000/api/user/2'); // Replace with your Django server URL
+    final response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      // Successful response, handle the data
+      print('Response body: ${response.body}');
+      setState(() {
+        usersSensors = jsonDecode(response.body);
+      });
+    } else {
+      // Handle errors
+      print('Request failed with status: ${response.statusCode}');
+    }
+  }
+
+
 
   void getData() async {
     final url = Uri.parse(
@@ -83,24 +100,39 @@ class _Sensors extends State<Sensors> {
       print('Response body: ${response.body}');
       final newData = jsonDecode(response.body);
 
-      final List<dynamic> updatedData = [];
+      setState(() {
+        for(final newSensor in newData){
+          final newSensorId = newSensor['sensor_data']['id'];
+          final index = sensor_data.indexWhere((sensor) => sensor['sensor_data']['id'] == newSensorId);
 
-      for (var newItem in newData) {
-        if(!sensor_data.contains(newItem)) {
-          updatedData.add(newItem);
+          if (index != -1) {
+            // If the sensor already exists in the list, update its measurements and recommendations.
+            sensor_data[index] = newSensor;
+          } else {
+            // If the sensor doesn't exist in the list (shouldn't happen as per your clarification), you can decide whether to add it or handle as an anomaly.
+            print('Unexpected sensor found with id: $newSensorId');
+            sensor_data.add(newSensor);
+          }
         }
-      }
+      });
 
-      if (updatedData.isNotEmpty){
-        setState(() {
-          sensor_data.addAll(updatedData);
-        });
-      }
 
+      // for (var newItem in newData) {
+      //   if (!sensor_data.contains(newItem)) {
+      //     updatedData.add(newItem);
+      //   }
+      // }
+      //
+      // if (updatedData.isNotEmpty) {
+      //   setState(() {
+      //     sensor_data.addAll(updatedData);
+      //   });
+      // }
     } else {
       // Handle errors
       print('Request failed with status: ${response.statusCode}');
     }
+
   }
 
   Timer? dataFetchTimer;
@@ -114,7 +146,7 @@ class _Sensors extends State<Sensors> {
   }
 
   void startFetching() {
-    if (dataFetchTimer == null){
+    if (dataFetchTimer == null) {
       startDataFetching();
     }
   }
@@ -124,12 +156,13 @@ class _Sensors extends State<Sensors> {
     dataFetchTimer = null;
   }
 
+
   @override
   void initState() {
     super.initState();
     startFetching();
     getData();
-    print("FETCHING DATA: $sensor_data");
+    getUserData();
     mySensorsList = widget.mySensors;
     if (mySensorsList == null) {
       fetchData().then((sensors) {
@@ -139,6 +172,7 @@ class _Sensors extends State<Sensors> {
       });
     }
   }
+
 
   void addSensor(SensorObject newSensor) {
     setState(() {
@@ -162,7 +196,6 @@ class _Sensors extends State<Sensors> {
               onPressed: () {
                 // Here, you can create a new SensorObject instance with the entered data
                 SensorObject newSensor = SensorObject(
-                  id: 1, // Provide the ID here as per your requirement
                   name:
                       "New Sensor", // Example name, you can replace it with the actual input from the TextField
                   humidity: true,
@@ -232,12 +265,6 @@ class _Sensors extends State<Sensors> {
           ),
           actions: [
             InkWell(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Login()),
-                );
-              },
               child: Image.asset(
                 'assets/minilogo.png',
                 height: AppBar().preferredSize.height - 16,
@@ -250,46 +277,7 @@ class _Sensors extends State<Sensors> {
             SizedBox(
               height: MediaQuery.of(context).size.height * 0.025,
             ),
-            Padding(
-              padding: EdgeInsets.symmetric(
-                  horizontal: MediaQuery.of(context).size.height * 0.02),
-              child: Container(
-                height: MediaQuery.of(context).size.height * 0.25,
-                width: MediaQuery.of(context).size.width * 0.9,
-                child: Stack(
-                  children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(20),
-                      child: GoogleMap(
-                        initialCameraPosition: CameraPosition(
-                          target: LatLng(46.77945, 23.61126),
-                          zoom: 10.0,
-                        ),
-                        mapType: MapType.satellite,
-                        markers: _createMarkers(),
-                      ),
-                    ),
-                    Positioned(
-                      top: 10,
-                      right: 10,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => MapScreen(),
-                            ),
-                          );
-                        },
-                        style: ElevatedButton.styleFrom(
-                          primary: Color(0xFF8EAC50),
-                        ),
-                        child: Text('View map'),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+            MapSP(),
             SizedBox(height: MediaQuery.of(context).size.height * 0.025),
             Divider(
               height: 3,
@@ -344,7 +332,7 @@ class _Sensors extends State<Sensors> {
                           ),
                           Column(
                             children: [
-                              for (final sensorid in sensor_id)
+                              for (final sensorid in usersSensors['sensors'])
                                 for (final sensor in sensor_data)
                                   if (sensorid == sensor['sensor_data']['id'])
                                     //color Card
@@ -369,8 +357,37 @@ class _Sensors extends State<Sensors> {
                                                   ['potassium']
                                               .toString() ??
                                           'N/A',
+                                      problems: sensor['problem_count'],
                                     ),
-                              if (sensor_data.isEmpty) const Text('Loading...'),
+
+                              //if (sensor_data.isEmpty) const Text('Loading...'),
+                              // SensorList(
+                              //   sensorName: 'N/A',
+                              //   humidity: "True",
+                              //   temperature: 'N/A',
+                              //   nitrogen: 'N/A',
+                              //   phosphorous: 'N/A',
+                              //   potassium: 'N/A',
+                              //   problems: 0,
+                              // ),
+                              // SensorList(
+                              //   sensorName: 'N/A',
+                              //   humidity: "True",
+                              //   temperature: 'N/A',
+                              //   nitrogen: 'N/A',
+                              //   phosphorous: 'N/A',
+                              //   potassium: 'N/A',
+                              //   problems: 1,
+                              // ),
+                              // SensorList(
+                              //   sensorName: 'N/A',
+                              //   humidity: "True",
+                              //   temperature: 'N/A',
+                              //   nitrogen: 'N/A',
+                              //   phosphorous: 'N/A',
+                              //   potassium: 'N/A',
+                              //   problems: 2,
+                              // ),
                             ],
                           ),
                           SizedBox(
@@ -416,7 +433,7 @@ class _Sensors extends State<Sensors> {
                                   final sensorName =
                                       sensorData["name"] ?? 'N/A';
 
-                                  if (!sensor_id.contains(sensorId)) {
+                                  if (!usersSensors['sensors'].contains(sensorId)) {
                                     return Container();
                                   }
 
@@ -472,66 +489,127 @@ class _Sensors extends State<Sensors> {
             ),
           ],
         ),
-        bottomNavigationBar: Container(
-          height: MediaQuery.of(context).size.height *
-              0.097, // Adjust the height here
-          color: Colors.white,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              SizedBox(
-                width: 72,
-                height: 72,
-                child: FloatingActionButton(
-                  onPressed: () {},
-                  backgroundColor: Colors.white, // Set the button color here
-                  elevation: 0,
-                  child: Image.asset(
-                    'assets/flower.png',
-                    height: 77,
-                  ),
+        bottomNavigationBar: NavBarSP(),
+      ),
+    );
+  }
+}
+
+class MapSP extends StatelessWidget {
+  const MapSP({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(
+          horizontal: MediaQuery.of(context).size.height * 0.02),
+      child: Container(
+        height: MediaQuery.of(context).size.height * 0.25,
+        width: MediaQuery.of(context).size.width * 0.9,
+        child: Stack(
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(20),
+              child: GoogleMap(
+                initialCameraPosition: CameraPosition(
+                  target: LatLng(46.77945, 23.61126),
+                  zoom: 10.0,
                 ),
+                mapType: MapType.satellite,
+                markers: _createMarkers(),
               ),
-              SizedBox(
-                width: 75,
-                height: 75,
-                child: FloatingActionButton(
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        PageTransition(
-                            child: NewSensor(),
-                            type: PageTransitionType.bottomToTop,
-                            duration: Duration(milliseconds: 500)));
-                  }, // Call the _showAddDialog function when the button is pressed
-                  backgroundColor:
-                      const Color(0xFF8EAC50), // Set the button color here
-                  child: const Icon(Icons.add),
+            ),
+            Positioned(
+              top: 10,
+              right: 10,
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => MapScreen(),
+                    ),
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  primary: Color(0xFF8EAC50),
                 ),
+                child: Text('View map'),
               ),
-              SizedBox(
-                width: 72,
-                height: 72,
-                child: FloatingActionButton(
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        PageTransition(
-                            child: Profile(),
-                            type: PageTransitionType.rightToLeftWithFade,
-                            duration: Duration(milliseconds: 500)));
-                  },
-                  backgroundColor: Colors.white, // Set the button color here
-                  elevation: 0,
-                  child: Image.asset(
-                    'assets/profile.png',
-                    height: 77,
-                  ),
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
+      ),
+    );
+  }
+}
+
+class NavBarSP extends StatelessWidget {
+  const NavBarSP({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height:
+          MediaQuery.of(context).size.height * 0.097, // Adjust the height here
+      color: Colors.white,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          SizedBox(
+            width: 72,
+            height: 72,
+            child: FloatingActionButton(
+              onPressed: () {},
+              backgroundColor: Colors.white, // Set the button color here
+              elevation: 0,
+              child: Image.asset(
+                'assets/flower.png',
+                height: 77,
+              ),
+            ),
+          ),
+          SizedBox(
+            width: 75,
+            height: 75,
+            child: FloatingActionButton(
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    PageTransition(
+                        child: NewSensor(),
+                        type: PageTransitionType.bottomToTop,
+                        duration: Duration(milliseconds: 500)));
+              }, // Call the _showAddDialog function when the button is pressed
+              backgroundColor:
+                  const Color(0xFF8EAC50), // Set the button color here
+              child: const Icon(Icons.add),
+            ),
+          ),
+          SizedBox(
+            width: 72,
+            height: 72,
+            child: FloatingActionButton(
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    PageTransition(
+                        child: Profile(),
+                        type: PageTransitionType.rightToLeftWithFade,
+                        duration: Duration(milliseconds: 500)));
+              },
+              backgroundColor: Colors.white, // Set the button color here
+              elevation: 0,
+              child: Image.asset(
+                'assets/profile.png',
+                height: 77,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -543,7 +621,7 @@ Set<Marker> _createMarkers() {
     Marker(
       markerId: MarkerId('marker1'),
       position:
-          LatLng(46.801912668838504, 23.621980721229484), // Marker position
+          LatLng(46.810471912910785, 23.584466379240606), // Marker position
       infoWindow: InfoWindow(title: 'Marker 1'), // Marker info window
     ),
     // Add more markers as needed

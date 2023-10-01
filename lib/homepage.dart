@@ -115,76 +115,87 @@ class Homepage extends StatelessWidget {
           ],
         ),
         // Add the custom BottomAppBar here
-        bottomNavigationBar: Container(
-          height: MediaQuery.of(context).size.height *
-              0.097, // Adjust the height here
-          color: Colors.white,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              SizedBox(
-                width: 72,
-                height: 72,
-                child: FloatingActionButton(
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        PageTransition(
-                            child: Sensors(),
-                            type: PageTransitionType.rightToLeftWithFade,
-                            duration: Duration(milliseconds: 500)));
-                  },
-                  backgroundColor: Colors.white, // Set the button color here
-                  elevation: 0,
-                  child: Image.asset(
-                    'assets/flower.png',
-                    height: 77,
-                  ),
-                ),
+        bottomNavigationBar: NavBarHP(),
+      ),
+    );
+  }
+}
+
+class NavBarHP extends StatelessWidget {
+  const NavBarHP({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height:
+          MediaQuery.of(context).size.height * 0.097, // Adjust the height here
+      color: Colors.white,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          SizedBox(
+            width: 72,
+            height: 72,
+            child: FloatingActionButton(
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    PageTransition(
+                        child: Sensors(),
+                        type: PageTransitionType.rightToLeftWithFade,
+                        duration: Duration(milliseconds: 500)));
+              },
+              backgroundColor: Colors.white, // Set the button color here
+              elevation: 0,
+              child: Image.asset(
+                'assets/flower.png',
+                height: 77,
               ),
-              SizedBox(
-                width: 75,
-                height: 75,
-                child: FloatingActionButton(
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        PageTransition(
-                            child: NewSensor(),
-                            type: PageTransitionType.bottomToTop,
-                            duration: Duration(milliseconds: 500)));
-                  },
-                  backgroundColor:
-                      const Color(0xFF8EAC50), // Set the button color here
-                  child: Image.asset(
-                    'assets/whiteplus.png',
-                    height: 30,
-                  ),
-                ),
-              ),
-              SizedBox(
-                width: 72,
-                height: 72,
-                child: FloatingActionButton(
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        PageTransition(
-                            child: Profile(),
-                            type: PageTransitionType.rightToLeftWithFade,
-                            duration: Duration(milliseconds: 500)));
-                  },
-                  backgroundColor: Colors.white, // Set the button color here
-                  elevation: 0,
-                  child: Image.asset(
-                    'assets/profile.png',
-                    height: 77,
-                  ),
-                ),
-              ),
-            ],
+            ),
           ),
-        ),
+          SizedBox(
+            width: 75,
+            height: 75,
+            child: FloatingActionButton(
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    PageTransition(
+                        child: NewSensor(),
+                        type: PageTransitionType.bottomToTop,
+                        duration: Duration(milliseconds: 500)));
+              },
+              backgroundColor:
+                  const Color(0xFF8EAC50), // Set the button color here
+              child: Image.asset(
+                'assets/whiteplus.png',
+                height: 30,
+              ),
+            ),
+          ),
+          SizedBox(
+            width: 72,
+            height: 72,
+            child: FloatingActionButton(
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    PageTransition(
+                        child: Profile(),
+                        type: PageTransitionType.rightToLeftWithFade,
+                        duration: Duration(milliseconds: 500)));
+              },
+              backgroundColor: Colors.white, // Set the button color here
+              elevation: 0,
+              child: Image.asset(
+                'assets/profile.png',
+                height: 77,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

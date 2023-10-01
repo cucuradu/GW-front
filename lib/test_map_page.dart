@@ -1,6 +1,59 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
+class SensorObject {
+  String? name;
+  String? plant;
+  double? temperature;
+  double? nitrogen;
+  double? phosphorus;
+  double? potassium;
+  String? id;
+  String? location;
+
+  SensorObject({
+    this.name,
+    this.plant,
+    this.temperature,
+    this.nitrogen,
+    this.phosphorus,
+    this.potassium,
+    this.id,
+    this.location,
+  });
+
+  factory SensorObject.fromJson(Map<String, dynamic> json) {
+    final sensorData = json['sensor_data'];
+    return SensorObject(
+      name: sensorData['name'],
+      plant: sensorData['plant'],
+      temperature: sensorData['temperature']?.toDouble(),
+      nitrogen: sensorData['nitrogen']?.toDouble(),
+      phosphorus: sensorData['phosphorus']?.toDouble(),
+      potassium: sensorData['potassium']?.toDouble(),
+      id: sensorData['id'],
+      location: sensorData['location'],
+    );
+  }
+}
+
+Future<List<SensorObject>> fetchSensorData() async {
+  final response = await http
+      .get(Uri.parse('http://192.168.0.111:8000/apiRest/recommendations/'));
+
+  if (response.statusCode == 200) {
+    final List<dynamic> jsonData = json.decode(response.body);
+    List<SensorObject> sensors =
+        jsonData.map((data) => SensorObject.fromJson(data)).toList();
+    return sensors;
+  } else {
+    // Handle the error appropriately (e.g., show an error message)
+    throw Exception('Failed to load sensor data');
+  }
+}
 
 class MapScreen extends StatefulWidget {
   @override
@@ -16,11 +69,10 @@ class _MapScreenState extends State<MapScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xFF8EAC50),
         actions: [
           IconButton(
             icon: Icon(Icons.location_on),
-            onPressed: _getMarkerLocation,
+            onPressed: _getUserLocation,
           ),
         ],
       ),
@@ -38,7 +90,7 @@ class _MapScreenState extends State<MapScreen> {
             circles: circles,
             onTap: (LatLng location) {
               _addMarker(
-                  location, 5); // Default value is 3, replace with your value
+                  location); // Default value is 3, replace with your value
             },
             mapType: MapType.hybrid,
           ),
@@ -47,10 +99,7 @@ class _MapScreenState extends State<MapScreen> {
             left: 16,
             child: FloatingActionButton(
               onPressed: _getUserLocation,
-              child: Icon(
-                Icons.my_location,
-              ),
-              backgroundColor: const Color(0xFF8EAC50),
+              child: Icon(Icons.my_location),
             ),
           ),
         ],
@@ -58,7 +107,7 @@ class _MapScreenState extends State<MapScreen> {
     );
   }
 
-  void _addMarker(LatLng location, int value) {
+  void _addMarker(LatLng location) {
     final Marker newMarker = Marker(
       markerId: MarkerId(location.toString()),
       position: location,
@@ -72,9 +121,10 @@ class _MapScreenState extends State<MapScreen> {
       circleId: CircleId(location.toString() + '_circle'),
       center: location,
       radius: 10, // Adjust the radius as needed (in meters)
-      fillColor: calculateColor(value).withOpacity(0.3),
+      fillColor:
+          Colors.blue.withOpacity(0.3), // Set a uniform color (e.g., blue)
       strokeWidth: 2,
-      strokeColor: calculateColor(value),
+      strokeColor: Colors.blue, // Set the circle border color (e.g., blue)
     );
 
     _addMarkerToSet(newMarker, circle);
@@ -117,65 +167,36 @@ class _MapScreenState extends State<MapScreen> {
 
     print("User Location: ${userLocation.latitude}, ${userLocation.longitude}");
 
-    _addMarker(userLocation, 5);
+    _addMarker(userLocation);
 
     mapController
         ?.animateCamera(CameraUpdate.newLatLngZoom(userLocation, 18.0));
+
+    // Fetch and print sensor data
+    _loadSensorData();
   }
 
-  void _getMarkerLocation() {
-    if (markers.isNotEmpty) {
-      showModalBottomSheet(
-        context: context,
-        builder: (context) {
-          return ListView.builder(
-            itemCount: markers.length,
-            itemBuilder: (context, index) {
-              return ListTile(
-                title: Text('Marker ${index + 1}'),
-                onTap: () {
-                  _showMarkerLocation(markers.elementAt(index));
-                  Navigator.pop(context);
-                },
-              );
-            },
-          );
-        },
-      );
-    } else {
-      print("No markers available.");
-    }
-  }
+  void _loadSensorData() async {
+    try {
+      List<SensorObject> sensors = await fetchSensorData();
+      // Now you have the sensor data in the 'sensors' list
+      // You can use it as needed within your widget
 
-  void _showMarkerLocation(Marker marker) {
-    final LatLng markerLocation = marker.position;
-
-    print(
-        "Selected Marker Location: ${markerLocation.latitude}, ${markerLocation.longitude}");
-  }
-
-  Color calculateColor(int value) {
-    if (value == 0) {
-      // Red
-      return Colors.red;
-    } else if (value == 1) {
-      // Slightly different shade of red
-      return Color(0xFFFF3333); // You can adjust the hex color code
-    } else if (value == 2) {
-      // Orange
-      return Colors.orange;
-    } else if (value == 3) {
-      // Yellow
-      return Colors.yellow;
-    } else if (value == 4) {
-      // Yellow inclined to green
-      return Color(0xFFCCFF33); // You can adjust the hex color code
-    } else if (value == 5) {
-      // Green
-      return Colors.green;
-    } else {
-      // Default to red for values outside the range (0 to 5)
-      return Colors.red;
+      // Print all the sensor data in the terminal
+      for (SensorObject sensor in sensors) {
+        print('Sensor ID: ${sensor.id ?? 'N/A'}');
+        print('Sensor Name: ${sensor.name ?? 'N/A'}');
+        print('Plant: ${sensor.plant ?? 'N/A'}');
+        print('Temperature: ${sensor.temperature ?? 'N/A'}');
+        print('Nitrogen: ${sensor.nitrogen ?? 'N/A'}');
+        print('Phosphorous: ${sensor.phosphorus ?? 'N/A'}');
+        print('Potassium: ${sensor.potassium ?? 'N/A'}');
+        print('Location: ${sensor.location ?? 'N/A'}'); // Print the location
+        print('-------------------------');
+      }
+    } catch (e) {
+      // Handle errors if the data retrieval fails
+      print('Error loading sensor data: $e');
     }
   }
 }

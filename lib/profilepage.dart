@@ -4,6 +4,8 @@ import 'package:gwfront/newsensor.dart';
 import 'package:gwfront/sensorspage.dart';
 import 'package:page_transition/page_transition.dart';
 import 'login.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class Profile extends StatefulWidget {
   Profile({super.key});
@@ -99,86 +101,120 @@ class _Profile extends State<Profile> {
                 endIndent: 20,
               ),
               SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-              Text(
-                'E-mail',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: MediaQuery.of(context).size.width *
-                      0.07, // Ajustați dimensiunea fontului după preferințele dvs.
-                  fontWeight: FontWeight.bold,
-                ),
+              Padding(
+                padding: EdgeInsets.fromLTRB(
+                    MediaQuery.sizeOf(context).width * 0.06, 0, 0, 0),
+                child: Column(children: [
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      'E-mail',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: MediaQuery.of(context).size.width *
+                            0.07, // Ajustați dimensiunea fontului după preferințele dvs.
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      'ap542975@gmail.com',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: MediaQuery.of(context).size.width *
+                            0.07, // Ajustați dimensiunea fontului după preferințele dvs.
+                      ),
+                    ),
+                  ),
+                ]),
               ),
             ],
           ),
-          bottomNavigationBar: Container(
-            height: MediaQuery.of(context).size.height *
-                0.097, // Adjust the height here
-            color: Colors.white,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                SizedBox(
-                  width: 72,
-                  height: 72,
-                  child: FloatingActionButton(
-                    onPressed: () {
-                      if (sensor_id.isEmpty) {
-                        Navigator.push(
-                            context,
-                            PageTransition(
-                                child: Homepage(),
-                                type: PageTransitionType.leftToRightWithFade,
-                                duration: Duration(milliseconds: 500)));
-                      } else {
-                        Navigator.push(
-                            context,
-                            PageTransition(
-                                child: Sensors(),
-                                type: PageTransitionType.leftToRightWithFade,
-                                duration: Duration(milliseconds: 500)));
-                      }
-                    },
-                    backgroundColor: Colors.white, // Set the button color here
-                    elevation: 0,
-                    child: Image.asset(
-                      'assets/flower.png',
-                      height: 77,
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  width: 75,
-                  height: 75,
-                  child: FloatingActionButton(
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          PageTransition(
-                              child: NewSensor(),
-                              type: PageTransitionType.bottomToTop,
-                              duration: Duration(milliseconds: 500)));
-                    }, // Call the _showAddDialog function when the button is pressed
-                    backgroundColor:
-                        const Color(0xFF8EAC50), // Set the button color here
-                    child: const Icon(Icons.add),
-                  ),
-                ),
-                SizedBox(
-                  width: 72,
-                  height: 72,
-                  child: FloatingActionButton(
-                    onPressed: () {},
-                    backgroundColor: Colors.white, // Set the button color here
-                    elevation: 0,
-                    child: Image.asset(
-                      'assets/profile.png',
-                      height: 77,
-                    ),
-                  ),
-                ),
-              ],
+          bottomNavigationBar: NavBarPP(),
+        ));
+  }
+}
+
+class NavBarPP extends StatelessWidget {
+  const NavBarPP({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height:
+          MediaQuery.of(context).size.height * 0.097, // Adjust the height here
+      color: Colors.white,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          SizedBox(
+            width: 72,
+            height: 72,
+            child: FloatingActionButton(
+              onPressed: () {
+                if (sensor_id.isEmpty) {
+                  Navigator.push(
+                      context,
+                      PageTransition(
+                          child: Homepage(),
+                          type: PageTransitionType.leftToRightWithFade,
+                          duration: Duration(milliseconds: 500)));
+                } else {
+                  Navigator.push(
+                      context,
+                      PageTransition(
+                          child: Sensors(),
+                          type: PageTransitionType.leftToRightWithFade,
+                          duration: Duration(milliseconds: 500)));
+                }
+              },
+              backgroundColor: Colors.white, // Set the button color here
+              elevation: 0,
+              child: Image.asset(
+                'assets/flower.png',
+                height: 77,
+              ),
             ),
           ),
-        ));
+          SizedBox(
+            width: 75,
+            height: 75,
+            child: FloatingActionButton(
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    PageTransition(
+                        child: NewSensor(),
+                        type: PageTransitionType.bottomToTop,
+                        duration: Duration(milliseconds: 500)));
+              }, // Call the _showAddDialog function when the button is pressed
+              backgroundColor:
+                  const Color(0xFF8EAC50), // Set the button color here
+              child: const Icon(Icons.add),
+            ),
+          ),
+          SizedBox(
+            width: 72,
+            height: 72,
+            child: FloatingActionButton(
+              onPressed: () {},
+              backgroundColor: Colors.white, // Set the button color here
+              elevation: 0,
+              child: Image.asset(
+                'assets/profile.png',
+                height: 77,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
