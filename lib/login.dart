@@ -15,7 +15,7 @@ Map<String, dynamic> userData = {
 int responseCode = 0;
 
 void checkUser() async {
-  final String apiUrl = 'http:///192.168.252.48:8000/api/authenticate/';
+  final String apiUrl = 'http:///192.168.0.111:8000/api/authenticate/';
 
   String userDataJson = jsonEncode(userData);
 

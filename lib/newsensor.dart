@@ -4,6 +4,8 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:gwfront/sensorspage.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:location/location.dart';
 
 List sensor_id = [];
 
@@ -19,6 +21,9 @@ class _NewSensorState extends State<NewSensor> {
   String? SensorID;
   String? SensorName;
   String? SensorPlant;
+  GoogleMapController? mapController;
+  Set<Marker> markers = Set();
+  Set<Circle> circles = Set();
 
   List sensor_data = [];
 
@@ -26,7 +31,7 @@ class _NewSensorState extends State<NewSensor> {
 
   void getData() async {
     final url = Uri.parse(
-        'http:///192.168.252.48:8000/apiRest/recommendations/'); // Replace with your Django server URL
+        'http:///192.168.0.111:8000/apiRest/recommendations/'); // Replace with your Django server URL
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
@@ -42,7 +47,7 @@ class _NewSensorState extends State<NewSensor> {
   }
 
   void updateData() async {
-    final String apiUrl = 'http:///192.168.252.48:8000/api/update_sensors/';
+    final String apiUrl = 'http:///192.168.0.111:8000/api/update_sensors/';
 
     String sensorDataListJson = jsonEncode(sensor_data);
 
@@ -63,6 +68,71 @@ class _NewSensorState extends State<NewSensor> {
   void initState() {
     super.initState();
     getData();
+  }
+
+  void _addMarker(LatLng location) {
+    final Marker newMarker = Marker(
+      markerId: MarkerId(location.toString()),
+      position: location,
+      infoWindow: InfoWindow(
+        title: 'Marker Location',
+        snippet: '${location.latitude}, ${location.longitude}',
+      ),
+    );
+    final Circle circle = Circle(
+      circleId: CircleId(location.toString() + '_circle'),
+      center: location,
+      radius: 10, // Adjust the radius as needed (in meters)
+      fillColor:
+          Colors.blue.withOpacity(0.3), // Set a uniform color (e.g., blue)
+      strokeWidth: 2,
+      strokeColor: Colors.blue, // Set the circle border color (e.g., blue)
+    );
+
+    _addMarkerToSet(newMarker, circle);
+  }
+
+  void _addMarkerToSet(Marker marker, Circle circle) {
+    setState(() {
+      markers.add(marker);
+      circles.add(circle);
+    });
+  }
+
+  void _getUserLocation() async {
+    Location location = Location();
+    bool serviceEnabled;
+    PermissionStatus permissionGranted;
+    LocationData locationData;
+
+    serviceEnabled = await location.serviceEnabled();
+    if (!serviceEnabled) {
+      serviceEnabled = await location.requestService();
+      if (!serviceEnabled) {
+        print("Location services are disabled, and user did not enable them.");
+        return;
+      }
+    }
+
+    permissionGranted = await location.hasPermission();
+    if (permissionGranted == PermissionStatus.denied) {
+      permissionGranted = await location.requestPermission();
+      if (permissionGranted != PermissionStatus.granted) {
+        print("Location permissions are denied.");
+        return;
+      }
+    }
+
+    locationData = await location.getLocation();
+    LatLng userLocation =
+        LatLng(locationData.latitude!, locationData.longitude!);
+
+    print("User Location: ${userLocation.latitude}, ${userLocation.longitude}");
+
+    _addMarker(userLocation);
+
+    mapController
+        ?.animateCamera(CameraUpdate.newLatLngZoom(userLocation, 18.0));
   }
 
   @override
@@ -327,7 +397,7 @@ class _NewSensorState extends State<NewSensor> {
 
                                   getData();
 
-                                  //Map._getUserLocation();
+                                  _getUserLocation();
 
                                   Navigator.push(
                                       context,
