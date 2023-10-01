@@ -12,6 +12,7 @@ Map<String, dynamic> userData = {
   "password": "user_password",
 };
 
+int userId = 0;
 int responseCode = 0;
 
 void checkUser() async {
@@ -204,6 +205,7 @@ class _LoginState extends State<Login> {
                           setState(() {
                             emailText = email.text;
                             passwordText = pass.text;
+
 
                             userData["email"] = emailText;
                             userData["password"] = passwordText;

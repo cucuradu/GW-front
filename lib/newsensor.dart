@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:gwfront/test_map_page.dart';
 import 'package:http/http.dart' as http;
@@ -40,6 +41,34 @@ class _NewSensorState extends State<NewSensor> {
       print('Request failed with status: ${response.statusCode}');
     }
   }
+
+  Future<void> addSensorToUser(String? sensorId) async {
+    final url = 'http://192.168.0.125:8000/api/add_sensors_to_user/2/';
+
+    final headers = {'Content-Type': 'application/json'};
+
+    final payload = {'sensor_ids': [sensorId]}; // Wrap the sensor ID in a list
+
+    try {
+      final response = await http.post(
+        Uri.parse(url),
+        headers: headers,
+        body: jsonEncode(payload),
+      );
+
+      if (response.statusCode == 200) {
+        // Request was successful, handle the response here
+        print('Sensor added successfully');
+      } else {
+        // Request failed, handle error here
+        print('Failed to add sensor: ${response.statusCode}');
+      }
+    } catch (error) {
+      // Handle network or other errors
+      print('Error: $error');
+    }
+  }
+
 
   void updateData() async {
     final String apiUrl = 'http:///192.168.252.48:8000/api/update_sensors/';
@@ -324,6 +353,8 @@ class _NewSensorState extends State<NewSensor> {
                                   sensor_id.add(SensorID);
 
                                   print('ADDED ID -- $sensor_id');
+
+                                  addSensorToUser(SensorID);
 
                                   getData();
 
