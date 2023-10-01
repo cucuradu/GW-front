@@ -70,12 +70,32 @@ class Sensors extends StatefulWidget {
 class _Sensors extends State<Sensors> {
   List<SensorObject>? mySensorsList;
   List sensor_data = [];
-
+  List usersSensors = [];
+  List sensorsForUser = [];
   _Sensors();
+
+  void getUserData() async {
+    final url = Uri.parse(
+        'http://192.168.0.125:8000/api/users/'); // Replace with your Django server URL
+    final response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      // Successful response, handle the data
+      print('Response body: ${response.body}');
+      setState(() {
+        usersSensors = jsonDecode(response.body);
+      });
+    } else {
+      // Handle errors
+      print('Request failed with status: ${response.statusCode}');
+    }
+  }
+
+
 
   void getData() async {
     final url = Uri.parse(
-        'http:///192.168.252.48:8000/apiRest/recommendations/'); // Replace with your Django server URL
+        'http://192.168.0.125:8000/apiRest/recommendations/'); // Replace with your Django server URL
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
@@ -123,11 +143,13 @@ class _Sensors extends State<Sensors> {
     dataFetchTimer = null;
   }
 
+
   @override
   void initState() {
     super.initState();
     startFetching();
     getData();
+    getUserData();
     mySensorsList = widget.mySensors;
     if (mySensorsList == null) {
       fetchData().then((sensors) {
@@ -137,6 +159,7 @@ class _Sensors extends State<Sensors> {
       });
     }
   }
+
 
   void addSensor(SensorObject newSensor) {
     setState(() {
