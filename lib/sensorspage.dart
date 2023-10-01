@@ -10,6 +10,7 @@ import 'dart:convert';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'test_map_page.dart';
 import 'newsensor.dart';
+import 'dart:async';
 
 class SensorObject {
   int? id;
@@ -71,6 +72,7 @@ class _Sensors extends State<Sensors> {
   List sensor_data = [];
 
   _Sensors();
+
   void getData() async {
     final url = Uri.parse(
         'http:///192.168.252.48:8000/apiRest/recommendations/'); // Replace with your Django server URL
@@ -79,18 +81,52 @@ class _Sensors extends State<Sensors> {
     if (response.statusCode == 200) {
       // Successful response, handle the data
       print('Response body: ${response.body}');
-      setState(() {
-        sensor_data = jsonDecode(response.body);
-      });
+      final newData = jsonDecode(response.body);
+
+      final List<dynamic> updatedData = [];
+
+      for (var newItem in newData) {
+        if (!sensor_data.contains(newItem)) {
+          updatedData.add(newItem);
+        }
+      }
+
+      if (updatedData.isNotEmpty) {
+        setState(() {
+          sensor_data.addAll(updatedData);
+        });
+      }
     } else {
       // Handle errors
       print('Request failed with status: ${response.statusCode}');
     }
   }
 
+  Timer? dataFetchTimer;
+
+  void startDataFetching() {
+    const Duration fetchInterval = Duration(seconds: 10);
+
+    dataFetchTimer = Timer.periodic(fetchInterval, (timer) {
+      getData();
+    });
+  }
+
+  void startFetching() {
+    if (dataFetchTimer == null) {
+      startDataFetching();
+    }
+  }
+
+  void stopFetching() {
+    dataFetchTimer?.cancel();
+    dataFetchTimer = null;
+  }
+
   @override
   void initState() {
     super.initState();
+    startFetching();
     getData();
     mySensorsList = widget.mySensors;
     if (mySensorsList == null) {
@@ -269,6 +305,7 @@ class _Sensors extends State<Sensors> {
                               for (final sensorid in sensor_id)
                                 for (final sensor in sensor_data)
                                   if (sensorid == sensor['sensor_data']['id'])
+                                    //color Card
                                     SensorList(
                                       sensorName: sensor['sensor_data']
                                               ['name'] ??
