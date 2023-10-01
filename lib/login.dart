@@ -12,13 +12,10 @@ Map<String, dynamic> userData = {
   "password": "user_password",
 };
 
-String userEmail = "asdasca@gmail.com";
-String passwd = "1212";
-
 int responseCode = 0;
 
 void checkUser() async {
-  final String apiUrl = 'http://192.168.68.114:8000/api/authenticate/';
+  final String apiUrl = 'http:///192.168.252.48:8000/api/authenticate/';
 
   String userDataJson = jsonEncode(userData);
 
@@ -216,24 +213,24 @@ class _LoginState extends State<Login> {
 
                             checkUser();
                           });
-                          if (responseCode == 200) {
-                            if (sensor_id.isEmpty) {
-                              Navigator.push(
-                                  context,
-                                  PageTransition(
-                                      child: Homepage(),
-                                      type: PageTransitionType
-                                          .rightToLeftWithFade,
-                                      duration: Duration(milliseconds: 500)));
-                            } else {
-                              Navigator.push(
-                                  context,
-                                  PageTransition(
-                                      child: Sensors(),
-                                      type: PageTransitionType
-                                          .rightToLeftWithFade,
-                                      duration: Duration(milliseconds: 500)));
-                            }
+                          //if (responseCode == 200) {
+                          if (sensor_id.isEmpty) {
+                            Navigator.push(
+                                context,
+                                PageTransition(
+                                    child: Homepage(),
+                                    type:
+                                        PageTransitionType.rightToLeftWithFade,
+                                    duration: Duration(milliseconds: 500)));
+                            //} else {
+                            Navigator.push(
+                                context,
+                                PageTransition(
+                                    child: Sensors(),
+                                    type:
+                                        PageTransitionType.rightToLeftWithFade,
+                                    duration: Duration(milliseconds: 500)));
+                            //}
                           }
                         },
                         style: ElevatedButton.styleFrom(

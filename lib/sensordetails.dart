@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gwfront/login.dart';
+import 'package:gwfront/profilepage.dart';
 import 'package:gwfront/recomendationspage.dart';
 import 'package:gwfront/sensorspage.dart';
 import 'package:gwfront/recomendationspage.dart';
@@ -90,38 +91,7 @@ class SensorDetails extends StatelessWidget {
           SizedBox(
             height: MediaQuery.of(context).size.height * 0.025,
           ),
-          Padding(
-            padding: EdgeInsets.symmetric(
-                horizontal: MediaQuery.of(context).size.height * 0.02),
-            child: Container(
-              height: MediaQuery.of(context).size.height * 0.25,
-              width: MediaQuery.of(context).size.width * 1,
-              child: GestureDetector(
-                behavior: HitTestBehavior.opaque,
-                onTap: () {
-                  // Handle tap events on the map here
-                  // You can open a new screen, show details, or perform any interaction
-                  // For example, open a map screen
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => MapScreen(),
-                    ),
-                  );
-                },
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(20),
-                  child: GoogleMap(
-                    initialCameraPosition: CameraPosition(
-                      target: LatLng(46.77945, 23.61126),
-                      zoom: 10.0,
-                    ),
-                    mapType: MapType.satellite,
-                    markers: _createMarkers(),
-                  ),
-                ),
-              ),
-            ),
-          ),
+          MapSD(),
           SizedBox(height: MediaQuery.of(context).size.height * 0.025),
           Divider(
             height: 3,
@@ -429,68 +399,134 @@ class SensorDetails extends StatelessWidget {
             ),
           ),
         ]),
-        bottomNavigationBar: Container(
-          height: MediaQuery.of(context).size.height *
-              0.097, // Adjust the height here
-          color: Colors.white,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              SizedBox(
-                width: 72,
-                height: 72,
-                child: FloatingActionButton(
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        PageTransition(
-                            child: Sensors(),
-                            type: PageTransitionType.leftToRightWithFade,
-                            duration: Duration(milliseconds: 500)));
-                  },
-                  backgroundColor: Colors.white, // Set the button color here
-                  elevation: 0,
-                  child: Image.asset(
-                    'assets/flower.png',
-                    height: 77,
-                  ),
+        bottomNavigationBar: NavBarSD(),
+      ),
+    );
+  }
+}
+
+class MapSD extends StatelessWidget {
+  const MapSD({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(
+          horizontal: MediaQuery.of(context).size.height * 0.02),
+      child: Container(
+        height: MediaQuery.of(context).size.height * 0.25,
+        width: MediaQuery.of(context).size.width * 0.9,
+        child: Stack(
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(20),
+              child: GoogleMap(
+                initialCameraPosition: CameraPosition(
+                  target: LatLng(46.77945, 23.61126),
+                  zoom: 10.0,
                 ),
+                mapType: MapType.satellite,
+                markers: _createMarkers(),
               ),
-              SizedBox(
-                width: 75,
-                height: 75,
-                child: FloatingActionButton(
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        PageTransition(
-                            child: NewSensor(),
-                            type: PageTransitionType.bottomToTop,
-                            duration: Duration(milliseconds: 500)));
-                  }, // Call the _showAddDialog function when the button is pressed
-                  backgroundColor:
-                      const Color(0xFF8EAC50), // Set the button color here
-                  child: const Icon(Icons.add),
+            ),
+            Positioned(
+              top: 10,
+              right: 10,
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => MapScreen(),
+                    ),
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  primary: Color(0xFF8EAC50),
                 ),
+                child: Text('View map'),
               ),
-              SizedBox(
-                width: 72,
-                height: 72,
-                child: FloatingActionButton(
-                  onPressed: () {
-                    // Your right button action goes here
-                  },
-                  backgroundColor: Colors.white, // Set the button color here
-                  elevation: 0,
-                  child: Image.asset(
-                    'assets/profile.png',
-                    height: 77,
-                  ),
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
+      ),
+    );
+  }
+}
+
+class NavBarSD extends StatelessWidget {
+  const NavBarSD({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height:
+          MediaQuery.of(context).size.height * 0.097, // Adjust the height here
+      color: Colors.white,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          SizedBox(
+            width: 72,
+            height: 72,
+            child: FloatingActionButton(
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    PageTransition(
+                        child: Sensors(),
+                        type: PageTransitionType.leftToRightWithFade,
+                        duration: Duration(milliseconds: 500)));
+              },
+              backgroundColor: Colors.white, // Set the button color here
+              elevation: 0,
+              child: Image.asset(
+                'assets/flower.png',
+                height: 77,
+              ),
+            ),
+          ),
+          SizedBox(
+            width: 75,
+            height: 75,
+            child: FloatingActionButton(
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    PageTransition(
+                        child: NewSensor(),
+                        type: PageTransitionType.bottomToTop,
+                        duration: Duration(milliseconds: 500)));
+              }, // Call the _showAddDialog function when the button is pressed
+              backgroundColor:
+                  const Color(0xFF8EAC50), // Set the button color here
+              child: const Icon(Icons.add),
+            ),
+          ),
+          SizedBox(
+            width: 72,
+            height: 72,
+            child: FloatingActionButton(
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    PageTransition(
+                        child: Profile(),
+                        type: PageTransitionType.rightToLeftWithFade,
+                        duration: Duration(milliseconds: 500)));
+              },
+              backgroundColor: Colors.white, // Set the button color here
+              elevation: 0,
+              child: Image.asset(
+                'assets/profile.png',
+                height: 77,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -502,7 +538,7 @@ Set<Marker> _createMarkers() {
     Marker(
       markerId: MarkerId('marker1'),
       position:
-          LatLng(46.801912668838504, 23.621980721229484), // Marker position
+          LatLng(46.810471912910785, 23.584466379240606), // Marker position
       infoWindow: InfoWindow(title: 'Marker 1'), // Marker info window
     ),
     // Add more markers as needed

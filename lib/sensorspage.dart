@@ -45,7 +45,7 @@ class SensorObject {
 
 Future<List<SensorObject>> fetchData() async {
   final response =
-      await http.get(Uri.parse('http://http://192.168.68.114:8000/sensors/'));
+      await http.get(Uri.parse('http://http:///172.20.10.4:8000/sensors/'));
 
   if (response.statusCode == 200) {
     final List<dynamic> jsonData = json.decode(response.body);
@@ -73,7 +73,7 @@ class _Sensors extends State<Sensors> {
   _Sensors();
   void getData() async {
     final url = Uri.parse(
-        'http://192.168.68.114:8000/apiRest/recommendations/'); // Replace with your Django server URL
+        'http:///192.168.252.48:8000/apiRest/recommendations/'); // Replace with your Django server URL
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
@@ -211,46 +211,7 @@ class _Sensors extends State<Sensors> {
             SizedBox(
               height: MediaQuery.of(context).size.height * 0.025,
             ),
-            Padding(
-              padding: EdgeInsets.symmetric(
-                  horizontal: MediaQuery.of(context).size.height * 0.02),
-              child: Container(
-                height: MediaQuery.of(context).size.height * 0.25,
-                width: MediaQuery.of(context).size.width * 0.9,
-                child: Stack(
-                  children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(20),
-                      child: GoogleMap(
-                        initialCameraPosition: CameraPosition(
-                          target: LatLng(46.77945, 23.61126),
-                          zoom: 10.0,
-                        ),
-                        mapType: MapType.satellite,
-                        markers: _createMarkers(),
-                      ),
-                    ),
-                    Positioned(
-                      top: 10,
-                      right: 10,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => MapScreen(),
-                            ),
-                          );
-                        },
-                        style: ElevatedButton.styleFrom(
-                          primary: Color(0xFF8EAC50),
-                        ),
-                        child: Text('View map'),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+            MapSP(),
             SizedBox(height: MediaQuery.of(context).size.height * 0.025),
             Divider(
               height: 3,
@@ -329,8 +290,36 @@ class _Sensors extends State<Sensors> {
                                                   ['potassium']
                                               .toString() ??
                                           'N/A',
+                                      problems: 0,
                                     ),
-                              if (sensor_data.isEmpty) const Text('Loading...'),
+                              //if (sensor_data.isEmpty) const Text('Loading...'),
+                              SensorList(
+                                sensorName: 'N/A',
+                                humidity: "True",
+                                temperature: 'N/A',
+                                nitrogen: 'N/A',
+                                phosphorous: 'N/A',
+                                potassium: 'N/A',
+                                problems: 0,
+                              ),
+                              SensorList(
+                                sensorName: 'N/A',
+                                humidity: "True",
+                                temperature: 'N/A',
+                                nitrogen: 'N/A',
+                                phosphorous: 'N/A',
+                                potassium: 'N/A',
+                                problems: 1,
+                              ),
+                              SensorList(
+                                sensorName: 'N/A',
+                                humidity: "True",
+                                temperature: 'N/A',
+                                nitrogen: 'N/A',
+                                phosphorous: 'N/A',
+                                potassium: 'N/A',
+                                problems: 2,
+                              ),
                             ],
                           ),
                           SizedBox(
@@ -432,66 +421,127 @@ class _Sensors extends State<Sensors> {
             ),
           ],
         ),
-        bottomNavigationBar: Container(
-          height: MediaQuery.of(context).size.height *
-              0.097, // Adjust the height here
-          color: Colors.white,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              SizedBox(
-                width: 72,
-                height: 72,
-                child: FloatingActionButton(
-                  onPressed: () {},
-                  backgroundColor: Colors.white, // Set the button color here
-                  elevation: 0,
-                  child: Image.asset(
-                    'assets/flower.png',
-                    height: 77,
-                  ),
+        bottomNavigationBar: NavBarSP(),
+      ),
+    );
+  }
+}
+
+class MapSP extends StatelessWidget {
+  const MapSP({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(
+          horizontal: MediaQuery.of(context).size.height * 0.02),
+      child: Container(
+        height: MediaQuery.of(context).size.height * 0.25,
+        width: MediaQuery.of(context).size.width * 0.9,
+        child: Stack(
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(20),
+              child: GoogleMap(
+                initialCameraPosition: CameraPosition(
+                  target: LatLng(46.77945, 23.61126),
+                  zoom: 10.0,
                 ),
+                mapType: MapType.satellite,
+                markers: _createMarkers(),
               ),
-              SizedBox(
-                width: 75,
-                height: 75,
-                child: FloatingActionButton(
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        PageTransition(
-                            child: NewSensor(),
-                            type: PageTransitionType.bottomToTop,
-                            duration: Duration(milliseconds: 500)));
-                  }, // Call the _showAddDialog function when the button is pressed
-                  backgroundColor:
-                      const Color(0xFF8EAC50), // Set the button color here
-                  child: const Icon(Icons.add),
+            ),
+            Positioned(
+              top: 10,
+              right: 10,
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => MapScreen(),
+                    ),
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  primary: Color(0xFF8EAC50),
                 ),
+                child: Text('View map'),
               ),
-              SizedBox(
-                width: 72,
-                height: 72,
-                child: FloatingActionButton(
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        PageTransition(
-                            child: Profile(),
-                            type: PageTransitionType.rightToLeftWithFade,
-                            duration: Duration(milliseconds: 500)));
-                  },
-                  backgroundColor: Colors.white, // Set the button color here
-                  elevation: 0,
-                  child: Image.asset(
-                    'assets/profile.png',
-                    height: 77,
-                  ),
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
+      ),
+    );
+  }
+}
+
+class NavBarSP extends StatelessWidget {
+  const NavBarSP({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height:
+          MediaQuery.of(context).size.height * 0.097, // Adjust the height here
+      color: Colors.white,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          SizedBox(
+            width: 72,
+            height: 72,
+            child: FloatingActionButton(
+              onPressed: () {},
+              backgroundColor: Colors.white, // Set the button color here
+              elevation: 0,
+              child: Image.asset(
+                'assets/flower.png',
+                height: 77,
+              ),
+            ),
+          ),
+          SizedBox(
+            width: 75,
+            height: 75,
+            child: FloatingActionButton(
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    PageTransition(
+                        child: NewSensor(),
+                        type: PageTransitionType.bottomToTop,
+                        duration: Duration(milliseconds: 500)));
+              }, // Call the _showAddDialog function when the button is pressed
+              backgroundColor:
+                  const Color(0xFF8EAC50), // Set the button color here
+              child: const Icon(Icons.add),
+            ),
+          ),
+          SizedBox(
+            width: 72,
+            height: 72,
+            child: FloatingActionButton(
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    PageTransition(
+                        child: Profile(),
+                        type: PageTransitionType.rightToLeftWithFade,
+                        duration: Duration(milliseconds: 500)));
+              },
+              backgroundColor: Colors.white, // Set the button color here
+              elevation: 0,
+              child: Image.asset(
+                'assets/profile.png',
+                height: 77,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -503,7 +553,7 @@ Set<Marker> _createMarkers() {
     Marker(
       markerId: MarkerId('marker1'),
       position:
-          LatLng(46.801912668838504, 23.621980721229484), // Marker position
+          LatLng(46.810471912910785, 23.584466379240606), // Marker position
       infoWindow: InfoWindow(title: 'Marker 1'), // Marker info window
     ),
     // Add more markers as needed
