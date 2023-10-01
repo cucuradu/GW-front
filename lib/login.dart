@@ -215,24 +215,24 @@ class _LoginState extends State<Login> {
 
                             checkUser();
                           });
-                          //if (responseCode == 200) {
-                          if (sensor_id.isEmpty) {
-                            Navigator.push(
-                                context,
-                                PageTransition(
-                                    child: Homepage(),
-                                    type:
-                                        PageTransitionType.rightToLeftWithFade,
-                                    duration: Duration(milliseconds: 500)));
-                            //} else {
-                            Navigator.push(
-                                context,
-                                PageTransition(
-                                    child: Sensors(),
-                                    type:
-                                        PageTransitionType.rightToLeftWithFade,
-                                    duration: Duration(milliseconds: 500)));
-                            //}
+                          if (responseCode == 200) {
+                            if (sensor_id.isEmpty) {
+                              Navigator.push(
+                                  context,
+                                  PageTransition(
+                                      child: Homepage(),
+                                      type: PageTransitionType
+                                          .rightToLeftWithFade,
+                                      duration: Duration(milliseconds: 500)));
+                            } else {
+                              Navigator.push(
+                                  context,
+                                  PageTransition(
+                                      child: Sensors(),
+                                      type: PageTransitionType
+                                          .rightToLeftWithFade,
+                                      duration: Duration(milliseconds: 500)));
+                            }
                           }
                         },
                         style: ElevatedButton.styleFrom(
