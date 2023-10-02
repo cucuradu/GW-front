@@ -90,7 +90,9 @@ class RecommendationsPage extends StatelessWidget {
                     Padding(
                       padding: EdgeInsets.symmetric(
                           vertical: 8), // Equal vertical spacing
-                      child: Text(
+                      child:
+
+                      Text(
                         "The standard Lorem Ipsum passage, used since the 1500s",
                         style: TextStyle(
                           fontSize: 16,
