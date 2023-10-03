@@ -10,6 +10,8 @@ import 'package:location/location.dart';
 
 List sensor_id = [];
 
+Map<String, dynamic> sensorsLocation = {};
+
 class NewSensor extends StatefulWidget {
   @override
   _NewSensorState createState() => _NewSensorState();
@@ -30,6 +32,25 @@ class _NewSensorState extends State<NewSensor> {
 
   final MapScreen map = new MapScreen();
 
+  //GET LOCATION
+  void getSensorLocation() async {
+    final url = Uri.parse(
+      'http://192.168.100.29:8000/sensor/add_location/$SensorID/'
+    );
+
+    final response = await http.get(url);
+
+    if(response.statusCode == 200){
+      print('LOCATION: ${response.body}');
+      setState(() {
+        sensorsLocation = jsonDecode(response.body);
+      });
+    } else {
+      print('Request failed with status: ${response.statusCode}');
+    }
+
+  }
+
   void getData() async {
     final url = Uri.parse(
         'http://192.168.100.29:8000/apiRest/recommendations/'); // Replace with your Django server URL
@@ -49,7 +70,7 @@ class _NewSensorState extends State<NewSensor> {
   }
 
   Future<void> addSensorToUser(String? sensorId) async {
-    final url = 'http://192.168.100.29:8000/api/add_sensors_to_user/1/';
+    final url = 'http://192.168.100.29:8000/api/add_sensors_to_user/3/';
 
     final headers = {'Content-Type': 'application/json'};
 
@@ -419,11 +440,11 @@ class _NewSensorState extends State<NewSensor> {
                                     }
                                   }
 
+                                  getSensorLocation();
+
                                   updateData();
 
                                   sensor_id.add(SensorID);
-
-                                  print('ADDED ID -- $sensor_id');
 
                                   addSensorToUser(SensorID);
 

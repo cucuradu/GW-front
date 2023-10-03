@@ -55,7 +55,7 @@ class _LoginState extends State<Login> {
 
   void getUserData() async {
     final url = Uri.parse(
-        'http://192.168.100.29:8000/api/user/1'); // Replace with your Django server URL
+        'http://192.168.100.29:8000/api/user/3'); // Replace with your Django server URL
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
@@ -75,7 +75,6 @@ class _LoginState extends State<Login> {
   @override
   void initState() {
     super.initState();
-    getUserData();
   }
 
   @override
@@ -239,6 +238,8 @@ class _LoginState extends State<Login> {
                             //pagina, else sa ramana pe pagina de login
 
                             checkUser();
+                            getUserData();
+
                           });
                           if (responseCode == 200) {
                               if (usersSensors.isEmpty) {
