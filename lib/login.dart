@@ -20,7 +20,7 @@ int responseCode = 0;
 
 
 void checkUser() async {
-  final String apiUrl = 'http://192.168.100.29:8000/api/authenticate/';
+  final String apiUrl = 'http://192.168.1.7:8000/api/authenticate/'; 
 
   String userDataJson = jsonEncode(userData);
 

@@ -44,7 +44,7 @@ class SensorObject {
 
 Future<List<SensorObject>> fetchData() async {
   final response =
-      await http.get(Uri.parse('http://http:///192.168.1.210:8000/sensors/'));
+      await http.get(Uri.parse('http://http://192.168.1.7:8000/sensors/'));
 
   if (response.statusCode == 200) {
     final List<dynamic> jsonData = json.decode(response.body);
@@ -73,7 +73,7 @@ class _Sensors extends State<Sensors> {
 
   void getUserData() async {
     final url = Uri.parse(
-        'http://192.168.100.29:8000/api/user/3'); // Replace with your Django server URL
+        'http://192.168.1.7:8000/api/user/3'); // Replace with your Django server URL
 
     final response = await http.get(url);
 
