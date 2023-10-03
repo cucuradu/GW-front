@@ -44,7 +44,7 @@ class SensorObject {
 
 Future<List<SensorObject>> fetchData() async {
   final response =
-      await http.get(Uri.parse('http://http:///172.20.10.4:8000/sensors/'));
+      await http.get(Uri.parse('http://http:///192.168.1.210:8000/sensors/'));
 
   if (response.statusCode == 200) {
     final List<dynamic> jsonData = json.decode(response.body);
@@ -73,7 +73,11 @@ class _Sensors extends State<Sensors> {
 
   void getUserData() async {
     final url = Uri.parse(
+<<<<<<< HEAD
         'http://192.168.100.29:8000/api/user/3'); // Replace with your Django server URL
+=======
+        'http://192.168.1.210:8000/api/user/1'); // Replace with your Django server URL
+>>>>>>> 81d652dccac3e607e5b7b46a2ad207af10e7c0e6
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
@@ -92,7 +96,7 @@ class _Sensors extends State<Sensors> {
 
   void getData() async {
     final url = Uri.parse(
-        'http://192.168.100.29:8000/apiRest/recommendations/'); // Replace with your Django server URL
+        'http://192.168.1.210:8000/apiRest/recommendations/'); // Replace with your Django server URL
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
@@ -363,16 +367,8 @@ class _Sensors extends State<Sensors> {
                                       problems: sensor['problem_count'],
                                     ),
 
-                              //if (sensor_data.isEmpty) const Text('Loading...'),
-                              // SensorList(
-                              //   sensorName: 'N/A',
-                              //   humidity: "True",
-                              //   temperature: 'N/A',
-                              //   nitrogen: 'N/A',
-                              //   phosphorous: 'N/A',
-                              //   potassium: 'N/A',
-                              //   problems: 0,
-                              // ),
+                              if (sensor_data.isEmpty) const Text('Loading...'),
+                               
                               // SensorList(
                               //   sensorName: 'N/A',
                               //   humidity: "True",

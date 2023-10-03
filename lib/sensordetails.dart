@@ -12,17 +12,27 @@ import 'newsensor.dart'; // Import the RecommendationsPage
 class SensorDetails extends StatelessWidget {
   String? sensorName;
   String? humidity;
-  String? temperature;
+  String? temperature ;
   String? nitrogen;
   String? phosphorous;
   String? potassium;
+  int? temperatureValue, nitrogenValue, phosphorusValue, potassiumValue;
   SensorDetails(
       {this.sensorName,
       this.humidity,
       this.temperature,
       this.nitrogen,
       this.phosphorous,
-      this.potassium});
+      this.potassium}
+  ){
+    values();
+  }
+  void values(){
+    temperatureValue = int.parse(temperature?.substring(0, temperature!.length-2) ?? "0");
+    nitrogenValue = int.parse(nitrogen?.substring(0, nitrogen!.length-2) ?? "0");
+    phosphorusValue = int.parse(phosphorous?.substring(0, phosphorous!.length-2) ?? "0");
+    potassiumValue = int.parse(potassium?.substring(0, potassium!.length-2) ?? "0");
+  }
 
   final List<String> recommendations = [
     "Recommendation 1",
@@ -151,7 +161,9 @@ class SensorDetails extends StatelessWidget {
                             Text(
                               "Humidity",
                               style: TextStyle(
-                                color: Colors.black,
+                                color: (humidity == true)
+                                  ? Colors.black
+                                  : Colors.red,
                                 fontSize:
                                     MediaQuery.of(context).size.width * 0.05,
                               ),
@@ -160,7 +172,9 @@ class SensorDetails extends StatelessWidget {
                             Text(
                               humidity ?? "?",
                               style: TextStyle(
-                                color: Colors.black,
+                                color:(humidity == true)
+                                  ? Colors.black
+                                  : Colors.red,
                                 fontSize:
                                     MediaQuery.of(context).size.width * 0.05,
                               ),
@@ -179,7 +193,9 @@ class SensorDetails extends StatelessWidget {
                             Text(
                               "Temperature",
                               style: TextStyle(
-                                color: Colors.black,
+                                color: (10<temperatureValue! && temperatureValue!<30)
+                                  ? Colors.black
+                                  : Colors.red,
                                 fontSize:
                                     MediaQuery.of(context).size.width * 0.05,
                               ),
@@ -188,7 +204,9 @@ class SensorDetails extends StatelessWidget {
                             Text(
                               temperature ?? "?",
                               style: TextStyle(
-                                color: Colors.black,
+                                color: (10<temperatureValue! && temperatureValue!<30)
+                                  ? Colors.black
+                                  : Colors.red,
                                 fontSize:
                                     MediaQuery.of(context).size.width * 0.05,
                               ),
@@ -199,7 +217,9 @@ class SensorDetails extends StatelessWidget {
                             Text(
                               "°C",
                               style: TextStyle(
-                                color: Colors.black,
+                                color:(10<temperatureValue! && temperatureValue!<30)
+                                  ? Colors.black
+                                  : Colors.red,
                                 fontSize:
                                     MediaQuery.of(context).size.width * 0.05,
                               ),
@@ -218,7 +238,9 @@ class SensorDetails extends StatelessWidget {
                             Text(
                               "Nitrogen",
                               style: TextStyle(
-                                color: Colors.black,
+                                color: (40<nitrogenValue! && nitrogenValue!<60)
+                                  ? Colors.black
+                                  : Colors.red,
                                 fontSize:
                                     MediaQuery.of(context).size.width * 0.05,
                               ),
@@ -227,7 +249,9 @@ class SensorDetails extends StatelessWidget {
                             Text(
                               nitrogen ?? "?",
                               style: TextStyle(
-                                color: Colors.black,
+                                color:(40<nitrogenValue! && nitrogenValue!<60)
+                                  ? Colors.black
+                                  : Colors.red,
                                 fontSize:
                                     MediaQuery.of(context).size.width * 0.05,
                               ),
@@ -238,7 +262,9 @@ class SensorDetails extends StatelessWidget {
                             Text(
                               "mg/kg",
                               style: TextStyle(
-                                color: Colors.black,
+                                color: (40<nitrogenValue! && nitrogenValue!<60)
+                                  ? Colors.black
+                                  : Colors.red,
                                 fontSize:
                                     MediaQuery.of(context).size.width * 0.05,
                               ),
@@ -257,27 +283,33 @@ class SensorDetails extends StatelessWidget {
                             Text(
                               "Phosphorus",
                               style: TextStyle(
-                                color: Colors.black,
+                                color: (30<phosphorusValue! && phosphorusValue!<50)
+                                    ? Colors.black
+                                    : Colors.red,
                                 fontSize:
                                     MediaQuery.of(context).size.width * 0.05,
                               ),
                             ),
                             Spacer(),
-                            Text(
-                              phosphorous ?? "?",
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize:
-                                    MediaQuery.of(context).size.width * 0.05,
+                              Text(
+                                phosphorous ?? "?",
+                                style: TextStyle(
+                                  color: (30<phosphorusValue! && phosphorusValue!<50)
+                                    ? Colors.black
+                                    : Colors.red,
+                                  fontSize:
+                                      MediaQuery.of(context).size.width * 0.05,
+                                ),
                               ),
-                            ),
                             SizedBox(
                               width: 11,
                             ),
                             Text(
                               "mg/kg",
                               style: TextStyle(
-                                color: Colors.black,
+                                color: (30<phosphorusValue! && phosphorusValue!<50)
+                                    ? Colors.black
+                                    : Colors.red,
                                 fontSize:
                                     MediaQuery.of(context).size.width * 0.05,
                               ),
@@ -296,7 +328,9 @@ class SensorDetails extends StatelessWidget {
                             Text(
                               "Potassium",
                               style: TextStyle(
-                                color: Colors.black,
+                                color: (40<potassiumValue! && potassiumValue!<70)
+                                    ? Colors.black
+                                    : Colors.red,
                                 fontSize:
                                     MediaQuery.of(context).size.width * 0.05,
                               ),
@@ -305,7 +339,9 @@ class SensorDetails extends StatelessWidget {
                             Text(
                               potassium ?? "?",
                               style: TextStyle(
-                                color: Colors.black,
+                                color: (40<potassiumValue! && potassiumValue!<70)
+                                    ? Colors.black
+                                    : Colors.red,
                                 fontSize:
                                     MediaQuery.of(context).size.width * 0.05,
                               ),
@@ -316,7 +352,9 @@ class SensorDetails extends StatelessWidget {
                             Text(
                               "mg/kg",
                               style: TextStyle(
-                                color: Colors.black,
+                                color: (40<potassiumValue! && potassiumValue!<70)
+                                    ? Colors.black
+                                    : Colors.red,
                                 fontSize:
                                     MediaQuery.of(context).size.width * 0.05,
                               ),
