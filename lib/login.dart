@@ -20,7 +20,7 @@ int responseCode = 0;
 
 
 void checkUser() async {
-  final String apiUrl = 'http://192.168.0.125:8000/api/authenticate/';
+  final String apiUrl = 'http://192.168.1.210:8000/api/authenticate/';
 
   String userDataJson = jsonEncode(userData);
 
@@ -221,15 +221,15 @@ class _LoginState extends State<Login> {
                             checkUser();
                           });
                           if (responseCode == 200) {
-                             // if (usersSensors.isEmpty) {
-                             //   Navigator.push(
-                             //       context,
-                             //       PageTransition(
-                             //           child: Homepage(),
-                             //           type: PageTransitionType
-                             //               .rightToLeftWithFade,
-                             //           duration: Duration(milliseconds: 500)));
-                             //}else{
+                              if (usersSensors.isEmpty) {
+                                Navigator.push(
+                                    context,
+                                    PageTransition(
+                                        child: Homepage(),
+                                        type: PageTransitionType
+                                            .rightToLeftWithFade,
+                                        duration: Duration(milliseconds: 500)));
+                             }else{
                               Navigator.push(
                                   context,
                                   PageTransition(
@@ -237,7 +237,7 @@ class _LoginState extends State<Login> {
                                       type: PageTransitionType
                                           .rightToLeftWithFade,
                                       duration: Duration(milliseconds: 500)));
-                          //}
+                          }
                           }
                         },
                         style: ElevatedButton.styleFrom(

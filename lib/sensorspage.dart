@@ -360,16 +360,16 @@ class _Sensors extends State<Sensors> {
                                       problems: sensor['problem_count'],
                                     ),
 
-                              //if (sensor_data.isEmpty) const Text('Loading...'),
-                              // SensorList(
-                              //   sensorName: 'N/A',
-                              //   humidity: "True",
-                              //   temperature: 'N/A',
-                              //   nitrogen: 'N/A',
-                              //   phosphorous: 'N/A',
-                              //   potassium: 'N/A',
-                              //   problems: 0,
-                              // ),
+                              if (sensor_data.isEmpty) const Text('Loading...'),
+                               SensorList(
+                                 sensorName: 'N/A',
+                                 humidity: "True",
+                                 temperature: 'N/A',
+                                nitrogen: 'N/A',
+                                 phosphorous: '1000',
+                                 potassium: 'N/A',
+                                 problems: 2,
+                               ),
                               // SensorList(
                               //   sensorName: 'N/A',
                               //   humidity: "True",

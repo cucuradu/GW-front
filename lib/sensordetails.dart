@@ -12,17 +12,29 @@ import 'newsensor.dart'; // Import the RecommendationsPage
 class SensorDetails extends StatelessWidget {
   String? sensorName;
   String? humidity;
-  String? temperature;
+  String? temperature ;
   String? nitrogen;
   String? phosphorous;
   String? potassium;
+  double? maxValue, minValue;
+  double? phosphorusValue;
   SensorDetails(
       {this.sensorName,
       this.humidity,
       this.temperature,
       this.nitrogen,
       this.phosphorous,
-      this.potassium});
+      this.potassium}
+  ){
+    values();
+  }
+  void values(){
+    double humidityValue = double.parse(humidity ?? "0");
+    double temperatureValue = double.parse(temperature ?? "0");
+    double nitrogenValue = double.parse(nitrogen ?? "0");
+    phosphorusValue = double.parse(phosphorous ?? "0");
+    double potassiumValue = double.parse(potassium ?? "0");
+  }
 
   final List<String> recommendations = [
     "Recommendation 1",
@@ -263,14 +275,16 @@ class SensorDetails extends StatelessWidget {
                               ),
                             ),
                             Spacer(),
-                            Text(
-                              phosphorous ?? "?",
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize:
-                                    MediaQuery.of(context).size.width * 0.05,
+                              Text(
+                                phosphorous ?? "?",
+                                style: TextStyle(
+                                  color: (minValue!<phosphorusValue! && phosphorusValue!<maxValue!)
+                                    ? Colors.black
+                                    : Colors.red,
+                                  fontSize:
+                                      MediaQuery.of(context).size.width * 0.05,
+                                ),
                               ),
-                            ),
                             SizedBox(
                               width: 11,
                             ),
