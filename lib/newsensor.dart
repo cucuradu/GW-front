@@ -41,7 +41,7 @@ class _NewSensorState extends State<NewSensor> {
     final response = await http.get(url);
 
     if(response.statusCode == 200){
-      print('LOCATION: ${response.body}');
+      print('LOCATIONNNNN: ${response.body}');
       setState(() {
         sensorsLocation = jsonDecode(response.body);
       });
@@ -70,11 +70,8 @@ class _NewSensorState extends State<NewSensor> {
   }
 
   Future<void> addSensorToUser(String? sensorId) async {
-<<<<<<< HEAD
+
     final url = 'http://192.168.100.29:8000/api/add_sensors_to_user/3/';
-=======
-    final url = 'http://192.168.1.210:8000/api/add_sensors_to_user/1/';
->>>>>>> 81d652dccac3e607e5b7b46a2ad207af10e7c0e6
 
     final headers = {'Content-Type': 'application/json'};
 
