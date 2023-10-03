@@ -73,7 +73,7 @@ class _Sensors extends State<Sensors> {
 
   void getUserData() async {
     final url = Uri.parse(
-        'http://192.168.0.125:8000/api/user/3'); // Replace with your Django server URL
+        'http://192.168.100.29:8000/api/user/1'); // Replace with your Django server URL
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
@@ -92,7 +92,7 @@ class _Sensors extends State<Sensors> {
 
   void getData() async {
     final url = Uri.parse(
-        'http://192.168.0.125:8000/apiRest/recommendations/'); // Replace with your Django server URL
+        'http://192.168.100.29:8000/apiRest/recommendations/'); // Replace with your Django server URL
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
@@ -340,7 +340,10 @@ class _Sensors extends State<Sensors> {
                                       sensorName: sensor['sensor_data']
                                               ['name'] ??
                                           'N/A',
-                                      humidity: sensor['sensor_data']['humidity'].toString() ?? 'N/A',
+                                      humidity: sensor['sensor_data']
+                                      ['humidity']
+                                          .toString() ??
+                                          'N/A',
                                       temperature: sensor['sensor_data']
                                                   ['temperature']
                                               .toString() ??
