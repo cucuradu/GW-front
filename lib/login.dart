@@ -53,9 +53,29 @@ class _LoginState extends State<Login> {
   String? emailText;
   String? passwordText;
 
+  void getUserData() async {
+    final url = Uri.parse(
+        'http://192.168.100.29:8000/api/user/1'); // Replace with your Django server URL
+    final response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      // Successful response, handle the data
+      print('Response body: ${response.body}');
+      setState(() {
+        usersSensors = jsonDecode(response.body);
+      });
+    } else {
+      // Handle errors
+      print('Request failed with status: ${response.statusCode}');
+    }
+  }
+
+
+
   @override
   void initState() {
     super.initState();
+    getUserData();
   }
 
   @override

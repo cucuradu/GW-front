@@ -44,7 +44,7 @@ class SensorObject {
 
 Future<List<SensorObject>> fetchData() async {
   final response =
-      await http.get(Uri.parse('http://http:///172.20.10.4:8000/sensors/'));
+      await http.get(Uri.parse('http://http:///192.168.1.210:8000/sensors/'));
 
   if (response.statusCode == 200) {
     final List<dynamic> jsonData = json.decode(response.body);
@@ -73,7 +73,7 @@ class _Sensors extends State<Sensors> {
 
   void getUserData() async {
     final url = Uri.parse(
-        'http://192.168.0.125:8000/api/user/3'); // Replace with your Django server URL
+        'http://192.168.1.210:8000/api/user/1'); // Replace with your Django server URL
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
@@ -92,7 +92,7 @@ class _Sensors extends State<Sensors> {
 
   void getData() async {
     final url = Uri.parse(
-        'http://192.168.0.125:8000/apiRest/recommendations/'); // Replace with your Django server URL
+        'http://192.168.1.210:8000/apiRest/recommendations/'); // Replace with your Django server URL
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
@@ -340,7 +340,10 @@ class _Sensors extends State<Sensors> {
                                       sensorName: sensor['sensor_data']
                                               ['name'] ??
                                           'N/A',
-                                      humidity: sensor['sensor_data']['humidity'].toString() ?? 'N/A',
+                                      humidity: sensor['sensor_data']
+                                      ['humidity']
+                                          .toString() ??
+                                          'N/A',
                                       temperature: sensor['sensor_data']
                                                   ['temperature']
                                               .toString() ??
@@ -361,15 +364,7 @@ class _Sensors extends State<Sensors> {
                                     ),
 
                               if (sensor_data.isEmpty) const Text('Loading...'),
-                               SensorList(
-                                 sensorName: 'N/A',
-                                 humidity: "True",
-                                 temperature: 'N/A',
-                                nitrogen: 'N/A',
-                                 phosphorous: '1000',
-                                 potassium: 'N/A',
-                                 problems: 2,
-                               ),
+                               
                               // SensorList(
                               //   sensorName: 'N/A',
                               //   humidity: "True",
