@@ -33,6 +33,34 @@ class _NewSensorState extends State<NewSensor> {
 
   final MapScreen map = new MapScreen();
 
+  //ADD LOCATION
+  Future<void> addSensorLocationToSensor(String? sensorId, String location) async {
+    final url = Uri.parse('http://192.168.100.29:8000/sensor/add_location/$sensorId/');
+
+    try {
+      final response = await http.post(
+        url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode({'location': location}),
+      );
+
+      if (response.statusCode == 200) {
+        // The location has been successfully update
+        print('Location added successfully');
+      } else if (response.statusCode == 404) {
+        print('Request failed with status: ${response.statusCode}');
+        // Handle the case where the sensor is not found
+      } else {
+        print('Request failed with status: ${response.statusCode}');
+        // Handle other error cases here
+      }
+    } catch (e) {
+      print('Failed to add location: $e');
+    }
+  }
+
   //GET LOCATION
   void getSensorLocation() async {
     final url = Uri.parse(
@@ -446,13 +474,17 @@ class _NewSensorState extends State<NewSensor> {
                                     }
                                   }
 
-                                  getSensorLocation();
+                                  String location = "2123";
+
+                                  addSensorLocationToSensor(SensorID, location);
 
                                   updateData();
 
                                   sensor_id.add(SensorID);
 
                                   addSensorToUser(SensorID);
+
+                                  getSensorLocation();
 
                                   getData();
 
