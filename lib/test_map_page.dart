@@ -97,7 +97,7 @@ class _MapScreenState extends State<MapScreen> {
             markers: markers,
             circles: circles,
             onTap: (LatLng location) {
-              _addMarker(location); // Default value is 3, replace with your value
+              //_addMarker(location); // Default value is 3, replace with your value
             },
             mapType: MapType.hybrid,
           ),
@@ -241,7 +241,6 @@ class _MapScreenState extends State<MapScreen> {
     }
   }
 }
-
 
 Set<Marker> _createMarkers() {
   // Create a set of markers to display on the map
