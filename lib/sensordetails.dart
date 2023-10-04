@@ -7,7 +7,8 @@ import 'package:gwfront/recomendationspage.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'test_map_page.dart';
-import 'newsensor.dart'; // Import the RecommendationsPage
+import 'newsensor.dart';
+import 'package:flutter/services.dart';
 
 class SensorDetails extends StatelessWidget {
   String? sensorName;
@@ -38,11 +39,14 @@ class SensorDetails extends StatelessWidget {
     "Recommendation 1",
     "Recommendation 2",
     "Recommendation 3",
-    // Add more recommendations here as needed
   ];
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+        DeviceOrientation.portraitUp,
+        DeviceOrientation.portraitDown,
+      ]);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
@@ -387,7 +391,7 @@ class SensorDetails extends StatelessWidget {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => RecommendationsPage(),
+                                    builder: (context) => Recomandations(Name: sensorName),
                                   ),
                                 );
                               },
@@ -402,7 +406,7 @@ class SensorDetails extends StatelessWidget {
                           borderRadius: BorderRadius.circular(20),
                           child: Container(
                             height: MediaQuery.of(context).size.height * 0.25,
-                            width: MediaQuery.of(context).size.width * 0.7,
+                            width: MediaQuery.of(context).size.width * 0.9,
                             decoration: BoxDecoration(
                               color: Color(0xFFFAE392),
                             ),
@@ -410,12 +414,12 @@ class SensorDetails extends StatelessWidget {
                               alignment: Alignment.bottomLeft,
                               child: ElevatedButton(
                                 onPressed: () {
-                                  // Navigator.push(
-                                  //   context,
-                                  //   MaterialPageRoute(
-                                  //     builder: (context) => Recomandations(),
-                                  //   ),
-                                  // );
+                                   Navigator.push(
+                                     context,
+                                     MaterialPageRoute(
+                                       builder: (context) => Recomandations(Name: sensorName),
+                                     ),
+                                   );
                                 },
                                 style: ElevatedButton.styleFrom(
                                   primary: Color(0xFFFAE392),

@@ -7,6 +7,7 @@ import 'package:gwfront/sensorspage.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
+import 'package:flutter/services.dart';
 
 List sensor_id = [];
 
@@ -101,7 +102,7 @@ class _NewSensorState extends State<NewSensor> {
   //GET LOCATION
   void getSensorLocation() async {
     final url = Uri.parse(
-      'http://192.168.100.29:8000/sensor/get_location/$SensorID/'
+      'http://192.168.68.102:8000/sensor/get_location/$SensorID/'
     );
 
     final response = await http.get(url);
@@ -119,13 +120,13 @@ class _NewSensorState extends State<NewSensor> {
 
   void getData() async {
     final url = Uri.parse(
-        'http://192.168.100.29:8000/apiRest/recommendations/'); // Replace with your Django server URL
+        'http://192.168.68.102:8000/apiRest/recommendations/'); // Replace with your Django server URL
 
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
       // Successful response, handle the data
-      print('Response body: ${response.body}');
+      //print('Response body: ${response.body}');
       setState(() {
         sensor_data = jsonDecode(response.body);
       });
@@ -137,7 +138,7 @@ class _NewSensorState extends State<NewSensor> {
 
   Future<void> addSensorToUser(String? sensorId) async {
 
-    final url = 'http://192.168.100.29:8000/api/add_sensors_to_user/3/';
+    final url = 'http://192.168.68.102:8000/api/add_sensors_to_user/1/';
 
     final headers = {'Content-Type': 'application/json'};
 
@@ -165,7 +166,7 @@ class _NewSensorState extends State<NewSensor> {
 
 
   void updateData() async {
-    final String apiUrl = 'http://192.168.100.29:8000/api/update_sensors/';
+    final String apiUrl = 'http://192.168.68.102:8000/api/update_sensors/';
 
     String sensorDataListJson = jsonEncode(sensor_data);
 
@@ -220,6 +221,10 @@ class _NewSensorState extends State<NewSensor> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+        DeviceOrientation.portraitUp,
+        DeviceOrientation.portraitDown,
+      ]);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
@@ -426,8 +431,8 @@ class _NewSensorState extends State<NewSensor> {
                                 items: <String>[
                                   'Tomato',
                                   'Cucumber',
-                                  'Carrot',
-                                  'Potato',
+                                  'Carrots',
+                                  'Potatoes',
                                   'Another',
                                 ].map<DropdownMenuItem<String>>((String value) {
                                   return DropdownMenuItem<String>(

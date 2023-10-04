@@ -6,6 +6,7 @@ import 'package:page_transition/page_transition.dart';
 import 'login.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:flutter/services.dart';
 
 class Profile extends StatefulWidget {
   Profile({super.key});
@@ -17,6 +18,10 @@ class _Profile extends State<Profile> {
   _Profile();
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+        DeviceOrientation.portraitUp,
+        DeviceOrientation.portraitDown,
+      ]);
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         home: Scaffold(
