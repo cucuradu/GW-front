@@ -40,9 +40,10 @@ class SensorObject {
   }
 }
 
+
 Future<List<SensorObject>> fetchSensorData() async {
-  final response = await http
-      .get(Uri.parse('http://192.168.0.111:8000/apiRest/recommendations/'));
+  final response = await http.get(
+      Uri.parse('http://192.168.1.7:8000/apiRest/recommendations/'));
 
   if (response.statusCode == 200) {
     final List<dynamic> jsonData = json.decode(response.body);
@@ -54,6 +55,7 @@ Future<List<SensorObject>> fetchSensorData() async {
     throw Exception('Failed to load sensor data');
   }
 }
+
 
 class MapScreen extends StatefulWidget {
   @override
@@ -89,11 +91,11 @@ class _MapScreenState extends State<MapScreen> {
             markers: markers,
             circles: circles,
             onTap: (LatLng location) {
-              _addMarker(
-                  location); // Default value is 3, replace with your value
+              _addMarker(location); // Default value is 3, replace with your value
             },
             mapType: MapType.hybrid,
           ),
+
           Positioned(
             top: 16,
             left: 16,
@@ -121,8 +123,7 @@ class _MapScreenState extends State<MapScreen> {
       circleId: CircleId(location.toString() + '_circle'),
       center: location,
       radius: 10, // Adjust the radius as needed (in meters)
-      fillColor:
-          Colors.blue.withOpacity(0.3), // Set a uniform color (e.g., blue)
+      fillColor: Colors.blue.withOpacity(0.3), // Set a uniform color (e.g., blue)
       strokeWidth: 2,
       strokeColor: Colors.blue, // Set the circle border color (e.g., blue)
     );
@@ -169,11 +170,41 @@ class _MapScreenState extends State<MapScreen> {
 
     _addMarker(userLocation);
 
-    mapController
-        ?.animateCamera(CameraUpdate.newLatLngZoom(userLocation, 18.0));
+    mapController?.animateCamera(CameraUpdate.newLatLngZoom(userLocation, 18.0));
 
     // Fetch and print sensor data
     _loadSensorData();
+  }
+
+  void _addMarkersForSensors(List<SensorObject> sensors) {
+    for (SensorObject sensor in sensors) {
+      if (sensor.location != null) {
+        LatLng sensorLocation = LatLng(
+          double.parse(sensor.location!.split(',')[0]), // Extract latitude
+          double.parse(sensor.location!.split(',')[1]), // Extract longitude
+        );
+
+        final Marker newMarker = Marker(
+          markerId: MarkerId(sensor.id ?? 'N/A'),
+          position: sensorLocation,
+          infoWindow: InfoWindow(
+            title: sensor.name ?? 'Sensor',
+            snippet: '${sensorLocation.latitude}, ${sensorLocation.longitude}',
+          ),
+        );
+
+        final Circle circle = Circle(
+          circleId: CircleId(sensor.id ?? 'N/A' + '_circle'),
+          center: sensorLocation,
+          radius: 10, // Adjust the radius as needed (in meters)
+          fillColor: Colors.blue.withOpacity(0.3), // Set a uniform color (e.g., blue)
+          strokeWidth: 2,
+          strokeColor: Colors.blue, // Set the circle border color (e.g., blue)
+        );
+
+        _addMarkerToSet(newMarker, circle);
+      }
+    }
   }
 
   void _loadSensorData() async {
@@ -194,6 +225,9 @@ class _MapScreenState extends State<MapScreen> {
         print('Location: ${sensor.location ?? 'N/A'}'); // Print the location
         print('-------------------------');
       }
+
+      // Add markers for sensors
+      _addMarkersForSensors(sensors);
     } catch (e) {
       // Handle errors if the data retrieval fails
       print('Error loading sensor data: $e');
@@ -201,15 +235,16 @@ class _MapScreenState extends State<MapScreen> {
   }
 }
 
+
 Set<Marker> _createMarkers() {
   // Create a set of markers to display on the map
   return {
     Marker(
       markerId: MarkerId('marker1'),
-      position:
-          LatLng(46.80187718142852, 23.621918470312753), // Marker position
+      position: LatLng(46.80187718142852, 23.621918470312753), // Marker position
       infoWindow: InfoWindow(title: 'Marker 1'), // Marker info window
     ),
     // Add more markers as needed
   };
 }
+

@@ -10,7 +10,7 @@ import 'package:location/location.dart';
 
 List sensor_id = [];
 
-Map<String, dynamic> sensorsLocation = {};
+Map<String, dynamic> sensorsLocation = { };
 
 class NewSensor extends StatefulWidget {
   @override
@@ -81,7 +81,7 @@ class _NewSensorState extends State<NewSensor> {
 
   void getData() async {
     final url = Uri.parse(
-        'http://192.168.1.210:8000/apiRest/recommendations/'); // Replace with your Django server URL
+        'http://192.168.100.29:8000/apiRest/recommendations/'); // Replace with your Django server URL
 
     final response = await http.get(url);
 
@@ -127,7 +127,7 @@ class _NewSensorState extends State<NewSensor> {
 
 
   void updateData() async {
-    final String apiUrl = 'http://192.168.1.210:8000/api/update_sensors/';
+    final String apiUrl = 'http://192.168.100.29:8000/api/update_sensors/';
 
     String sensorDataListJson = jsonEncode(sensor_data);
 

@@ -44,7 +44,7 @@ class SensorObject {
 
 Future<List<SensorObject>> fetchData() async {
   final response =
-      await http.get(Uri.parse('http://http:///192.168.1.210:8000/sensors/'));
+      await http.get(Uri.parse('http://192.168.1.7:8000/sensors/'));
 
   if (response.statusCode == 200) {
     final List<dynamic> jsonData = json.decode(response.body);
