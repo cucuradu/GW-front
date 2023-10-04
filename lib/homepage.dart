@@ -4,12 +4,16 @@ import 'package:gwfront/newsensor.dart';
 import 'package:gwfront/profilepage.dart';
 import 'package:gwfront/sensorspage.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:flutter/services.dart';
 
 class Homepage extends StatelessWidget {
   Homepage({super.key});
-
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+        DeviceOrientation.portraitUp,
+        DeviceOrientation.portraitDown,
+      ]);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(

@@ -10,6 +10,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'test_map_page.dart';
 import 'newsensor.dart';
 import 'dart:async';
+import 'package:flutter/services.dart';
 
 Map<String, dynamic> usersSensors = {};
 
@@ -32,34 +33,34 @@ class SensorObject {
 
   factory SensorObject.fromJson(Map<String, dynamic> json) {
     return SensorObject(
-      name: json['name'],
-      humidity: json['humidity'],
-      temperature: json['temperature'],
-      nitrogen: json["nitrogen"],
-      phosphorous: json["phosphorus"],
-      potassium: json["potassium"],
+      name: json['name'] ?? "N/A",
+      humidity: json['humidity'] ?? 0,
+      temperature: json['temperature'] ?? 0,
+      nitrogen: json["nitrogen"] ?? 0,
+      phosphorous: json["phosphorus"] ?? 0,
+      potassium: json["potassium"] ?? 0,
     );
   }
 }
 
 Future<List<SensorObject>> fetchData() async {
   final response =
-      await http.get(Uri.parse('http://http:///172.20.10.4:8000/sensors/'));
+      await http.get(Uri.parse('http://192.168.68.102:8000/sensors/'));
 
   if (response.statusCode == 200) {
-    final List<dynamic> jsonData = json.decode(response.body);
-    List<SensorObject> mySensors =
+    final List<dynamic> jsonData = json.decode(response.body); //?? [];
+    final List<SensorObject> mySensors =
         jsonData.map((data) => SensorObject.fromJson(data)).toList();
     return mySensors;
   } else {
     // Error fetching data
-    print('Request failed with status: ${response.statusCode}');
+    print('1Request failed with status: ${response.statusCode}');
     return [];
   }
 }
 
 class Sensors extends StatefulWidget {
-  List<SensorObject>? mySensors;
+  final List<SensorObject>? mySensors;
   Sensors({this.mySensors});
   @override
   _Sensors createState() => _Sensors();
@@ -73,18 +74,19 @@ class _Sensors extends State<Sensors> {
 
   void getUserData() async {
     final url = Uri.parse(
-        'http://192.168.100.29:8000/api/user/2'); // Replace with your Django server URL
+        'http://192.168.68.102:8000/api/user/1'); // Replace with your Django server URL
+
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
       // Successful response, handle the data
-      print('Response body: ${response.body}');
+      //print('Response body: ${response.body}');
       setState(() {
         usersSensors = jsonDecode(response.body);
       });
     } else {
       // Handle errors
-      print('Request failed with status: ${response.statusCode}');
+      print('2Request failed with status: ${response.statusCode}');
     }
   }
 
@@ -92,12 +94,12 @@ class _Sensors extends State<Sensors> {
 
   void getData() async {
     final url = Uri.parse(
-        'http://192.168.100.29:8000/apiRest/recommendations/'); // Replace with your Django server URL
+        'http://192.168.68.102:8000/apiRest/recommendations/'); // Replace with your Django server URL
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
       // Successful response, handle the data
-      print('Response body: ${response.body}');
+      //print('Response body: ${response.body}');
       final newData = jsonDecode(response.body);
 
       setState(() {
@@ -130,7 +132,7 @@ class _Sensors extends State<Sensors> {
       // }
     } else {
       // Handle errors
-      print('Request failed with status: ${response.statusCode}');
+      print('3Request failed with status: ${response.statusCode}');
     }
 
   }
@@ -180,52 +182,13 @@ class _Sensors extends State<Sensors> {
     });
   }
 
-  void _showAddDialog() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text("Add Sensor"),
-          content: TextField(
-            onChanged: (value) {
-              // String? sensorName = value;
-            },
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                // Here, you can create a new SensorObject instance with the entered data
-                SensorObject newSensor = SensorObject(
-                  name:
-                      "New Sensor", // Example name, you can replace it with the actual input from the TextField
-                  humidity: true,
-                  temperature: 25.0,
-                  nitrogen: 10.0,
-                  phosphorous: 5.0,
-                  potassium: 3.0,
-                );
-
-                addSensor(
-                    newSensor); // Call the addSensor function to add the new sensor to the list
-                Navigator.of(context).pop(); // Close the dialog
-              },
-              child: Text("Add"),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(); // Close the dialog
-              },
-              child: Text("Cancel"),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+        DeviceOrientation.portraitUp,
+        DeviceOrientation.portraitDown,
+      ]);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
@@ -337,39 +300,28 @@ class _Sensors extends State<Sensors> {
                                   if (sensorid == sensor['sensor_data']['id'])
                                     //color Card
                                     SensorList(
-                                      sensorName: sensor['sensor_data']
-                                              ['name'] ??
-                                          'N/A',
-                                      humidity: "True",
-                                      temperature: sensor['sensor_data']
-                                                  ['temperature']
-                                              .toString() ??
-                                          'N/A',
-                                      nitrogen: sensor['sensor_data']
-                                                  ['nitrogen']
-                                              .toString() ??
-                                          'N/A',
-                                      phosphorous: sensor['sensor_data']
-                                                  ['phosphorus']
-                                              .toString() ??
-                                          'N/A',
-                                      potassium: sensor['sensor_data']
-                                                  ['potassium']
-                                              .toString() ??
-                                          'N/A',
-                                      problems: sensor['problem_count'],
-                                    ),
+                                    sensorName: sensor['sensor_data']['name'] as String? ?? 'N/A',
+                                    humidity: (sensor['sensor_data']['humidity'] as bool?)
+                                            ?.toString() ??
+                                        'N/A',
+                                    temperature: (sensor['sensor_data']['temperature'] as double?)
+                                            ?.toString() ??
+                                        'N/A',
+                                    nitrogen: (sensor['sensor_data']['nitrogen'] as double?)
+                                            ?.toString() ??
+                                        'N/A',
+                                    phosphorous: (sensor['sensor_data']['phosphorus'] as double?)
+                                            ?.toString() ??
+                                        'N/A',
+                                    potassium: (sensor['sensor_data']['potassium'] as double?)
+                                            ?.toString() ??
+                                        'N/A',
+                                    problems: 3,
+                                    //problems: sensor['problem_count'],
+                                  ),
 
-                              //if (sensor_data.isEmpty) const Text('Loading...'),
-                              // SensorList(
-                              //   sensorName: 'N/A',
-                              //   humidity: "True",
-                              //   temperature: 'N/A',
-                              //   nitrogen: 'N/A',
-                              //   phosphorous: 'N/A',
-                              //   potassium: 'N/A',
-                              //   problems: 0,
-                              // ),
+                              if (sensor_data.isEmpty) const Text('Loading...'),
+                               
                               // SensorList(
                               //   sensorName: 'N/A',
                               //   humidity: "True",
@@ -440,12 +392,14 @@ class _Sensors extends State<Sensors> {
                                   final recommendation =
                                       sensor["recommendation"];
                                   String temperatureRecommendation = 'N/A';
+                                  String humidityRecommendation = 'N/A';
                                   List<String> nutrientRecommendation = [];
 
                                   if (recommendation is Map<String, dynamic>) {
                                     temperatureRecommendation = recommendation[
                                             "temperature_recommendation"] ??
                                         'N/A';
+                                    humidityRecommendation = recommendation["humidity_recommendation"] ?? 'N/A';
                                     final nutrientRecommendationList =
                                         recommendation[
                                             "nutrient_recommendation"];
@@ -466,6 +420,7 @@ class _Sensors extends State<Sensors> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text('- $temperatureRecommendation'),
+                                        Text('- $humidityRecommendation'),
                                         if (nutrientRecommendation.isNotEmpty)
                                           for (var nutrient
                                               in nutrientRecommendation)
@@ -621,7 +576,13 @@ Set<Marker> _createMarkers() {
     Marker(
       markerId: MarkerId('marker1'),
       position:
-          LatLng(46.810471912910785, 23.584466379240606), // Marker position
+          LatLng(46.7514415003376, 23.575745852039482), // Marker position
+      infoWindow: InfoWindow(title: 'Marker 1'), // Marker info window
+    ),
+    Marker(
+      markerId: MarkerId('marker1'),
+      position:
+          LatLng(46.75128998512223, 23.575964580017544), // Marker position
       infoWindow: InfoWindow(title: 'Marker 1'), // Marker info window
     ),
     // Add more markers as needed

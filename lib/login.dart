@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:gwfront/newsensor.dart';
 import 'sensorspage.dart';
+import 'package:flutter/services.dart';
 
 Map<String, dynamic> userData = {
   "email": "user_email@example.com",
@@ -17,7 +18,7 @@ int userId = 0;
 int responseCode = 0;
 
 void checkUser() async {
-  final String apiUrl = 'http://192.168.100.29:8000/api/authenticate/';
+  final String apiUrl = 'http://192.168.68.102:8000/api/authenticate/';
 
   String userDataJson = jsonEncode(userData);
 
@@ -49,6 +50,23 @@ class _LoginState extends State<Login> {
   String? emailText;
   String? passwordText;
 
+  void getUserData() async {
+    final url = Uri.parse(
+        'http://192.168.68.102:8000/api/user/3'); // Replace with your Django server URL
+    final response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      // Successful response, handle the data
+      print('Response body: ${response.body}');
+      setState(() {
+        usersSensors = jsonDecode(response.body);
+      });
+    } else {
+      // Handle errors
+      print('Request failed with status: ${response.statusCode}');
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -56,6 +74,10 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
@@ -214,24 +236,27 @@ class _LoginState extends State<Login> {
                             //pagina, else sa ramana pe pagina de login
 
                             checkUser();
+                            getUserData();
                           });
-
-                          // if (usersSensors.isEmpty) {
-                          //   Navigator.push(
-                          //       context,
-                          //       PageTransition(
-                          //           child: Homepage(),
-                          //           type: PageTransitionType
-                          //               .rightToLeftWithFade,
-                          //           duration: Duration(milliseconds: 500)));
-                          //}else{
-                          Navigator.push(
-                              context,
-                              PageTransition(
-                                  child: Sensors(),
-                                  type: PageTransitionType.rightToLeftWithFade,
-                                  duration: Duration(milliseconds: 500)));
-                          //}
+                          if (responseCode == 200) {
+                            if (usersSensors.isEmpty) {
+                              Navigator.push(
+                                  context,
+                                  PageTransition(
+                                      child: Homepage(),
+                                      type: PageTransitionType
+                                          .rightToLeftWithFade,
+                                      duration: Duration(milliseconds: 500)));
+                            } else {
+                              Navigator.push(
+                                  context,
+                                  PageTransition(
+                                      child: Sensors(),
+                                      type: PageTransitionType
+                                          .rightToLeftWithFade,
+                                      duration: Duration(milliseconds: 500)));
+                            }
+                          }
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.yellow,

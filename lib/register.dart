@@ -6,6 +6,7 @@ import 'sensorspage.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'newsensor.dart';
+import 'package:flutter/services.dart';
 
 class Register extends StatefulWidget {
   Register({Key? key}) : super(key: key);
@@ -26,7 +27,7 @@ class _RegisterState extends State<Register> {
   String? confirmText;
 
   void getData() async {
-    final url = Uri.parse('http://192.168.0.125:8000/apiRest/recommendations/'); // Replace with your Django server URL
+    final url = Uri.parse('http://192.168.68.102:8000/apiRest/recommendations/'); // Replace with your Django server URL
 
     final response = await http.get(url);
 
@@ -48,6 +49,10 @@ class _RegisterState extends State<Register> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+        DeviceOrientation.portraitUp,
+        DeviceOrientation.portraitDown,
+      ]);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
