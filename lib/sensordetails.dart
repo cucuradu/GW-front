@@ -165,7 +165,7 @@ class SensorDetails extends StatelessWidget {
                             Text(
                               "Humidity",
                               style: TextStyle(
-                                color: (humidity == true)
+                                color: (humidity != true)
                                   ? Colors.black
                                   : Colors.red,
                                 fontSize:
@@ -176,7 +176,7 @@ class SensorDetails extends StatelessWidget {
                             Text(
                               humidity ?? "?",
                               style: TextStyle(
-                                color:(humidity == true)
+                                color:(humidity != true)
                                   ? Colors.black
                                   : Colors.red,
                                 fontSize:
@@ -197,7 +197,7 @@ class SensorDetails extends StatelessWidget {
                             Text(
                               "Temperature",
                               style: TextStyle(
-                                color: (10<temperatureValue! && temperatureValue!<30)
+                                color: (10<=temperatureValue! && temperatureValue!<=30)
                                   ? Colors.black
                                   : Colors.red,
                                 fontSize:
@@ -208,7 +208,7 @@ class SensorDetails extends StatelessWidget {
                             Text(
                               temperature ?? "?",
                               style: TextStyle(
-                                color: (10<temperatureValue! && temperatureValue!<30)
+                                color: (10<=temperatureValue! && temperatureValue!<=30)
                                   ? Colors.black
                                   : Colors.red,
                                 fontSize:
@@ -221,7 +221,7 @@ class SensorDetails extends StatelessWidget {
                             Text(
                               "°C",
                               style: TextStyle(
-                                color:(10<temperatureValue! && temperatureValue!<30)
+                                color:(10<=temperatureValue! && temperatureValue!<=30)
                                   ? Colors.black
                                   : Colors.red,
                                 fontSize:
@@ -242,7 +242,7 @@ class SensorDetails extends StatelessWidget {
                             Text(
                               "Nitrogen",
                               style: TextStyle(
-                                color: (40<nitrogenValue! && nitrogenValue!<60)
+                                color: (40<=nitrogenValue! && nitrogenValue!<=60)
                                   ? Colors.black
                                   : Colors.red,
                                 fontSize:
@@ -253,7 +253,7 @@ class SensorDetails extends StatelessWidget {
                             Text(
                               nitrogen ?? "?",
                               style: TextStyle(
-                                color:(40<nitrogenValue! && nitrogenValue!<60)
+                                color:(40<=nitrogenValue! && nitrogenValue!<=60)
                                   ? Colors.black
                                   : Colors.red,
                                 fontSize:
@@ -266,7 +266,7 @@ class SensorDetails extends StatelessWidget {
                             Text(
                               "mg/kg",
                               style: TextStyle(
-                                color: (40<nitrogenValue! && nitrogenValue!<60)
+                                color: (40<=nitrogenValue! && nitrogenValue!<=60)
                                   ? Colors.black
                                   : Colors.red,
                                 fontSize:
@@ -298,7 +298,7 @@ class SensorDetails extends StatelessWidget {
                               Text(
                                 phosphorous ?? "?",
                                 style: TextStyle(
-                                  color: (30<phosphorusValue! && phosphorusValue!<50)
+                                  color: (30<=phosphorusValue! && phosphorusValue!<=50)
                                     ? Colors.black
                                     : Colors.red,
                                   fontSize:
@@ -311,7 +311,7 @@ class SensorDetails extends StatelessWidget {
                             Text(
                               "mg/kg",
                               style: TextStyle(
-                                color: (30<phosphorusValue! && phosphorusValue!<50)
+                                color: (30<=phosphorusValue! && phosphorusValue!<=50)
                                     ? Colors.black
                                     : Colors.red,
                                 fontSize:
@@ -332,7 +332,7 @@ class SensorDetails extends StatelessWidget {
                             Text(
                               "Potassium",
                               style: TextStyle(
-                                color: (40<potassiumValue! && potassiumValue!<70)
+                                color: (40<=potassiumValue! && potassiumValue!<=70)
                                     ? Colors.black
                                     : Colors.red,
                                 fontSize:
@@ -343,7 +343,7 @@ class SensorDetails extends StatelessWidget {
                             Text(
                               potassium ?? "?",
                               style: TextStyle(
-                                color: (40<potassiumValue! && potassiumValue!<70)
+                                color: (40<=potassiumValue! && potassiumValue!<=70)
                                     ? Colors.black
                                     : Colors.red,
                                 fontSize:
@@ -356,7 +356,7 @@ class SensorDetails extends StatelessWidget {
                             Text(
                               "mg/kg",
                               style: TextStyle(
-                                color: (40<potassiumValue! && potassiumValue!<70)
+                                color: (40<=potassiumValue! && potassiumValue!<=70)
                                     ? Colors.black
                                     : Colors.red,
                                 fontSize:
@@ -395,6 +395,9 @@ class SensorDetails extends StatelessWidget {
                                   ),
                                 );
                               },
+                              style: ElevatedButton.styleFrom(
+                  primary: Color(0xFF8EAC50),
+                ),
                               child: Text("See More"),
                             ),
                           ],
@@ -410,24 +413,31 @@ class SensorDetails extends StatelessWidget {
                             decoration: BoxDecoration(
                               color: Color(0xFFFAE392),
                             ),
-                            child: Align(
-                              alignment: Alignment.bottomLeft,
-                              child: ElevatedButton(
-                                onPressed: () {
-                                   Navigator.push(
-                                     context,
-                                     MaterialPageRoute(
-                                       builder: (context) => Recomandations(Name: sensorName),
-                                     ),
-                                   );
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  primary: Color(0xFFFAE392),
-                                  elevation: 0, // No shadow
-                                ),
-                                child: Image.asset("assets/ReadMore.png"),
-                              ),
-                            ),
+                            child: Image.asset('assets/tomatoes.jpg',
+                    fit: BoxFit.cover,
+                    height: MediaQuery.of(context).size.height *
+                        0.25, // Adjust the height here to make it larger
+                    width: MediaQuery.of(context).size.width *
+                        0.93, // Adjust the width here to make it larger
+                  ),
+                  // child: Align(
+                  //             alignment: Alignment.bottomLeft,
+                  //             child: ElevatedButton(
+                  //               onPressed: () {
+                  //                  Navigator.push(
+                  //                    context,
+                  //                    MaterialPageRoute(
+                  //                      builder: (context) => Recomandations(Name: sensorName),
+                  //                    ),
+                  //                  );
+                  //               },
+                  //               style: ElevatedButton.styleFrom(
+                  //                 primary: Color(0xFFFAE392),
+                  //                 elevation: 0, // No shadow
+                  //               ),
+                  //               child: Image.asset("assets/ReadMore.png"),
+                  //             ),
+                  //           ),
                           ),
                         ),
                         SizedBox(
