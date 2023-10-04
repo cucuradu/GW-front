@@ -10,6 +10,8 @@ import 'package:location/location.dart';
 
 List sensor_id = [];
 
+String locationAsString = "";
+
 Map<String, dynamic> sensorsLocation = { };
 
 class NewSensor extends StatefulWidget {
@@ -31,6 +33,42 @@ class _NewSensorState extends State<NewSensor> {
   List sensor_data = [];
 
   final MapScreen map = new MapScreen();
+
+
+  void _getUserLocation() async {
+    Location location = Location();
+    bool serviceEnabled;
+    PermissionStatus permissionGranted;
+    LocationData locationData;
+
+    serviceEnabled = await location.serviceEnabled();
+    if (!serviceEnabled) {
+      serviceEnabled = await location.requestService();
+      if (!serviceEnabled) {
+        print("Location services are disabled, and user did not enable them.");
+        return;
+      }
+    }
+
+    permissionGranted = await location.hasPermission();
+    if (permissionGranted == PermissionStatus.denied) {
+      permissionGranted = await location.requestPermission();
+      if (permissionGranted != PermissionStatus.granted) {
+        print("Location permissions are denied.");
+        return;
+      }
+    }
+
+    locationData = await location.getLocation();
+    LatLng userLocation =
+    LatLng(locationData.latitude!, locationData.longitude!);
+
+    setState(() {
+      locationAsString = "${userLocation.latitude},${userLocation.longitude}";
+    });
+
+    print("User Location: ${userLocation.latitude}, ${userLocation.longitude}");
+  }
 
   //ADD LOCATION
   Future<void> addSensorLocationToSensor(String? sensorId, String location) async {
@@ -179,41 +217,6 @@ class _NewSensorState extends State<NewSensor> {
     });
   }
 
-  void _getUserLocation() async {
-    Location location = Location();
-    bool serviceEnabled;
-    PermissionStatus permissionGranted;
-    LocationData locationData;
-
-    serviceEnabled = await location.serviceEnabled();
-    if (!serviceEnabled) {
-      serviceEnabled = await location.requestService();
-      if (!serviceEnabled) {
-        print("Location services are disabled, and user did not enable them.");
-        return;
-      }
-    }
-
-    permissionGranted = await location.hasPermission();
-    if (permissionGranted == PermissionStatus.denied) {
-      permissionGranted = await location.requestPermission();
-      if (permissionGranted != PermissionStatus.granted) {
-        print("Location permissions are denied.");
-        return;
-      }
-    }
-
-    locationData = await location.getLocation();
-    LatLng userLocation =
-        LatLng(locationData.latitude!, locationData.longitude!);
-
-    print("User Location: ${userLocation.latitude}, ${userLocation.longitude}");
-
-    _addMarker(userLocation);
-
-    mapController
-        ?.animateCamera(CameraUpdate.newLatLngZoom(userLocation, 18.0));
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -469,9 +472,11 @@ class _NewSensorState extends State<NewSensor> {
                                     }
                                   }
 
-                                  String location = "2123";
+                                  _getUserLocation();
 
-                                  addSensorLocationToSensor(SensorID, location);
+                                  print("LOCATIONFORUSER HELLLLL: $locationAsString");
+
+                                  addSensorLocationToSensor(SensorID, locationAsString);
 
                                   updateData();
 
