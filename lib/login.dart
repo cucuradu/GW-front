@@ -14,10 +14,7 @@ Map<String, dynamic> userData = {
 
 int userId = 0;
 
-
 int responseCode = 0;
-
-
 
 void checkUser() async {
   final String apiUrl = 'http://192.168.100.29:8000/api/authenticate/';
@@ -38,7 +35,6 @@ void checkUser() async {
     print('POST request failed with status code: ${response.statusCode}');
   }
 }
-
 
 class Login extends StatefulWidget {
   Login({Key? key}) : super(key: key);
@@ -211,7 +207,6 @@ class _LoginState extends State<Login> {
                             emailText = email.text;
                             passwordText = pass.text;
 
-
                             userData["email"] = emailText;
                             userData["password"] = passwordText;
 
@@ -220,25 +215,23 @@ class _LoginState extends State<Login> {
 
                             checkUser();
                           });
-                          if (responseCode == 200) {
-                             // if (usersSensors.isEmpty) {
-                             //   Navigator.push(
-                             //       context,
-                             //       PageTransition(
-                             //           child: Homepage(),
-                             //           type: PageTransitionType
-                             //               .rightToLeftWithFade,
-                             //           duration: Duration(milliseconds: 500)));
-                             //}else{
-                              Navigator.push(
-                                  context,
-                                  PageTransition(
-                                      child: Sensors(),
-                                      type: PageTransitionType
-                                          .rightToLeftWithFade,
-                                      duration: Duration(milliseconds: 500)));
+
+                          // if (usersSensors.isEmpty) {
+                          //   Navigator.push(
+                          //       context,
+                          //       PageTransition(
+                          //           child: Homepage(),
+                          //           type: PageTransitionType
+                          //               .rightToLeftWithFade,
+                          //           duration: Duration(milliseconds: 500)));
+                          //}else{
+                          Navigator.push(
+                              context,
+                              PageTransition(
+                                  child: Sensors(),
+                                  type: PageTransitionType.rightToLeftWithFade,
+                                  duration: Duration(milliseconds: 500)));
                           //}
-                          }
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.yellow,
@@ -246,7 +239,7 @@ class _LoginState extends State<Login> {
                         child: Text(
                           'SIGN IN',
                           style: TextStyle(
-                              color: const Color(0xFF17594A),
+                              color: Color(0xFF17594A),
                               fontSize:
                                   MediaQuery.of(context).size.width * 0.05),
                         ),
