@@ -72,7 +72,7 @@ class _NewSensorState extends State<NewSensor> {
 
   Future<void> addSensorToUser(String? sensorId) async {
 
-    final url = 'http://192.168.1.7:8000/api/add_sensors_to_user/3/';
+    final url = 'http://192.168.1.7:8000/api/add_sensors_to_user/1/';
 
     final headers = {'Content-Type': 'application/json'};
 
