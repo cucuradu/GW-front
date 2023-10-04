@@ -76,6 +76,7 @@ class _MapScreenState extends State<MapScreen> {
       ]);
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: const Color(0xFF8EAC50),
         actions: [
           IconButton(
             icon: Icon(Icons.location_on),
@@ -106,6 +107,7 @@ class _MapScreenState extends State<MapScreen> {
             left: 16,
             child: FloatingActionButton(
               onPressed: _getUserLocation,
+              backgroundColor: const Color(0xFF8EAC50),
               child: Icon(Icons.my_location),
             ),
           ),
@@ -128,9 +130,9 @@ class _MapScreenState extends State<MapScreen> {
       circleId: CircleId(location.toString() + '_circle'),
       center: location,
       radius: 10, // Adjust the radius as needed (in meters)
-      fillColor: Colors.blue.withOpacity(0.3), // Set a uniform color (e.g., blue)
+      fillColor: const Color(0xFF8EAC50).withOpacity(0.3), // Set a uniform color (e.g., blue)
       strokeWidth: 2,
-      strokeColor: Colors.blue, // Set the circle border color (e.g., blue)
+      strokeColor: const Color(0xFF8EAC50), // Set the circle border color (e.g., blue)
     );
 
     _addMarkerToSet(newMarker, circle);
@@ -202,9 +204,9 @@ class _MapScreenState extends State<MapScreen> {
           circleId: CircleId(sensor.id ?? 'N/A' + '_circle'),
           center: sensorLocation,
           radius: 10, // Adjust the radius as needed (in meters)
-          fillColor: Colors.blue.withOpacity(0.3), // Set a uniform color (e.g., blue)
+          fillColor: const Color(0xFF8EAC50).withOpacity(0.3), // Set a uniform color (e.g., blue)
           strokeWidth: 2,
-          strokeColor: Colors.blue, // Set the circle border color (e.g., blue)
+          strokeColor: const Color(0xFF8EAC50), // Set the circle border color (e.g., blue)
         );
 
         _addMarkerToSet(newMarker, circle);
@@ -246,7 +248,14 @@ Set<Marker> _createMarkers() {
   return {
     Marker(
       markerId: MarkerId('marker1'),
-      position: LatLng(46.80187718142852, 23.621918470312753), // Marker position
+      position:
+          LatLng(46.7514415003376, 23.575745852039482), // Marker position
+      infoWindow: InfoWindow(title: 'Marker 1'), // Marker info window
+    ),
+    Marker(
+      markerId: MarkerId('marker1'),
+      position:
+          LatLng(46.75128998512223, 23.575964580017544), // Marker position
       infoWindow: InfoWindow(title: 'Marker 1'), // Marker info window
     ),
     // Add more markers as needed

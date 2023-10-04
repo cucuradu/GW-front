@@ -39,7 +39,7 @@ class _RecommendationsPageState extends State<Recomandations> {
       //text = recomandationFun(plant);
       //plantRecomandationText = text[0];
       //funFactText = text[1];
-      plant = "Potatoes";
+      plant = "Tomato";
       Random random = new Random();
       if(plant == "Tomato"){
         plantRecomandationText = plantRecomandation[0];
@@ -198,7 +198,7 @@ class _RecommendationsPageState extends State<Recomandations> {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(20),
                   child: Image.asset(
-                    'assets/image6.png',
+                    'assets/tomatoes.jpg',
                     fit: BoxFit.cover,
                     height: MediaQuery.of(context).size.height *
                         0.25, // Adjust the height here to make it larger

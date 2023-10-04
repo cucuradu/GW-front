@@ -165,7 +165,7 @@ class SensorDetails extends StatelessWidget {
                             Text(
                               "Humidity",
                               style: TextStyle(
-                                color: (humidity == true)
+                                color: (humidity != true)
                                   ? Colors.black
                                   : Colors.red,
                                 fontSize:
@@ -176,7 +176,7 @@ class SensorDetails extends StatelessWidget {
                             Text(
                               humidity ?? "?",
                               style: TextStyle(
-                                color:(humidity == true)
+                                color:(humidity != true)
                                   ? Colors.black
                                   : Colors.red,
                                 fontSize:
@@ -395,6 +395,9 @@ class SensorDetails extends StatelessWidget {
                                   ),
                                 );
                               },
+                              style: ElevatedButton.styleFrom(
+                  primary: Color(0xFF8EAC50),
+                ),
                               child: Text("See More"),
                             ),
                           ],
@@ -410,24 +413,31 @@ class SensorDetails extends StatelessWidget {
                             decoration: BoxDecoration(
                               color: Color(0xFFFAE392),
                             ),
-                            child: Align(
-                              alignment: Alignment.bottomLeft,
-                              child: ElevatedButton(
-                                onPressed: () {
-                                   Navigator.push(
-                                     context,
-                                     MaterialPageRoute(
-                                       builder: (context) => Recomandations(Name: sensorName),
-                                     ),
-                                   );
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  primary: Color(0xFFFAE392),
-                                  elevation: 0, // No shadow
-                                ),
-                                child: Image.asset("assets/ReadMore.png"),
-                              ),
-                            ),
+                            child: Image.asset('assets/tomatoes.jpg',
+                    fit: BoxFit.cover,
+                    height: MediaQuery.of(context).size.height *
+                        0.25, // Adjust the height here to make it larger
+                    width: MediaQuery.of(context).size.width *
+                        0.93, // Adjust the width here to make it larger
+                  ),
+                  // child: Align(
+                  //             alignment: Alignment.bottomLeft,
+                  //             child: ElevatedButton(
+                  //               onPressed: () {
+                  //                  Navigator.push(
+                  //                    context,
+                  //                    MaterialPageRoute(
+                  //                      builder: (context) => Recomandations(Name: sensorName),
+                  //                    ),
+                  //                  );
+                  //               },
+                  //               style: ElevatedButton.styleFrom(
+                  //                 primary: Color(0xFFFAE392),
+                  //                 elevation: 0, // No shadow
+                  //               ),
+                  //               child: Image.asset("assets/ReadMore.png"),
+                  //             ),
+                  //           ),
                           ),
                         ),
                         SizedBox(
@@ -580,7 +590,13 @@ Set<Marker> _createMarkers() {
     Marker(
       markerId: MarkerId('marker1'),
       position:
-          LatLng(46.810471912910785, 23.584466379240606), // Marker position
+          LatLng(46.7514415003376, 23.575745852039482), // Marker position
+      infoWindow: InfoWindow(title: 'Marker 1'), // Marker info window
+    ),
+    Marker(
+      markerId: MarkerId('marker1'),
+      position:
+          LatLng(46.75128998512223, 23.575964580017544), // Marker position
       infoWindow: InfoWindow(title: 'Marker 1'), // Marker info window
     ),
     // Add more markers as needed
