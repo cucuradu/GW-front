@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gwfront/login.dart';
 import 'package:flutter/services.dart';
+import 'package:gwfront/recomendationspage.dart';
 
 void main() {
   SystemChrome.setPreferredOrientations([
@@ -15,6 +16,6 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) => MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: Login(),
+        home: Recomandations(Name: "alex"),
       );
 }

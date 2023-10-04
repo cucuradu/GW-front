@@ -10,6 +10,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'test_map_page.dart';
 import 'newsensor.dart';
 import 'dart:async';
+import 'package:flutter/services.dart';
 
 Map<String, dynamic> usersSensors = {};
 
@@ -32,23 +33,23 @@ class SensorObject {
 
   factory SensorObject.fromJson(Map<String, dynamic> json) {
     return SensorObject(
-      name: json['name'],
-      humidity: json['humidity'],
-      temperature: json['temperature'],
-      nitrogen: json["nitrogen"],
-      phosphorous: json["phosphorus"],
-      potassium: json["potassium"],
+      name: json['name'] ?? "N/A",
+      humidity: json['humidity'] ?? 0,
+      temperature: json['temperature'] ?? 0,
+      nitrogen: json["nitrogen"] ?? 0,
+      phosphorous: json["phosphorus"] ?? 0,
+      potassium: json["potassium"] ?? 0,
     );
   }
 }
 
 Future<List<SensorObject>> fetchData() async {
   final response =
-      await http.get(Uri.parse('http://http:///192.168.1.210:8000/sensors/'));
+      await http.get(Uri.parse('http://192.168.68.102:8000/sensors/'));
 
   if (response.statusCode == 200) {
-    final List<dynamic> jsonData = json.decode(response.body);
-    List<SensorObject> mySensors =
+    final List<dynamic> jsonData = json.decode(response.body); //?? [];
+    final List<SensorObject> mySensors =
         jsonData.map((data) => SensorObject.fromJson(data)).toList();
     return mySensors;
   } else {
@@ -59,7 +60,7 @@ Future<List<SensorObject>> fetchData() async {
 }
 
 class Sensors extends StatefulWidget {
-  List<SensorObject>? mySensors;
+  final List<SensorObject>? mySensors;
   Sensors({this.mySensors});
   @override
   _Sensors createState() => _Sensors();
@@ -73,13 +74,13 @@ class _Sensors extends State<Sensors> {
 
   void getUserData() async {
     final url = Uri.parse(
-        'http://192.168.1.210:8000/api/user/3'); // Replace with your Django server URL
+        'http://192.168.68.102:8000/api/user/3'); // Replace with your Django server URL
 
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
       // Successful response, handle the data
-      print('Response body: ${response.body}');
+      //print('Response body: ${response.body}');
       setState(() {
         usersSensors = jsonDecode(response.body);
       });
@@ -93,12 +94,12 @@ class _Sensors extends State<Sensors> {
 
   void getData() async {
     final url = Uri.parse(
-        'http://192.168.1.210:8000/apiRest/recommendations/'); // Replace with your Django server URL
+        'http://192.168.68.102:8000/apiRest/recommendations/'); // Replace with your Django server URL
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
       // Successful response, handle the data
-      print('Response body: ${response.body}');
+      //print('Response body: ${response.body}');
       final newData = jsonDecode(response.body);
 
       setState(() {
@@ -227,6 +228,10 @@ class _Sensors extends State<Sensors> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+        DeviceOrientation.portraitUp,
+        DeviceOrientation.portraitDown,
+      ]);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
@@ -338,31 +343,24 @@ class _Sensors extends State<Sensors> {
                                   if (sensorid == sensor['sensor_data']['id'])
                                     //color Card
                                     SensorList(
-                                      sensorName: sensor['sensor_data']
-                                              ['name'] ??
-                                          'N/A',
-                                      humidity: sensor['sensor_data']
-                                      ['humidity']
-                                          .toString() ??
-                                          'N/A',
-                                      temperature: sensor['sensor_data']
-                                                  ['temperature']
-                                              .toString() ??
-                                          'N/A',
-                                      nitrogen: sensor['sensor_data']
-                                                  ['nitrogen']
-                                              .toString() ??
-                                          'N/A',
-                                      phosphorous: sensor['sensor_data']
-                                                  ['phosphorus']
-                                              .toString() ??
-                                          'N/A',
-                                      potassium: sensor['sensor_data']
-                                                  ['potassium']
-                                              .toString() ??
-                                          'N/A',
-                                      problems: sensor['problem_count'],
-                                    ),
+                                    sensorName: sensor['sensor_data']['name'] as String? ?? 'N/A',
+                                    humidity: (sensor['sensor_data']['humidity'] as bool?)
+                                            ?.toString() ??
+                                        'N/A',
+                                    temperature: (sensor['sensor_data']['temperature'] as double?)
+                                            ?.toString() ??
+                                        'N/A',
+                                    nitrogen: (sensor['sensor_data']['nitrogen'] as double?)
+                                            ?.toString() ??
+                                        'N/A',
+                                    phosphorous: (sensor['sensor_data']['phosphorus'] as double?)
+                                            ?.toString() ??
+                                        'N/A',
+                                    potassium: (sensor['sensor_data']['potassium'] as double?)
+                                            ?.toString() ??
+                                        'N/A',
+                                    problems: 3,
+                                  ),
 
                               if (sensor_data.isEmpty) const Text('Loading...'),
                                

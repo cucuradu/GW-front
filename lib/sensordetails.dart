@@ -8,6 +8,7 @@ import 'package:page_transition/page_transition.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'test_map_page.dart';
 import 'newsensor.dart';
+import 'package:flutter/services.dart';
 
 class SensorDetails extends StatelessWidget {
   String? sensorName;
@@ -42,6 +43,10 @@ class SensorDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+        DeviceOrientation.portraitUp,
+        DeviceOrientation.portraitDown,
+      ]);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
@@ -386,7 +391,7 @@ class SensorDetails extends StatelessWidget {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => RecommendationsPage(),
+                                    builder: (context) => Recomandations(Name: sensorName),
                                   ),
                                 );
                               },
@@ -412,7 +417,7 @@ class SensorDetails extends StatelessWidget {
                                    Navigator.push(
                                      context,
                                      MaterialPageRoute(
-                                       builder: (context) => Recomandations(),
+                                       builder: (context) => Recomandations(Name: sensorName),
                                      ),
                                    );
                                 },

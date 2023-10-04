@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gwfront/sensordetails.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:flutter/services.dart';
 
 class SensorList extends StatelessWidget {
   String? sensorName;
@@ -22,6 +23,10 @@ class SensorList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+        DeviceOrientation.portraitUp,
+        DeviceOrientation.portraitDown,
+      ]);
     return Padding(
       padding: EdgeInsets.only(
         left: MediaQuery.of(context).size.width * 0.005,
