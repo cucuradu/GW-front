@@ -197,7 +197,7 @@ class SensorDetails extends StatelessWidget {
                             Text(
                               "Temperature",
                               style: TextStyle(
-                                color: (10<temperatureValue! && temperatureValue!<30)
+                                color: (10<=temperatureValue! && temperatureValue!<=30)
                                   ? Colors.black
                                   : Colors.red,
                                 fontSize:
@@ -208,7 +208,7 @@ class SensorDetails extends StatelessWidget {
                             Text(
                               temperature ?? "?",
                               style: TextStyle(
-                                color: (10<temperatureValue! && temperatureValue!<30)
+                                color: (10<=temperatureValue! && temperatureValue!<=30)
                                   ? Colors.black
                                   : Colors.red,
                                 fontSize:
@@ -221,7 +221,7 @@ class SensorDetails extends StatelessWidget {
                             Text(
                               "°C",
                               style: TextStyle(
-                                color:(10<temperatureValue! && temperatureValue!<30)
+                                color:(10<=temperatureValue! && temperatureValue!<=30)
                                   ? Colors.black
                                   : Colors.red,
                                 fontSize:
@@ -242,7 +242,7 @@ class SensorDetails extends StatelessWidget {
                             Text(
                               "Nitrogen",
                               style: TextStyle(
-                                color: (40<nitrogenValue! && nitrogenValue!<60)
+                                color: (40<=nitrogenValue! && nitrogenValue!<=60)
                                   ? Colors.black
                                   : Colors.red,
                                 fontSize:
@@ -253,7 +253,7 @@ class SensorDetails extends StatelessWidget {
                             Text(
                               nitrogen ?? "?",
                               style: TextStyle(
-                                color:(40<nitrogenValue! && nitrogenValue!<60)
+                                color:(40<=nitrogenValue! && nitrogenValue!<=60)
                                   ? Colors.black
                                   : Colors.red,
                                 fontSize:
@@ -266,7 +266,7 @@ class SensorDetails extends StatelessWidget {
                             Text(
                               "mg/kg",
                               style: TextStyle(
-                                color: (40<nitrogenValue! && nitrogenValue!<60)
+                                color: (40<=nitrogenValue! && nitrogenValue!<=60)
                                   ? Colors.black
                                   : Colors.red,
                                 fontSize:
@@ -287,7 +287,7 @@ class SensorDetails extends StatelessWidget {
                             Text(
                               "Phosphorus",
                               style: TextStyle(
-                                color: (30<phosphorusValue! && phosphorusValue!<50)
+                                color: (30<=phosphorusValue! && phosphorusValue!<=50)
                                     ? Colors.black
                                     : Colors.red,
                                 fontSize:
@@ -298,7 +298,7 @@ class SensorDetails extends StatelessWidget {
                               Text(
                                 phosphorous ?? "?",
                                 style: TextStyle(
-                                  color: (30<phosphorusValue! && phosphorusValue!<50)
+                                  color: (30<=phosphorusValue! && phosphorusValue!<=50)
                                     ? Colors.black
                                     : Colors.red,
                                   fontSize:
@@ -311,7 +311,7 @@ class SensorDetails extends StatelessWidget {
                             Text(
                               "mg/kg",
                               style: TextStyle(
-                                color: (30<phosphorusValue! && phosphorusValue!<50)
+                                color: (30<=phosphorusValue! && phosphorusValue!<=50)
                                     ? Colors.black
                                     : Colors.red,
                                 fontSize:
@@ -332,7 +332,7 @@ class SensorDetails extends StatelessWidget {
                             Text(
                               "Potassium",
                               style: TextStyle(
-                                color: (40<potassiumValue! && potassiumValue!<70)
+                                color: (40<=potassiumValue! && potassiumValue!<=70)
                                     ? Colors.black
                                     : Colors.red,
                                 fontSize:
@@ -343,7 +343,7 @@ class SensorDetails extends StatelessWidget {
                             Text(
                               potassium ?? "?",
                               style: TextStyle(
-                                color: (40<potassiumValue! && potassiumValue!<70)
+                                color: (40<=potassiumValue! && potassiumValue!<=70)
                                     ? Colors.black
                                     : Colors.red,
                                 fontSize:
@@ -356,7 +356,7 @@ class SensorDetails extends StatelessWidget {
                             Text(
                               "mg/kg",
                               style: TextStyle(
-                                color: (40<potassiumValue! && potassiumValue!<70)
+                                color: (40<=potassiumValue! && potassiumValue!<=70)
                                     ? Colors.black
                                     : Colors.red,
                                 fontSize:

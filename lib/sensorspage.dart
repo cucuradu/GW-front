@@ -74,7 +74,7 @@ class _Sensors extends State<Sensors> {
 
   void getUserData() async {
     final url = Uri.parse(
-        'http://192.168.68.102:8000/api/user/1'); // Replace with your Django server URL
+        'http://192.168.100.29:8000/api/user/3'); // Replace with your Django server URL
 
     final response = await http.get(url);
 
@@ -94,7 +94,7 @@ class _Sensors extends State<Sensors> {
 
   void getData() async {
     final url = Uri.parse(
-        'http://192.168.68.102:8000/apiRest/recommendations/'); // Replace with your Django server URL
+        'http://192.168.100.29:8000/apiRest/recommendations/'); // Replace with your Django server URL
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
@@ -132,7 +132,7 @@ class _Sensors extends State<Sensors> {
       // }
     } else {
       // Handle errors
-      print('3Request failed with status: ${response.statusCode}');
+      print('Request failed with status: ${response.statusCode}');
     }
 
   }
@@ -316,8 +316,7 @@ class _Sensors extends State<Sensors> {
                                     potassium: (sensor['sensor_data']['potassium'] as double?)
                                             ?.toString() ??
                                         'N/A',
-                                    problems: 3,
-                                    //problems: sensor['problem_count'],
+                                      problems: sensor['problem_count'],
                                   ),
 
                               if (sensor_data.isEmpty) const Text('Loading...'),
