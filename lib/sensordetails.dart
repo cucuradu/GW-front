@@ -287,7 +287,7 @@ class SensorDetails extends StatelessWidget {
                             Text(
                               "Phosphorus",
                               style: TextStyle(
-                                color: (30<phosphorusValue! && phosphorusValue!<50)
+                                color: (30<=phosphorusValue! && phosphorusValue!<=50)
                                     ? Colors.black
                                     : Colors.red,
                                 fontSize:

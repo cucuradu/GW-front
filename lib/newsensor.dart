@@ -11,6 +11,8 @@ import 'package:flutter/services.dart';
 
 List sensor_id = [];
 
+String locationAsString = "";
+
 Map<String, dynamic> sensorsLocation = { };
 
 class NewSensor extends StatefulWidget {
@@ -32,6 +34,42 @@ class _NewSensorState extends State<NewSensor> {
   List sensor_data = [];
 
   final MapScreen map = new MapScreen();
+
+
+  void _getUserLocation() async {
+    Location location = Location();
+    bool serviceEnabled;
+    PermissionStatus permissionGranted;
+    LocationData locationData;
+
+    serviceEnabled = await location.serviceEnabled();
+    if (!serviceEnabled) {
+      serviceEnabled = await location.requestService();
+      if (!serviceEnabled) {
+        print("Location services are disabled, and user did not enable them.");
+        return;
+      }
+    }
+
+    permissionGranted = await location.hasPermission();
+    if (permissionGranted == PermissionStatus.denied) {
+      permissionGranted = await location.requestPermission();
+      if (permissionGranted != PermissionStatus.granted) {
+        print("Location permissions are denied.");
+        return;
+      }
+    }
+
+    locationData = await location.getLocation();
+    LatLng userLocation =
+    LatLng(locationData.latitude!, locationData.longitude!);
+
+    setState(() {
+      locationAsString = "${userLocation.latitude},${userLocation.longitude}";
+    });
+
+    print("User Location: ${userLocation.latitude}, ${userLocation.longitude}");
+  }
 
   //ADD LOCATION
   Future<void> addSensorLocationToSensor(String? sensorId, String location) async {
@@ -64,7 +102,7 @@ class _NewSensorState extends State<NewSensor> {
   //GET LOCATION
   void getSensorLocation() async {
     final url = Uri.parse(
-      'http://192.168.68.102:8000/sensor/get_location/$SensorID/'
+      'http://192.168.100.29:8000/sensor/get_location/$SensorID/'
     );
 
     final response = await http.get(url);
@@ -82,7 +120,7 @@ class _NewSensorState extends State<NewSensor> {
 
   void getData() async {
     final url = Uri.parse(
-        'http://192.168.68.102:8000/apiRest/recommendations/'); // Replace with your Django server URL
+        'http://192.168.100.29:8000/apiRest/recommendations/'); // Replace with your Django server URL
 
     final response = await http.get(url);
 
@@ -100,7 +138,7 @@ class _NewSensorState extends State<NewSensor> {
 
   Future<void> addSensorToUser(String? sensorId) async {
 
-    final url = 'http://192.168.68.102:8000/api/add_sensors_to_user/1/';
+    final url = 'http://192.168.100.29:8000/api/add_sensors_to_user/4/';
 
     final headers = {'Content-Type': 'application/json'};
 
@@ -128,7 +166,7 @@ class _NewSensorState extends State<NewSensor> {
 
 
   void updateData() async {
-    final String apiUrl = 'http://192.168.68.102:8000/api/update_sensors/';
+    final String apiUrl = 'http://192.168.100.29:8000/api/update_sensors/';
 
     String sensorDataListJson = jsonEncode(sensor_data);
 
@@ -180,41 +218,6 @@ class _NewSensorState extends State<NewSensor> {
     });
   }
 
-  void _getUserLocation() async {
-    Location location = Location();
-    bool serviceEnabled;
-    PermissionStatus permissionGranted;
-    LocationData locationData;
-
-    serviceEnabled = await location.serviceEnabled();
-    if (!serviceEnabled) {
-      serviceEnabled = await location.requestService();
-      if (!serviceEnabled) {
-        print("Location services are disabled, and user did not enable them.");
-        return;
-      }
-    }
-
-    permissionGranted = await location.hasPermission();
-    if (permissionGranted == PermissionStatus.denied) {
-      permissionGranted = await location.requestPermission();
-      if (permissionGranted != PermissionStatus.granted) {
-        print("Location permissions are denied.");
-        return;
-      }
-    }
-
-    locationData = await location.getLocation();
-    LatLng userLocation =
-        LatLng(locationData.latitude!, locationData.longitude!);
-
-    print("User Location: ${userLocation.latitude}, ${userLocation.longitude}");
-
-    _addMarker(userLocation);
-
-    mapController
-        ?.animateCamera(CameraUpdate.newLatLngZoom(userLocation, 18.0));
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -474,9 +477,11 @@ class _NewSensorState extends State<NewSensor> {
                                     }
                                   }
 
-                                  String location = "2123";
+                                  //_getUserLocation();
 
-                                  addSensorLocationToSensor(SensorID, location);
+                                  //print("LOCATIONFORUSER HELLLLL: $locationAsString");
+
+                                  //addSensorLocationToSensor(SensorID, locationAsString);
 
                                   updateData();
 
@@ -484,9 +489,10 @@ class _NewSensorState extends State<NewSensor> {
 
                                   addSensorToUser(SensorID);
 
+                                  getData();
+
                                   getSensorLocation();
 
-                                  getData();
 
                                   _getUserLocation();
 
