@@ -138,7 +138,7 @@ class _NewSensorState extends State<NewSensor> {
 
   Future<void> addSensorToUser(String? sensorId) async {
 
-    final url = 'http://192.168.100.29:8000/api/add_sensors_to_user/1/';
+    final url = 'http://192.168.100.29:8000/api/add_sensors_to_user/4/';
 
     final headers = {'Content-Type': 'application/json'};
 
@@ -477,11 +477,11 @@ class _NewSensorState extends State<NewSensor> {
                                     }
                                   }
 
-                                  _getUserLocation();
+                                  //_getUserLocation();
 
-                                  print("LOCATIONFORUSER HELLLLL: $locationAsString");
+                                  //print("LOCATIONFORUSER HELLLLL: $locationAsString");
 
-                                  addSensorLocationToSensor(SensorID, locationAsString);
+                                  //addSensorLocationToSensor(SensorID, locationAsString);
 
                                   updateData();
 
@@ -489,9 +489,10 @@ class _NewSensorState extends State<NewSensor> {
 
                                   addSensorToUser(SensorID);
 
+                                  getData();
+
                                   getSensorLocation();
 
-                                  getData();
 
                                   _getUserLocation();
 

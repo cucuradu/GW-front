@@ -74,7 +74,7 @@ class _Sensors extends State<Sensors> {
 
   void getUserData() async {
     final url = Uri.parse(
-        'http://192.168.100.29:8000/api/user/3'); // Replace with your Django server URL
+        'http://192.168.100.29:8000/api/user/4'); // Replace with your Django server URL
 
     final response = await http.get(url);
 
