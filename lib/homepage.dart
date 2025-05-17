@@ -91,7 +91,7 @@ class Homepage extends StatelessWidget {
                                 duration: Duration(milliseconds: 500)));
                       },
                       style: ElevatedButton.styleFrom(
-                        primary: Color(0xFFFAE392),
+                        backgroundColor: Color(0xFFFAE392),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20),
                         ),

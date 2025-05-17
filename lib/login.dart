@@ -21,7 +21,7 @@ int responseCode = 0;
 
 
 void checkUser() async {
-  final String apiUrl = 'http://192.168.100.29:8000/api/authenticate/';
+  final String apiUrl = 'http://192.168.100.4:8000/api/authenticate/';
 
   String userDataJson = jsonEncode(userData);
 
@@ -56,7 +56,7 @@ class _LoginState extends State<Login> {
 
   void getUserData() async {
     final url = Uri.parse(
-        'http://192.168.100.29:8000/api/user/4'); // Replace with your Django server URL
+        'http://192.168.100.4:8000/api/user/4'); // Replace with your Django server URL
     final response = await http.get(url);
 
     if (response.statusCode == 200) {

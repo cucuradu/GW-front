@@ -4,8 +4,6 @@ import 'package:gwfront/profilepage.dart';
 import 'package:gwfront/sensorlist.dart';
 import 'package:http/http.dart' as http;
 import 'package:page_transition/page_transition.dart';
-import 'homepage.dart';
-import 'login.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'test_map_page.dart';
 import 'newsensor.dart';
@@ -45,7 +43,7 @@ class SensorObject {
 
 Future<List<SensorObject>> fetchData() async {
   final response =
-      await http.get(Uri.parse('http://192.168.68.102:8000/sensors/'));
+      await http.get(Uri.parse('http://192.168.100.4:8000/sensors/'));
 
   if (response.statusCode == 200) {
     final List<dynamic> jsonData = json.decode(response.body); //?? [];
@@ -74,7 +72,7 @@ class _Sensors extends State<Sensors> {
 
   void getUserData() async {
     final url = Uri.parse(
-        'http://192.168.100.29:8000/api/user/4'); // Replace with your Django server URL
+        'http://192.168.100.4:8000/api/user/4'); // Replace with your Django server URL
 
     final response = await http.get(url);
 
@@ -94,7 +92,7 @@ class _Sensors extends State<Sensors> {
 
   void getData() async {
     final url = Uri.parse(
-        'http://192.168.100.29:8000/apiRest/recommendations/'); // Replace with your Django server URL
+        'http://192.168.100.4:8000/apiRest/recommendations/'); // Replace with your Django server URL
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
@@ -487,7 +485,7 @@ class MapSP extends StatelessWidget {
                   );
                 },
                 style: ElevatedButton.styleFrom(
-                  primary: Color(0xFF8EAC50),
+                  backgroundColor: Color(0xFF8EAC50),
                 ),
                 child: Text('View map'),
               ),

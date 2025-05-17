@@ -73,7 +73,7 @@ class _NewSensorState extends State<NewSensor> {
 
   //ADD LOCATION
   Future<void> addSensorLocationToSensor(String? sensorId, String location) async {
-    final url = Uri.parse('http://192.168.100.29:8000/sensor/add_location/$sensorId/');
+    final url = Uri.parse('http://192.168.100.4:8000/sensor/add_location/$sensorId/');
 
     try {
       final response = await http.post(
@@ -102,7 +102,7 @@ class _NewSensorState extends State<NewSensor> {
   //GET LOCATION
   void getSensorLocation() async {
     final url = Uri.parse(
-      'http://192.168.100.29:8000/sensor/get_location/$SensorID/'
+      'http://192.168.100.4:8000/sensor/get_location/$SensorID/'
     );
 
     final response = await http.get(url);
@@ -120,7 +120,7 @@ class _NewSensorState extends State<NewSensor> {
 
   void getData() async {
     final url = Uri.parse(
-        'http://192.168.100.29:8000/apiRest/recommendations/'); // Replace with your Django server URL
+        'http://192.168.100.4:8000/apiRest/recommendations/'); // Replace with your Django server URL
 
     final response = await http.get(url);
 
@@ -138,7 +138,7 @@ class _NewSensorState extends State<NewSensor> {
 
   Future<void> addSensorToUser(String? sensorId) async {
 
-    final url = 'http://192.168.100.29:8000/api/add_sensors_to_user/4/';
+    final url = 'http://192.168.100.4:8000/api/add_sensors_to_user/4/';
 
     final headers = {'Content-Type': 'application/json'};
 
@@ -166,7 +166,7 @@ class _NewSensorState extends State<NewSensor> {
 
 
   void updateData() async {
-    final String apiUrl = 'http://192.168.100.29:8000/api/update_sensors/';
+    final String apiUrl = 'http://192.168.100.4:8000/api/update_sensors/';
 
     String sensorDataListJson = jsonEncode(sensor_data);
 

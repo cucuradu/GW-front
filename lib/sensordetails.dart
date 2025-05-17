@@ -396,7 +396,7 @@ class SensorDetails extends StatelessWidget {
                                 );
                               },
                               style: ElevatedButton.styleFrom(
-                  primary: Color(0xFF8EAC50),
+                  backgroundColor: Color(0xFF8EAC50),
                 ),
                               child: Text("See More"),
                             ),
@@ -495,7 +495,7 @@ class MapSD extends StatelessWidget {
                   );
                 },
                 style: ElevatedButton.styleFrom(
-                  primary: Color(0xFF8EAC50),
+                  backgroundColor: Color(0xFF8EAC50),
                 ),
                 child: Text('View map'),
               ),
