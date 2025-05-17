@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:gwfront/test_map_page.dart';
 import 'package:http/http.dart' as http;
@@ -13,7 +12,7 @@ List sensor_id = [];
 
 String locationAsString = "";
 
-Map<String, dynamic> sensorsLocation = { };
+Map<String, dynamic> sensorsLocation = {};
 
 class NewSensor extends StatefulWidget {
   @override
@@ -34,7 +33,6 @@ class _NewSensorState extends State<NewSensor> {
   List sensor_data = [];
 
   final MapScreen map = new MapScreen();
-
 
   void _getUserLocation() async {
     Location location = Location();
@@ -62,7 +60,7 @@ class _NewSensorState extends State<NewSensor> {
 
     locationData = await location.getLocation();
     LatLng userLocation =
-    LatLng(locationData.latitude!, locationData.longitude!);
+        LatLng(locationData.latitude!, locationData.longitude!);
 
     setState(() {
       locationAsString = "${userLocation.latitude},${userLocation.longitude}";
@@ -72,8 +70,10 @@ class _NewSensorState extends State<NewSensor> {
   }
 
   //ADD LOCATION
-  Future<void> addSensorLocationToSensor(String? sensorId, String location) async {
-    final url = Uri.parse('http://192.168.100.29:8000/sensor/add_location/$sensorId/');
+  Future<void> addSensorLocationToSensor(
+      String? sensorId, String location) async {
+    final url =
+        Uri.parse('http://172.20.10.2:8000/sensor/add_location/$sensorId/');
 
     try {
       final response = await http.post(
@@ -101,13 +101,12 @@ class _NewSensorState extends State<NewSensor> {
 
   //GET LOCATION
   void getSensorLocation() async {
-    final url = Uri.parse(
-      'http://192.168.100.29:8000/sensor/get_location/$SensorID/'
-    );
+    final url =
+        Uri.parse('http://172.20.10.2:8000/sensor/get_location/$SensorID/');
 
     final response = await http.get(url);
 
-    if(response.statusCode == 200){
+    if (response.statusCode == 200) {
       print('LOCATIONNNNN: ${response.body}');
       setState(() {
         sensorsLocation = jsonDecode(response.body);
@@ -115,12 +114,11 @@ class _NewSensorState extends State<NewSensor> {
     } else {
       print('Request failed with status: ${response.statusCode}');
     }
-
   }
 
   void getData() async {
     final url = Uri.parse(
-        'http://192.168.100.29:8000/apiRest/recommendations/'); // Replace with your Django server URL
+        'http://192.168.68.108:8000/apiRest/recommendations/'); // Replace with your Django server URL
 
     final response = await http.get(url);
 
@@ -137,12 +135,13 @@ class _NewSensorState extends State<NewSensor> {
   }
 
   Future<void> addSensorToUser(String? sensorId) async {
-
-    final url = 'http://192.168.100.29:8000/api/add_sensors_to_user/4/';
+    final url = 'http://192.168.68.108:8000/api/add_sensors_to_user/1/';
 
     final headers = {'Content-Type': 'application/json'};
 
-    final payload = {'sensor_ids': [sensorId]}; // Wrap the sensor ID in a list
+    final payload = {
+      'sensor_ids': [sensorId]
+    }; // Wrap the sensor ID in a list
 
     try {
       final response = await http.post(
@@ -164,9 +163,8 @@ class _NewSensorState extends State<NewSensor> {
     }
   }
 
-
   void updateData() async {
-    final String apiUrl = 'http://192.168.100.29:8000/api/update_sensors/';
+    final String apiUrl = 'http://192.168.68.108:8000/api/update_sensors/';
 
     String sensorDataListJson = jsonEncode(sensor_data);
 
@@ -218,68 +216,16 @@ class _NewSensorState extends State<NewSensor> {
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([
-        DeviceOrientation.portraitUp,
-        DeviceOrientation.portraitDown,
-      ]);
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         resizeToAvoidBottomInset: false,
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          elevation: 0,
-          leading: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Container(
-              width: 60,
-              height: 60,
-              child: Image.asset('assets/profileimg.png'),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15),
-              ),
-            ),
-          ),
-          title: RichText(
-            text: TextSpan(
-              text: "Hi, ",
-              style: const TextStyle(
-                color: Colors.black,
-                fontSize: 28,
-                fontWeight: FontWeight.normal,
-              ),
-              children: [
-                TextSpan(
-                  text: "Alex",
-                  style: const TextStyle(
-                    color: Colors.black,
-                    fontSize: 28,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          actions: [
-            InkWell(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => Sensors(),
-                  ),
-                );
-              },
-              child: Image.asset(
-                'assets/minilogo.png',
-                height: AppBar().preferredSize.height - 16,
-              ),
-            ),
-          ],
-        ),
         backgroundColor: Colors.transparent, // Set background to transparent
         body: Container(
           height: MediaQuery.of(context).size.height,
@@ -493,7 +439,6 @@ class _NewSensorState extends State<NewSensor> {
 
                                   getSensorLocation();
 
-
                                   _getUserLocation();
 
                                   Navigator.push(
@@ -526,6 +471,9 @@ class _NewSensorState extends State<NewSensor> {
                                 ),
                               ),
                             ),
+                            SizedBox(
+                              height: 200,
+                            )
                           ],
                         ),
                       ),

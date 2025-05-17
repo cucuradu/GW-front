@@ -18,7 +18,7 @@ int userId = 0;
 int responseCode = 0;
 
 void checkUser() async {
-  final String apiUrl = 'http://192.168.100.29:8000/api/authenticate/';
+  final String apiUrl = 'http://192.168.68.108:8000/api/authenticate/';
 
   String userDataJson = jsonEncode(userData);
 
@@ -47,12 +47,12 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   TextEditingController email = TextEditingController();
   TextEditingController pass = TextEditingController();
-  String? emailText;
-  String? passwordText;
+  String? emailText = "test@mail.ro";
+  String? passwordText = "test";
 
   void getUserData() async {
     final url = Uri.parse(
-        'http://192.168.100.29:8000/api/user/4'); // Replace with your Django server URL
+        'http://192.168.68.108:8000/api/user/1'); // Replace with your Django server URL
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
@@ -229,8 +229,8 @@ class _LoginState extends State<Login> {
                             emailText = email.text;
                             passwordText = pass.text;
 
-                            userData["email"] = emailText;
-                            userData["password"] = passwordText;
+                            userData["email"] = "test@mail.ro";
+                            userData["password"] = "test";
 
                             //if responseCode == 200 atunci sa treaca pe urmatoare
                             //pagina, else sa ramana pe pagina de login

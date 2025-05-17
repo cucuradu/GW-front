@@ -11,22 +11,34 @@ class SensorList extends StatelessWidget {
   String? phosphorous;
   String? potassium;
   int? problems;
-  SensorList(
-      {super.key,
-      this.sensorName,
-      this.humidity,
-      this.temperature,
-      this.nitrogen,
-      this.phosphorous,
-      this.potassium,
-      this.problems});
+
+  SensorList({
+    super.key,
+    this.sensorName,
+    this.humidity,
+    this.temperature,
+    this.nitrogen,
+    this.phosphorous,
+    this.potassium,
+    this.problems,
+  });
 
   @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([
-        DeviceOrientation.portraitUp,
-        DeviceOrientation.portraitDown,
-      ]);
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
+
+    // Provide fake fallback data
+    final String displayName = sensorName ?? "Demo Sensor";
+    final String displayHumidity = humidity ?? "45%";
+    final String displayTemperature = temperature ?? "22°C";
+    final String displayNitrogen = nitrogen ?? "50";
+    final String displayPhosphorous = phosphorous ?? "30";
+    final String displayPotassium = potassium ?? "40";
+    final int displayProblems = problems ?? 0;
+
     return Padding(
       padding: EdgeInsets.only(
         left: MediaQuery.of(context).size.width * 0.005,
@@ -36,21 +48,23 @@ class SensorList extends StatelessWidget {
       child: ElevatedButton(
         onPressed: () {
           Navigator.push(
-              context,
-              PageTransition(
-                  child: SensorDetails(
-                    sensorName: sensorName,
-                    humidity: humidity,
-                    temperature: temperature,
-                    nitrogen: nitrogen,
-                    phosphorous: phosphorous,
-                    potassium: potassium,
-                  ),
-                  type: PageTransitionType.rightToLeftWithFade,
-                  duration: Duration(seconds: 1)));
+            context,
+            PageTransition(
+              child: SensorDetails(
+                sensorName: displayName,
+                humidity: displayHumidity,
+                temperature: displayTemperature,
+                nitrogen: displayNitrogen,
+                phosphorous: displayPhosphorous,
+                potassium: displayPotassium,
+              ),
+              type: PageTransitionType.rightToLeftWithFade,
+              duration: Duration(seconds: 1),
+            ),
+          );
         },
         style: ElevatedButton.styleFrom(
-          primary: Colors.white,
+          primary: Theme.of(context).colorScheme.primary,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
           ),
@@ -60,46 +74,27 @@ class SensorList extends StatelessWidget {
           width: MediaQuery.of(context).size.width * 0.92,
           height: 57,
           child: Row(
-            // Use a Row to align the text to the left
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Padding(
-                padding: EdgeInsets.only(
-                  left: MediaQuery.of(context).size.width * 0.0,
-                ),
-                child: Text(
-                  sensorName!,
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: MediaQuery.of(context).size.width * 0.055,
-                    fontWeight: FontWeight.bold,
-                  ),
+              Text(
+                displayName,
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onSurface,
+                  fontSize: MediaQuery.of(context).size.width * 0.055,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
-              if (problems == 0)
-                CircleAvatar(
-                  backgroundColor: Colors.green,
-                  child: Icon(
-                    Icons.check,
-                    color: Colors.white,
-                  ),
-                )
-              else if (problems == 1)
-                CircleAvatar(
-                  backgroundColor: Colors.yellow,
-                  child: Icon(
-                    Icons.close,
-                    color: Colors.white,
-                  ),
-                )
-              else
-                CircleAvatar(
-                  backgroundColor: Colors.red,
-                  child: Icon(
-                    Icons.close,
-                    color: Colors.white,
-                  ),
-                )
+              CircleAvatar(
+                backgroundColor: displayProblems == 0
+                    ? Colors.green
+                    : displayProblems == 1
+                        ? Colors.yellow
+                        : Colors.red,
+                child: Icon(
+                  displayProblems == 0 ? Icons.check : Icons.close,
+                  color: Colors.white,
+                ),
+              ),
             ],
           ),
         ),
