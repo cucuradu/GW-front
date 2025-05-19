@@ -4,13 +4,17 @@ import 'package:gwfront/profilepage.dart';
 import 'package:gwfront/sensorlist.dart';
 import 'package:http/http.dart' as http;
 import 'package:page_transition/page_transition.dart';
+import 'homepage.dart';
+import 'login.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'test_map_page.dart';
 import 'newsensor.dart';
 import 'dart:async';
 import 'package:flutter/services.dart';
 
-Map<String, dynamic> usersSensors = {};
+Map<String, dynamic> usersSensors = {
+  "sensors": ["gTsSy0"]
+};
 
 class SensorObject {
   String? name;
@@ -72,7 +76,7 @@ class _Sensors extends State<Sensors> {
 
   void getUserData() async {
     final url = Uri.parse(
-        'http://192.168.100.4:8000/api/user/4'); // Replace with your Django server URL
+        'http://192.168.100.4:8000/api/user/1'); // Replace with your Django server URL
 
     final response = await http.get(url);
 
@@ -88,8 +92,6 @@ class _Sensors extends State<Sensors> {
     }
   }
 
-
-
   void getData() async {
     final url = Uri.parse(
         'http://192.168.100.4:8000/apiRest/recommendations/'); // Replace with your Django server URL
@@ -97,13 +99,14 @@ class _Sensors extends State<Sensors> {
 
     if (response.statusCode == 200) {
       // Successful response, handle the data
-      //print('Response body: ${response.body}');
+      print('Response body: ${response.body}');
       final newData = jsonDecode(response.body);
 
       setState(() {
-        for(final newSensor in newData){
+        for (final newSensor in newData) {
           final newSensorId = newSensor['sensor_data']['id'];
-          final index = sensor_data.indexWhere((sensor) => sensor['sensor_data']['id'] == newSensorId);
+          final index = sensor_data.indexWhere(
+              (sensor) => sensor['sensor_data']['id'] == newSensorId);
 
           if (index != -1) {
             // If the sensor already exists in the list, update its measurements and recommendations.
@@ -115,7 +118,6 @@ class _Sensors extends State<Sensors> {
           }
         }
       });
-
 
       // for (var newItem in newData) {
       //   if (!sensor_data.contains(newItem)) {
@@ -132,7 +134,6 @@ class _Sensors extends State<Sensors> {
       // Handle errors
       print('Request failed with status: ${response.statusCode}');
     }
-
   }
 
   Timer? dataFetchTimer;
@@ -156,23 +157,21 @@ class _Sensors extends State<Sensors> {
     dataFetchTimer = null;
   }
 
-
   @override
   void initState() {
     super.initState();
-    startFetching();
-    getData();
-    getUserData();
-    mySensorsList = widget.mySensors;
-    if (mySensorsList == null) {
-      fetchData().then((sensors) {
-        setState(() {
-          mySensorsList = sensors;
-        });
-      });
-    }
+     startFetching();
+     getData();
+     getUserData();
+     mySensorsList = widget.mySensors;
+     if (mySensorsList == null) {
+       fetchData().then((sensors) {
+         setState(() {
+           mySensorsList = sensors;
+         });
+       });
+     }
   }
-
 
   void addSensor(SensorObject newSensor) {
     setState(() {
@@ -180,268 +179,238 @@ class _Sensors extends State<Sensors> {
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([
-        DeviceOrientation.portraitUp,
-        DeviceOrientation.portraitDown,
-      ]);
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          leading: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Container(
-              width: 60,
-              height: 60,
-              child: Image.asset('assets/profileimg.png'),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15),
-              ),
-            ),
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
+    print('Sensor Data: $sensor_data');
+    return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
+      body: Column(
+        children: [
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.025,
           ),
-          title: RichText(
-            text: const TextSpan(
-              text: "Hi, ",
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 28,
-                fontWeight: FontWeight.normal,
-              ),
+          MapSP(),
+          SizedBox(height: MediaQuery.of(context).size.height * 0.025),
+          Divider(
+            height: 3,
+            color: Colors.grey,
+            thickness: 1,
+            indent: 20,
+            endIndent: 20,
+          ),
+          SizedBox(height: MediaQuery.of(context).size.height * 0.01),
+          Expanded(
+            child: ListView(
+              physics: BouncingScrollPhysics(),
               children: [
-                TextSpan(
-                  text: "Alex",
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 28,
-                    fontWeight: FontWeight.bold,
+                Container(
+                  color: Colors.white, // Background color
+                ),
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: MediaQuery.of(context).size.height * 0.02,
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.015,
+                        ),
+                        Row(
+                          // Use a Row to align the text to the left
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(
+                                left: MediaQuery.of(context).size.width * 0.0,
+                              ),
+                              child: Text(
+                                "Sensor list",
+                                style: TextStyle(
+                                  color:
+                                      Theme.of(context).colorScheme.onSurface,
+                                  fontSize:
+                                      MediaQuery.of(context).size.width * 0.07,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.035,
+                        ),
+                        Column(
+                          children: [
+                            SensorList(
+                              sensorName: 'Sensorinio 1',
+                              humidity: '1',
+                              temperature: '1',
+                              nitrogen: '1',
+                              phosphorous: '1',
+                              potassium: '1',
+                              problems: 0,
+                            ),
+                            if (usersSensors['sensors'] is List) ...[
+                              for (final sensorid in usersSensors['sensors'])
+                                for (final sensor in sensor_data)
+                                  if (sensorid == sensor['sensor_data']['id'])
+                                    SensorList(
+                                      sensorName: sensor['sensor_data']['name']
+                                              as String? ??
+                                          'N/A',
+                                      humidity: (sensor['sensor_data']
+                                                  ['humidity'] as bool?)
+                                              ?.toString() ??
+                                          'N/A',
+                                      temperature: (sensor['sensor_data']
+                                                  ['temperature'] as double?)
+                                              ?.toString() ??
+                                          'N/A',
+                                      nitrogen: (sensor['sensor_data']
+                                                  ['nitrogen'] as double?)
+                                              ?.toString() ??
+                                          'N/A',
+                                      phosphorous: (sensor['sensor_data']
+                                                  ['phosphorus'] as double?)
+                                              ?.toString() ??
+                                          'N/A',
+                                      potassium: (sensor['sensor_data']
+                                                  ['potassium'] as double?)
+                                              ?.toString() ??
+                                          'N/A',
+                                      problems: sensor['problem_count'],
+                                    )
+                            ] else ...[
+                              const Text('Loading sensors...'),
+                            ]
+
+                            // SensorList(
+                            //   sensorName: 'N/A',
+                            //   humidity: "True",
+                            //   temperature: 'N/A',
+                            //   nitrogen: 'N/A',
+                            //   phosphorous: 'N/A',
+                            //   potassium: 'N/A',
+                            //   problems: 1,
+                            // ),
+                            // SensorList(
+                            //   sensorName: 'N/A',
+                            //   humidity: "True",
+                            //   temperature: 'N/A',
+                            //   nitrogen: 'N/A',
+                            //   phosphorous: 'N/A',
+                            //   potassium: 'N/A',
+                            //   problems: 2,
+                            // ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.02,
+                        ),
+                        Row(
+                          // Use a Row to align the text to the left
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(
+                                left: MediaQuery.of(context).size.width * 0.0,
+                              ),
+                              child: Text(
+                                'Alerts',
+                                style: TextStyle(
+                                  color:
+                                      Theme.of(context).colorScheme.onSurface,
+                                  fontSize:
+                                      MediaQuery.of(context).size.width * 0.07,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.035,
+                        ),
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(20),
+                          child: Container(
+                            decoration: BoxDecoration(color: Color(0xFFFAE392)),
+                            height: MediaQuery.of(context).size.height *
+                                0.25, // Adjust the height here
+                            child: ListView.builder(
+                              itemCount: sensor_data.length,
+                              itemBuilder: (context, index) {
+                                final sensor = sensor_data[index];
+                                final sensorData = sensor["sensor_data"];
+                                final sensorId = sensorData["id"];
+                                final sensorName = sensorData["name"] ?? 'N/A';
+
+                                if (!usersSensors['sensors']
+                                    .contains(sensorId)) {
+                                  return Container();
+                                }
+
+                                final recommendation = sensor["recommendation"];
+                                String temperatureRecommendation = 'N/A';
+                                String humidityRecommendation = 'N/A';
+                                List<String> nutrientRecommendation = [];
+
+                                if (recommendation is Map<String, dynamic>) {
+                                  temperatureRecommendation = recommendation[
+                                          "temperature_recommendation"] ??
+                                      'N/A';
+                                  humidityRecommendation = recommendation[
+                                          "humidity_recommendation"] ??
+                                      'N/A';
+                                  final nutrientRecommendationList =
+                                      recommendation["nutrient_recommendation"];
+                                  if (nutrientRecommendationList is List) {
+                                    nutrientRecommendation =
+                                        nutrientRecommendationList
+                                            .cast<String>();
+                                  }
+                                } else if (recommendation is String) {
+                                  // If recommendation is a string, use it directly as temperature recommendation
+                                  temperatureRecommendation = recommendation;
+                                }
+
+                                return ListTile(
+                                  title: Text('Sensor Name: $sensorName'),
+                                  subtitle: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text('- $temperatureRecommendation'),
+                                      Text('- $humidityRecommendation'),
+                                      if (nutrientRecommendation.isNotEmpty)
+                                        for (var nutrient
+                                            in nutrientRecommendation)
+                                          Text('- $nutrient')
+                                    ],
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.035,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ],
             ),
           ),
-          actions: [
-            InkWell(
-              child: Image.asset(
-                'assets/minilogo.png',
-                height: AppBar().preferredSize.height - 16,
-              ),
-            ),
-          ],
-        ),
-        body: Column(
-          children: [
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.025,
-            ),
-            MapSP(),
-            SizedBox(height: MediaQuery.of(context).size.height * 0.025),
-            Divider(
-              height: 3,
-              color: Colors.grey,
-              thickness: 1,
-              indent: 20,
-              endIndent: 20,
-            ),
-            SizedBox(height: MediaQuery.of(context).size.height * 0.01),
-            Expanded(
-              child: ListView(
-                physics: BouncingScrollPhysics(),
-                children: [
-                  Container(
-                    color: Colors.white, // Background color
-                  ),
-                  Align(
-                    alignment: Alignment.bottomCenter,
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: MediaQuery.of(context).size.height * 0.02,
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.015,
-                          ),
-                          Row(
-                            // Use a Row to align the text to the left
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.only(
-                                  left: MediaQuery.of(context).size.width * 0.0,
-                                ),
-                                child: Text(
-                                  "Sensor list",
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize:
-                                        MediaQuery.of(context).size.width *
-                                            0.07,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.035,
-                          ),
-                          Column(
-                            children: [
-                              for (final sensorid in usersSensors['sensors'])
-                                for (final sensor in sensor_data)
-                                  if (sensorid == sensor['sensor_data']['id'])
-                                    //color Card
-                                    SensorList(
-                                    sensorName: sensor['sensor_data']['name'] as String? ?? 'N/A',
-                                    humidity: (sensor['sensor_data']['humidity'] as bool?)
-                                            ?.toString() ??
-                                        'N/A',
-                                    temperature: (sensor['sensor_data']['temperature'] as double?)
-                                            ?.toString() ??
-                                        'N/A',
-                                    nitrogen: (sensor['sensor_data']['nitrogen'] as double?)
-                                            ?.toString() ??
-                                        'N/A',
-                                    phosphorous: (sensor['sensor_data']['phosphorus'] as double?)
-                                            ?.toString() ??
-                                        'N/A',
-                                    potassium: (sensor['sensor_data']['potassium'] as double?)
-                                            ?.toString() ??
-                                        'N/A',
-                                      problems: sensor['problem_count'],
-                                  ),
-
-                              if (sensor_data.isEmpty) const Text('Loading...'),
-                               
-                              // SensorList(
-                              //   sensorName: 'N/A',
-                              //   humidity: "True",
-                              //   temperature: 'N/A',
-                              //   nitrogen: 'N/A',
-                              //   phosphorous: 'N/A',
-                              //   potassium: 'N/A',
-                              //   problems: 1,
-                              // ),
-                              // SensorList(
-                              //   sensorName: 'N/A',
-                              //   humidity: "True",
-                              //   temperature: 'N/A',
-                              //   nitrogen: 'N/A',
-                              //   phosphorous: 'N/A',
-                              //   potassium: 'N/A',
-                              //   problems: 2,
-                              // ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.02,
-                          ),
-                          Row(
-                            // Use a Row to align the text to the left
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.only(
-                                  left: MediaQuery.of(context).size.width * 0.0,
-                                ),
-                                child: Text(
-                                  'Alerts',
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize:
-                                        MediaQuery.of(context).size.width *
-                                            0.07,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.035,
-                          ),
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(20),
-                            child: Container(
-                              decoration:
-                                  BoxDecoration(color: Color(0xFFFAE392)),
-                              height: MediaQuery.of(context).size.height *
-                                  0.25, // Adjust the height here
-                              child: ListView.builder(
-                                itemCount: sensor_data.length,
-                                itemBuilder: (context, index) {
-                                  final sensor = sensor_data[index];
-                                  final sensorData = sensor["sensor_data"];
-                                  final sensorId = sensorData["id"];
-                                  final sensorName =
-                                      sensorData["name"] ?? 'N/A';
-
-                                  if (!usersSensors['sensors'].contains(sensorId)) {
-                                    return Container();
-                                  }
-
-                                  final recommendation =
-                                      sensor["recommendation"];
-                                  String temperatureRecommendation = 'N/A';
-                                  String humidityRecommendation = 'N/A';
-                                  List<String> nutrientRecommendation = [];
-
-                                  if (recommendation is Map<String, dynamic>) {
-                                    temperatureRecommendation = recommendation[
-                                            "temperature_recommendation"] ??
-                                        'N/A';
-                                    humidityRecommendation = recommendation["humidity_recommendation"] ?? 'N/A';
-                                    final nutrientRecommendationList =
-                                        recommendation[
-                                            "nutrient_recommendation"];
-                                    if (nutrientRecommendationList is List) {
-                                      nutrientRecommendation =
-                                          nutrientRecommendationList
-                                              .cast<String>();
-                                    }
-                                  } else if (recommendation is String) {
-                                    // If recommendation is a string, use it directly as temperature recommendation
-                                    temperatureRecommendation = recommendation;
-                                  }
-
-                                  return ListTile(
-                                    title: Text('Sensor Name: $sensorName'),
-                                    subtitle: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text('- $temperatureRecommendation'),
-                                        Text('- $humidityRecommendation'),
-                                        if (nutrientRecommendation.isNotEmpty)
-                                          for (var nutrient
-                                              in nutrientRecommendation)
-                                            Text('- $nutrient')
-                                      ],
-                                    ),
-                                  );
-                                },
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.035,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-        bottomNavigationBar: NavBarSP(),
+        ],
       ),
     );
   }
@@ -485,83 +454,18 @@ class MapSP extends StatelessWidget {
                   );
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0xFF8EAC50),
+                  primary: Color(0xFF8EAC50),
                 ),
-                child: Text('View map'),
+                child: Text(
+                  'View map',
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
               ),
             ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class NavBarSP extends StatelessWidget {
-  const NavBarSP({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height:
-          MediaQuery.of(context).size.height * 0.097, // Adjust the height here
-      color: Colors.white,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          SizedBox(
-            width: 72,
-            height: 72,
-            child: FloatingActionButton(
-              onPressed: () {},
-              backgroundColor: Colors.white, // Set the button color here
-              elevation: 0,
-              child: Image.asset(
-                'assets/flower.png',
-                height: 77,
-              ),
-            ),
-          ),
-          SizedBox(
-            width: 75,
-            height: 75,
-            child: FloatingActionButton(
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    PageTransition(
-                        child: NewSensor(),
-                        type: PageTransitionType.bottomToTop,
-                        duration: Duration(milliseconds: 500)));
-              }, // Call the _showAddDialog function when the button is pressed
-              backgroundColor:
-                  const Color(0xFF8EAC50), // Set the button color here
-              child: const Icon(Icons.add),
-            ),
-          ),
-          SizedBox(
-            width: 72,
-            height: 72,
-            child: FloatingActionButton(
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    PageTransition(
-                        child: Profile(),
-                        type: PageTransitionType.rightToLeftWithFade,
-                        duration: Duration(milliseconds: 500)));
-              },
-              backgroundColor: Colors.white, // Set the button color here
-              elevation: 0,
-              child: Image.asset(
-                'assets/profile.png',
-                height: 77,
-              ),
-            ),
-          ),
-        ],
       ),
     );
   }
@@ -572,16 +476,13 @@ Set<Marker> _createMarkers() {
   return {
     Marker(
       markerId: MarkerId('marker1'),
-      position:
-          LatLng(46.7514415003376, 23.575745852039482), // Marker position
+      position: LatLng(46.806844, 23.589411), // Marker position
       infoWindow: InfoWindow(title: 'Marker 1'), // Marker info window
     ),
     Marker(
       markerId: MarkerId('marker1'),
-      position:
-          LatLng(46.75128998512223, 23.575964580017544), // Marker position
-      infoWindow: InfoWindow(title: 'Marker 1'), // Marker info window
+      position: LatLng(46.811815, 23.585164), // Marker position
+      infoWindow: InfoWindow(title: 'Marker 2'), // Marker info window
     ),
-    // Add more markers as needed
   };
 }

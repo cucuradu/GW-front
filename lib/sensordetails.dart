@@ -1,110 +1,75 @@
 import 'package:flutter/material.dart';
-import 'package:gwfront/login.dart';
-import 'package:gwfront/profilepage.dart';
-import 'package:gwfront/recomendationspage.dart';
-import 'package:gwfront/sensorspage.dart';
-import 'package:gwfront/recomendationspage.dart';
-import 'package:page_transition/page_transition.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
+import 'Theme/theme_provider.dart';
+import 'login.dart';
+import 'profilepage.dart';
+import 'recomendationspage.dart';
+import 'sensorspage.dart';
 import 'test_map_page.dart';
 import 'newsensor.dart';
-import 'package:flutter/services.dart';
 
-class SensorDetails extends StatelessWidget {
-  String? sensorName;
-  String? humidity;
-  String? temperature ;
-  String? nitrogen;
-  String? phosphorous;
-  String? potassium;
-  int? temperatureValue, nitrogenValue, phosphorusValue, potassiumValue;
-  SensorDetails(
-      {this.sensorName,
-      this.humidity,
-      this.temperature,
-      this.nitrogen,
-      this.phosphorous,
-      this.potassium}
-  ){
-    values();
-  }
-  void values(){
-    temperatureValue = int.parse(temperature?.substring(0, temperature!.length-2) ?? "0");
-    nitrogenValue = int.parse(nitrogen?.substring(0, nitrogen!.length-2) ?? "0");
-    phosphorusValue = int.parse(phosphorous?.substring(0, phosphorous!.length-2) ?? "0");
-    potassiumValue = int.parse(potassium?.substring(0, potassium!.length-2) ?? "0");
+class SensorDetails extends StatefulWidget {
+  final String? sensorName;
+  final String? humidity;
+  final String? temperature;
+  final String? nitrogen;
+  final String? phosphorous;
+  final String? potassium;
+
+  SensorDetails({
+    this.sensorName,
+    this.humidity,
+    this.temperature,
+    this.nitrogen,
+    this.phosphorous,
+    this.potassium,
+  });
+
+  @override
+  _SensorDetailsState createState() => _SensorDetailsState();
+}
+
+class _SensorDetailsState extends State<SensorDetails> {
+  int temperatureValue = 0;
+  int nitrogenValue = 0;
+  int phosphorusValue = 0;
+  int potassiumValue = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    parseValues();
   }
 
-  final List<String> recommendations = [
-    "Recommendation 1",
-    "Recommendation 2",
-    "Recommendation 3",
-  ];
+  void parseValues() {
+    temperatureValue = int.tryParse(
+            widget.temperature?.replaceAll(RegExp(r'[^0-9]'), '') ?? '') ??
+        0;
+    nitrogenValue = int.tryParse(
+            widget.nitrogen?.replaceAll(RegExp(r'[^0-9]'), '') ?? '') ??
+        0;
+    phosphorusValue = int.tryParse(
+            widget.phosphorous?.replaceAll(RegExp(r'[^0-9]'), '') ?? '') ??
+        0;
+    potassiumValue = int.tryParse(
+            widget.potassium?.replaceAll(RegExp(r'[^0-9]'), '') ?? '') ??
+        0;
+  }
 
   @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([
-        DeviceOrientation.portraitUp,
-        DeviceOrientation.portraitDown,
-      ]);
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          leading: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Container(
-              width: 60,
-              height: 60,
-              child: Image.asset('assets/profileimg.png'),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15),
-              ),
-            ),
-          ),
-          title: RichText(
-            text: TextSpan(
-              text: "Hi, ",
-              style: const TextStyle(
-                color: Colors.black,
-                fontSize: 28,
-                fontWeight: FontWeight.normal,
-              ),
-              children: [
-                TextSpan(
-                  text: "Alex",
-                  style: const TextStyle(
-                    color: Colors.black,
-                    fontSize: 28,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          actions: [
-            InkWell(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => Sensors(),
-                  ),
-                );
-              },
-              child: Image.asset(
-                'assets/minilogo.png',
-                height: AppBar().preferredSize.height - 16,
-              ),
-            ),
-          ],
-        ),
-        body: Column(children: [
-          SizedBox(
-            height: MediaQuery.of(context).size.height * 0.025,
-          ),
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
+
+    return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
+      body: Column(
+        children: [
+          SizedBox(height: MediaQuery.of(context).size.height * 0.025),
           MapSD(),
           SizedBox(height: MediaQuery.of(context).size.height * 0.025),
           Divider(
@@ -119,354 +84,167 @@ class SensorDetails extends StatelessWidget {
             child: ListView(
               physics: BouncingScrollPhysics(),
               children: [
-                Container(
-                  color: Colors.white, // Background color
-                ),
-                SizedBox(height: MediaQuery.of(context).size.height * 0.015),
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: MediaQuery.of(context).size.height * 0.02),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.015,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.only(
-                                left: MediaQuery.of(context).size.width * 0.0,
-                              ),
-                              child: Text(
-                                sensorName ?? "Sensor",
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize:
-                                      MediaQuery.of(context).size.width * 0.07,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.035,
-                        ),
-                        Row(
-                          children: [
-                            Image.asset("assets/humidity.png"),
-                            SizedBox(
-                              width: 11,
-                            ),
-                            Text(
-                              "Humidity",
-                              style: TextStyle(
-                                color: (humidity != true)
-                                  ? Colors.black
-                                  : Colors.red,
-                                fontSize:
-                                    MediaQuery.of(context).size.width * 0.05,
-                              ),
-                            ),
-                            Spacer(),
-                            Text(
-                              humidity ?? "?",
-                              style: TextStyle(
-                                color:(humidity != true)
-                                  ? Colors.black
-                                  : Colors.red,
-                                fontSize:
-                                    MediaQuery.of(context).size.width * 0.05,
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.02,
-                        ),
-                        Row(
-                          children: [
-                            Image.asset("assets/temperature.png"),
-                            SizedBox(
-                              width: 11,
-                            ),
-                            Text(
-                              "Temperature",
-                              style: TextStyle(
-                                color: (10<=temperatureValue! && temperatureValue!<=30)
-                                  ? Colors.black
-                                  : Colors.red,
-                                fontSize:
-                                    MediaQuery.of(context).size.width * 0.05,
-                              ),
-                            ),
-                            Spacer(),
-                            Text(
-                              temperature ?? "?",
-                              style: TextStyle(
-                                color: (10<=temperatureValue! && temperatureValue!<=30)
-                                  ? Colors.black
-                                  : Colors.red,
-                                fontSize:
-                                    MediaQuery.of(context).size.width * 0.05,
-                              ),
-                            ),
-                            SizedBox(
-                              width: 11,
-                            ),
-                            Text(
-                              "°C",
-                              style: TextStyle(
-                                color:(10<=temperatureValue! && temperatureValue!<=30)
-                                  ? Colors.black
-                                  : Colors.red,
-                                fontSize:
-                                    MediaQuery.of(context).size.width * 0.05,
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.02,
-                        ),
-                        Row(
-                          children: [
-                            Image.asset("assets/nutrients.png"),
-                            SizedBox(
-                              width: 11,
-                            ),
-                            Text(
-                              "Nitrogen",
-                              style: TextStyle(
-                                color: (40<=nitrogenValue! && nitrogenValue!<=60)
-                                  ? Colors.black
-                                  : Colors.red,
-                                fontSize:
-                                    MediaQuery.of(context).size.width * 0.05,
-                              ),
-                            ),
-                            Spacer(),
-                            Text(
-                              nitrogen ?? "?",
-                              style: TextStyle(
-                                color:(40<=nitrogenValue! && nitrogenValue!<=60)
-                                  ? Colors.black
-                                  : Colors.red,
-                                fontSize:
-                                    MediaQuery.of(context).size.width * 0.05,
-                              ),
-                            ),
-                            SizedBox(
-                              width: 11,
-                            ),
-                            Text(
-                              "mg/kg",
-                              style: TextStyle(
-                                color: (40<=nitrogenValue! && nitrogenValue!<=60)
-                                  ? Colors.black
-                                  : Colors.red,
-                                fontSize:
-                                    MediaQuery.of(context).size.width * 0.05,
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.02,
-                        ),
-                        Row(
-                          children: [
-                            Image.asset("assets/nutrients.png"),
-                            SizedBox(
-                              width: 11,
-                            ),
-                            Text(
-                              "Phosphorus",
-                              style: TextStyle(
-                                color: (30<=phosphorusValue! && phosphorusValue!<=50)
-                                    ? Colors.black
-                                    : Colors.red,
-                                fontSize:
-                                    MediaQuery.of(context).size.width * 0.05,
-                              ),
-                            ),
-                            Spacer(),
-                              Text(
-                                phosphorous ?? "?",
-                                style: TextStyle(
-                                  color: (30<=phosphorusValue! && phosphorusValue!<=50)
-                                    ? Colors.black
-                                    : Colors.red,
-                                  fontSize:
-                                      MediaQuery.of(context).size.width * 0.05,
-                                ),
-                              ),
-                            SizedBox(
-                              width: 11,
-                            ),
-                            Text(
-                              "mg/kg",
-                              style: TextStyle(
-                                color: (30<=phosphorusValue! && phosphorusValue!<=50)
-                                    ? Colors.black
-                                    : Colors.red,
-                                fontSize:
-                                    MediaQuery.of(context).size.width * 0.05,
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.02,
-                        ),
-                        Row(
-                          children: [
-                            Image.asset("assets/nutrients.png"),
-                            SizedBox(
-                              width: 11,
-                            ),
-                            Text(
-                              "Potassium",
-                              style: TextStyle(
-                                color: (40<=potassiumValue! && potassiumValue!<=70)
-                                    ? Colors.black
-                                    : Colors.red,
-                                fontSize:
-                                    MediaQuery.of(context).size.width * 0.05,
-                              ),
-                            ),
-                            Spacer(),
-                            Text(
-                              potassium ?? "?",
-                              style: TextStyle(
-                                color: (40<=potassiumValue! && potassiumValue!<=70)
-                                    ? Colors.black
-                                    : Colors.red,
-                                fontSize:
-                                    MediaQuery.of(context).size.width * 0.05,
-                              ),
-                            ),
-                            SizedBox(
-                              width: 11,
-                            ),
-                            Text(
-                              "mg/kg",
-                              style: TextStyle(
-                                color: (40<=potassiumValue! && potassiumValue!<=70)
-                                    ? Colors.black
-                                    : Colors.red,
-                                fontSize:
-                                    MediaQuery.of(context).size.width * 0.05,
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.035,
-                        ),
-                        Row(
-                          // Use a Row to align the text to the left
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.only(
-                                left: MediaQuery.of(context).size.width * 0.0,
-                              ),
-                              child: Text(
-                                'Recommendations',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize:
-                                      MediaQuery.of(context).size.width * 0.07,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                            ElevatedButton(
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => Recomandations(Name: sensorName),
-                                  ),
-                                );
-                              },
-                              style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0xFF8EAC50),
-                ),
-                              child: Text("See More"),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.035,
-                        ),
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(20),
-                          child: Container(
-                            height: MediaQuery.of(context).size.height * 0.25,
-                            width: MediaQuery.of(context).size.width * 0.9,
-                            decoration: BoxDecoration(
-                              color: Color(0xFFFAE392),
-                            ),
-                            child: Image.asset('assets/tomatoes.jpg',
-                    fit: BoxFit.cover,
-                    height: MediaQuery.of(context).size.height *
-                        0.25, // Adjust the height here to make it larger
-                    width: MediaQuery.of(context).size.width *
-                        0.93, // Adjust the width here to make it larger
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: MediaQuery.of(context).size.height * 0.02,
                   ),
-                  // child: Align(
-                  //             alignment: Alignment.bottomLeft,
-                  //             child: ElevatedButton(
-                  //               onPressed: () {
-                  //                  Navigator.push(
-                  //                    context,
-                  //                    MaterialPageRoute(
-                  //                      builder: (context) => Recomandations(Name: sensorName),
-                  //                    ),
-                  //                  );
-                  //               },
-                  //               style: ElevatedButton.styleFrom(
-                  //                 primary: Color(0xFFFAE392),
-                  //                 elevation: 0, // No shadow
-                  //               ),
-                  //               child: Image.asset("assets/ReadMore.png"),
-                  //             ),
-                  //           ),
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          Text(
+                            widget.sensorName ?? "Sensor",
+                            style: TextStyle(
+                              fontSize:
+                                  MediaQuery.of(context).size.width * 0.07,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.035),
+                      _buildSensorRow("Humidity", widget.humidity ?? "?",
+                          "assets/humidity.png"),
+                      _buildSensorRow(
+                        "Temperature",
+                        widget.temperature ?? "?",
+                        "assets/temperature.png",
+                        suffix: "°C",
+                        isInRange:
+                            (10 <= temperatureValue && temperatureValue <= 30),
+                      ),
+                      _buildSensorRow(
+                        "Nitrogen",
+                        widget.nitrogen ?? "?",
+                        "assets/nutrients.png",
+                        suffix: "mg/kg",
+                        isInRange: (40 <= nitrogenValue && nitrogenValue <= 60),
+                      ),
+                      _buildSensorRow(
+                        "Phosphorus",
+                        widget.phosphorous ?? "?",
+                        "assets/nutrients.png",
+                        suffix: "mg/kg",
+                        isInRange:
+                            (30 <= phosphorusValue && phosphorusValue <= 50),
+                      ),
+                      _buildSensorRow(
+                        "Potassium",
+                        widget.potassium ?? "?",
+                        "assets/nutrients.png",
+                        suffix: "mg/kg",
+                        isInRange:
+                            (40 <= potassiumValue && potassiumValue <= 70),
+                      ),
+                      SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.035),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Recommendations',
+                            style: TextStyle(
+                              fontSize:
+                                  MediaQuery.of(context).size.width * 0.07,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          ElevatedButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      Recomandations(Name: widget.sensorName),
+                                ),
+                              );
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Color(0xFF8EAC50),
+                            ),
+                            child: Text("See More"),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.035),
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(20),
+                        child: Container(
+                          height: MediaQuery.of(context).size.height * 0.25,
+                          width: MediaQuery.of(context).size.width * 0.9,
+                          decoration: BoxDecoration(
+                            color: Color(0xFFFAE392),
+                          ),
+                          child: Image.asset(
+                            'assets/tomatoes.jpg',
+                            fit: BoxFit.cover,
                           ),
                         ),
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.035,
-                        ),
-                      ],
-                    ),
+                      ),
+                      SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.035),
+                    ],
                   ),
                 ),
               ],
             ),
           ),
-        ]),
-        bottomNavigationBar: NavBarSD(),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSensorRow(String label, String value, String iconPath,
+      {String? suffix, bool isInRange = true}) {
+    return Padding(
+      padding:
+          EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.02),
+      child: Row(
+        children: [
+          Image.asset(iconPath, height: 24),
+          SizedBox(width: 11),
+          Text(
+            label,
+            style: TextStyle(
+              color: isInRange ? Colors.black : Colors.red,
+              fontSize: MediaQuery.of(context).size.width * 0.05,
+            ),
+          ),
+          Spacer(),
+          Text(
+            value,
+            style: TextStyle(
+              color: isInRange ? Colors.black : Colors.red,
+              fontSize: MediaQuery.of(context).size.width * 0.05,
+            ),
+          ),
+          if (suffix != null) ...[
+            SizedBox(width: 11),
+            Text(
+              suffix,
+              style: TextStyle(
+                color: isInRange ? Colors.black : Colors.red,
+                fontSize: MediaQuery.of(context).size.width * 0.05,
+              ),
+            ),
+          ],
+        ],
       ),
     );
   }
 }
 
 class MapSD extends StatelessWidget {
-  const MapSD({
-    super.key,
-  });
+  const MapSD({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(
-          horizontal: MediaQuery.of(context).size.height * 0.02),
+        horizontal: MediaQuery.of(context).size.height * 0.02,
+      ),
       child: Container(
         height: MediaQuery.of(context).size.height * 0.25,
         width: MediaQuery.of(context).size.width * 0.9,
@@ -507,98 +285,17 @@ class MapSD extends StatelessWidget {
   }
 }
 
-class NavBarSD extends StatelessWidget {
-  const NavBarSD({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height:
-          MediaQuery.of(context).size.height * 0.097, // Adjust the height here
-      color: Colors.white,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          SizedBox(
-            width: 72,
-            height: 72,
-            child: FloatingActionButton(
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    PageTransition(
-                        child: Sensors(),
-                        type: PageTransitionType.leftToRightWithFade,
-                        duration: Duration(milliseconds: 500)));
-              },
-              backgroundColor: Colors.white, // Set the button color here
-              elevation: 0,
-              child: Image.asset(
-                'assets/flower.png',
-                height: 77,
-              ),
-            ),
-          ),
-          SizedBox(
-            width: 75,
-            height: 75,
-            child: FloatingActionButton(
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    PageTransition(
-                        child: NewSensor(),
-                        type: PageTransitionType.bottomToTop,
-                        duration: Duration(milliseconds: 500)));
-              }, // Call the _showAddDialog function when the button is pressed
-              backgroundColor:
-                  const Color(0xFF8EAC50), // Set the button color here
-              child: const Icon(Icons.add),
-            ),
-          ),
-          SizedBox(
-            width: 72,
-            height: 72,
-            child: FloatingActionButton(
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    PageTransition(
-                        child: Profile(),
-                        type: PageTransitionType.rightToLeftWithFade,
-                        duration: Duration(milliseconds: 500)));
-              },
-              backgroundColor: Colors.white, // Set the button color here
-              elevation: 0,
-              child: Image.asset(
-                'assets/profile.png',
-                height: 77,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
 Set<Marker> _createMarkers() {
-  // Create a set of markers to display on the map
   return {
     Marker(
       markerId: MarkerId('marker1'),
-      position:
-          LatLng(46.7514415003376, 23.575745852039482), // Marker position
-      infoWindow: InfoWindow(title: 'Marker 1'), // Marker info window
+      position: LatLng(46.7514415, 23.5757458),
+      infoWindow: InfoWindow(title: 'Marker 1'),
     ),
     Marker(
-      markerId: MarkerId('marker1'),
-      position:
-          LatLng(46.75128998512223, 23.575964580017544), // Marker position
-      infoWindow: InfoWindow(title: 'Marker 1'), // Marker info window
+      markerId: MarkerId('marker2'),
+      position: LatLng(46.75129, 23.5759646),
+      infoWindow: InfoWindow(title: 'Marker 2'),
     ),
-    // Add more markers as needed
   };
 }

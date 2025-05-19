@@ -41,10 +41,9 @@ class SensorObject {
   }
 }
 
-
 Future<List<SensorObject>> fetchSensorData() async {
-  final response = await http.get(
-      Uri.parse('http://192.168.100.4:8000/apiRest/recommendations/'));
+  final response = await http
+      .get(Uri.parse('http://192.168.1.7:8000/apiRest/recommendations/'));
 
   if (response.statusCode == 200) {
     final List<dynamic> jsonData = json.decode(response.body);
@@ -56,7 +55,6 @@ Future<List<SensorObject>> fetchSensorData() async {
     throw Exception('Failed to load sensor data');
   }
 }
-
 
 class MapScreen extends StatefulWidget {
   @override
@@ -71,15 +69,16 @@ class _MapScreenState extends State<MapScreen> {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([
-        DeviceOrientation.portraitUp,
-        DeviceOrientation.portraitDown,
-      ]);
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
-        backgroundColor: const Color(0xFF8EAC50),
+        backgroundColor: Color.fromARGB(0, 255, 255, 255),
         actions: [
           IconButton(
-            icon: Icon(Icons.location_on),
+            icon: Icon(Icons.my_location),
             onPressed: _getUserLocation,
           ),
         ],
@@ -91,8 +90,8 @@ class _MapScreenState extends State<MapScreen> {
               mapController = controller;
             },
             initialCameraPosition: CameraPosition(
-              target: LatLng(46.77945, 23.61126), // San Francisco's coordinates
-              zoom: 18.5,
+              target: LatLng(46.806844, 23.589411),
+              zoom: 13.5,
             ),
             markers: markers,
             circles: circles,
@@ -100,16 +99,6 @@ class _MapScreenState extends State<MapScreen> {
               //_addMarker(location); // Default value is 3, replace with your value
             },
             mapType: MapType.hybrid,
-          ),
-
-          Positioned(
-            top: 16,
-            left: 16,
-            child: FloatingActionButton(
-              onPressed: _getUserLocation,
-              backgroundColor: const Color(0xFF8EAC50),
-              child: Icon(Icons.my_location),
-            ),
           ),
         ],
       ),
@@ -130,9 +119,11 @@ class _MapScreenState extends State<MapScreen> {
       circleId: CircleId(location.toString() + '_circle'),
       center: location,
       radius: 10, // Adjust the radius as needed (in meters)
-      fillColor: const Color(0xFF8EAC50).withOpacity(0.3), // Set a uniform color (e.g., blue)
+      fillColor: const Color(0xFF8EAC50)
+          .withOpacity(0.3), // Set a uniform color (e.g., blue)
       strokeWidth: 2,
-      strokeColor: const Color(0xFF8EAC50), // Set the circle border color (e.g., blue)
+      strokeColor:
+          const Color(0xFF8EAC50), // Set the circle border color (e.g., blue)
     );
 
     _addMarkerToSet(newMarker, circle);
@@ -177,7 +168,8 @@ class _MapScreenState extends State<MapScreen> {
 
     _addMarker(userLocation);
 
-    mapController?.animateCamera(CameraUpdate.newLatLngZoom(userLocation, 18.0));
+    mapController
+        ?.animateCamera(CameraUpdate.newLatLngZoom(userLocation, 18.0));
 
     // Fetch and print sensor data
     _loadSensorData();
@@ -204,9 +196,11 @@ class _MapScreenState extends State<MapScreen> {
           circleId: CircleId(sensor.id ?? 'N/A' + '_circle'),
           center: sensorLocation,
           radius: 10, // Adjust the radius as needed (in meters)
-          fillColor: const Color(0xFF8EAC50).withOpacity(0.3), // Set a uniform color (e.g., blue)
+          fillColor: const Color(0xFF8EAC50)
+              .withOpacity(0.3), // Set a uniform color (e.g., blue)
           strokeWidth: 2,
-          strokeColor: const Color(0xFF8EAC50), // Set the circle border color (e.g., blue)
+          strokeColor: const Color(
+              0xFF8EAC50), // Set the circle border color (e.g., blue)
         );
 
         _addMarkerToSet(newMarker, circle);
@@ -247,8 +241,7 @@ Set<Marker> _createMarkers() {
   return {
     Marker(
       markerId: MarkerId('marker1'),
-      position:
-          LatLng(46.7514415003376, 23.575745852039482), // Marker position
+      position: LatLng(46.7514415003376, 23.575745852039482), // Marker position
       infoWindow: InfoWindow(title: 'Marker 1'), // Marker info window
     ),
     Marker(
@@ -260,4 +253,3 @@ Set<Marker> _createMarkers() {
     // Add more markers as needed
   };
 }
-
