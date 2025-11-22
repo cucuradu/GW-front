@@ -64,7 +64,7 @@ class SensorList extends StatelessWidget {
           );
         },
         style: ElevatedButton.styleFrom(
-          primary: Theme.of(context).colorScheme.primary,
+          backgroundColor: Theme.of(context).colorScheme.primary,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
           ),

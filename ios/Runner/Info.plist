@@ -47,5 +47,11 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>GrowWise needs your location to show your plants on the map and track sensor positions.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>GrowWise needs your location to continuously monitor your plants and sensors.</string>
+	<key>io.flutter.embedded_views_preview</key>
+	<true/>
 </dict>
 </plist>

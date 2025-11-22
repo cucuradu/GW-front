@@ -160,17 +160,17 @@ class _Sensors extends State<Sensors> {
   @override
   void initState() {
     super.initState();
-     startFetching();
-     getData();
-     getUserData();
-     mySensorsList = widget.mySensors;
-     if (mySensorsList == null) {
-       fetchData().then((sensors) {
-         setState(() {
-           mySensorsList = sensors;
-         });
-       });
-     }
+    startFetching();
+    getData();
+    getUserData();
+    mySensorsList = widget.mySensors;
+    if (mySensorsList == null) {
+      fetchData().then((sensors) {
+        setState(() {
+          mySensorsList = sensors;
+        });
+      });
+    }
   }
 
   void addSensor(SensorObject newSensor) {
@@ -454,7 +454,7 @@ class MapSP extends StatelessWidget {
                   );
                 },
                 style: ElevatedButton.styleFrom(
-                  primary: Color(0xFF8EAC50),
+                  backgroundColor: Color(0xFF8EAC50),
                 ),
                 child: Text(
                   'View map',
