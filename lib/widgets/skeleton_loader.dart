@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 /// Skeleton loader widget for displaying loading states with shimmer effect
 class SkeletonLoader extends StatelessWidget {
@@ -17,10 +18,24 @@ class SkeletonLoader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final baseColor = isDark ? Colors.grey[800]! : Colors.grey[300]!;
+    final highlightColor = isDark ? Colors.grey[700]! : Colors.grey[100]!;
+
+    // Disable shimmer on web for better performance
+    if (kIsWeb) {
+      return Container(
+        width: width,
+        height: height,
+        decoration: BoxDecoration(
+          color: baseColor,
+          borderRadius: borderRadius ?? BorderRadius.circular(8),
+        ),
+      );
+    }
 
     return Shimmer.fromColors(
-      baseColor: isDark ? Colors.grey[800]! : Colors.grey[300]!,
-      highlightColor: isDark ? Colors.grey[700]! : Colors.grey[100]!,
+      baseColor: baseColor,
+      highlightColor: highlightColor,
       child: Container(
         width: width,
         height: height,
