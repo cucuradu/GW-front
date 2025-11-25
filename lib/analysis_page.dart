@@ -3,8 +3,9 @@ import 'package:gwfront/widgets/sensor_history_chart.dart';
 import 'package:gwfront/services/weather_service.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:intl/intl.dart';
-
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:gwfront/services/export_service.dart';
+import 'package:gwfront/utils/haptic_feedback_util.dart';
 
 class AnalysisPage extends StatefulWidget {
   const AnalysisPage({super.key});
@@ -51,6 +52,50 @@ class _AnalysisPageState extends State<AnalysisPage> {
           ),
         ),
         centerTitle: true,
+        actions: [
+          IconButton(
+            icon: Icon(Icons.download_rounded,
+                color: Theme.of(context).colorScheme.tertiary),
+            onPressed: () async {
+              HapticFeedbackUtil.light();
+              final exportService = ExportService();
+
+              showDialog(
+                context: context,
+                builder: (context) => ExportOptionsDialog(
+                  sensorName: 'Analysis Data',
+                  onExport: (format) async {
+                    try {
+                      if (format == ExportFormat.csv) {
+                        final path = await exportService.exportToCsv(
+                          data: [
+                            {
+                              'Date': 'Today',
+                              'Temp': '25°C',
+                              'Humidity': '65%'
+                            },
+                          ],
+                          sensorName: 'analysis',
+                        );
+                        await exportService.shareFile(filePath: path);
+                      } else {
+                        final path = await exportService.generatePdfReport(
+                          sensorName: 'analysis',
+                          summaryData: {'Status': 'Excellent'},
+                          detailedData: [],
+                        );
+                        await exportService.shareFile(filePath: path);
+                      }
+                      await HapticFeedbackUtil.success();
+                    } catch (e) {
+                      print('Export error: $e');
+                    }
+                  },
+                ),
+              );
+            },
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(20),
