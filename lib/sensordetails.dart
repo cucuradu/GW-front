@@ -1,154 +1,177 @@
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:flutter/services.dart';
-import 'package:provider/provider.dart';
-import 'Theme/theme_provider.dart';
-import 'login.dart';
-import 'profilepage.dart';
-import 'recomendationspage.dart';
-import 'sensorspage.dart';
-import 'test_map_page.dart';
-import 'newsensor.dart';
+import 'package:gwfront/recomendationspage.dart';
+import 'package:gwfront/widgets/sensor_history_chart.dart';
+import 'package:gwfront/config.dart';
 
 class SensorDetails extends StatefulWidget {
-  final String? sensorName;
-  final String? humidity;
-  final String? temperature;
-  final String? nitrogen;
-  final String? phosphorous;
-  final String? potassium;
+  final String sensorName;
 
-  SensorDetails({
-    this.sensorName,
-    this.humidity,
-    this.temperature,
-    this.nitrogen,
-    this.phosphorous,
-    this.potassium,
-  });
+  SensorDetails({required this.sensorName});
 
   @override
   _SensorDetailsState createState() => _SensorDetailsState();
 }
 
 class _SensorDetailsState extends State<SensorDetails> {
-  int temperatureValue = 0;
-  int nitrogenValue = 0;
-  int phosphorusValue = 0;
-  int potassiumValue = 0;
+  Map<String, dynamic> sensorData = {};
+  bool isLoading = true;
 
   @override
   void initState() {
     super.initState();
-    parseValues();
+    fetchSensorData();
   }
 
-  void parseValues() {
-    temperatureValue = int.tryParse(
-            widget.temperature?.replaceAll(RegExp(r'[^0-9]'), '') ?? '') ??
-        0;
-    nitrogenValue = int.tryParse(
-            widget.nitrogen?.replaceAll(RegExp(r'[^0-9]'), '') ?? '') ??
-        0;
-    phosphorusValue = int.tryParse(
-            widget.phosphorous?.replaceAll(RegExp(r'[^0-9]'), '') ?? '') ??
-        0;
-    potassiumValue = int.tryParse(
-            widget.potassium?.replaceAll(RegExp(r'[^0-9]'), '') ?? '') ??
-        0;
+  Future<void> fetchSensorData() async {
+    // In a real app, you would fetch data based on widget.sensorName
+    // For now, we'll simulate a delay and use dummy data or the existing API structure
+    // final url = Uri.parse('${Config.baseUrl}/apiRest/recommendations/');
+
+    // Simulating network delay
+    await Future.delayed(Duration(seconds: 1));
+
+    if (mounted) {
+      setState(() {
+        // Dummy data for visualization
+        sensorData = {
+          "temperature": 24.5,
+          "humidity": 60,
+          "soil_moisture": 45,
+          "nitrogen": 120,
+          "phosphorus": 40,
+          "potassium": 150,
+        };
+        isLoading = false;
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-    ]);
-
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
-      body: Column(
-        children: [
-          SizedBox(height: MediaQuery.of(context).size.height * 0.025),
-          MapSD(),
-          SizedBox(height: MediaQuery.of(context).size.height * 0.025),
-          Divider(
-            height: 3,
-            color: Colors.grey,
-            thickness: 1,
-            indent: 20,
-            endIndent: 20,
+      backgroundColor: Colors.grey[100],
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+          icon: Image.asset('assets/backbutton.png', height: 40),
+          onPressed: () => Navigator.pop(context),
+        ),
+        title: Text(
+          widget.sensorName,
+          style: TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
           ),
-          SizedBox(height: MediaQuery.of(context).size.height * 0.01),
-          Expanded(
-            child: ListView(
-              physics: BouncingScrollPhysics(),
-              children: [
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: MediaQuery.of(context).size.height * 0.02,
-                  ),
-                  child: Column(
-                    children: [
-                      Row(
-                        children: [
-                          Text(
-                            widget.sensorName ?? "Sensor",
-                            style: TextStyle(
-                              fontSize:
-                                  MediaQuery.of(context).size.width * 0.07,
-                              fontWeight: FontWeight.bold,
-                            ),
+        ),
+        centerTitle: true,
+      ),
+      body: isLoading
+          ? Center(child: CircularProgressIndicator(color: Color(0xFF8EAC50)))
+          : SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // History Chart
+                    Container(
+                      height: 300,
+                      padding: EdgeInsets.all(15),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(25),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.1),
+                            spreadRadius: 5,
+                            blurRadius: 10,
                           ),
                         ],
                       ),
-                      SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.035),
-                      _buildSensorRow("Humidity", widget.humidity ?? "?",
-                          "assets/humidity.png"),
-                      _buildSensorRow(
-                        "Temperature",
-                        widget.temperature ?? "?",
-                        "assets/temperature.png",
-                        suffix: "°C",
-                        isInRange:
-                            (10 <= temperatureValue && temperatureValue <= 30),
+                      child: SensorHistoryChart(isShowingMainData: true),
+                    ),
+                    SizedBox(height: 25),
+
+                    // Current Readings Label
+                    Text(
+                      "Current Readings",
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black87,
                       ),
-                      _buildSensorRow(
-                        "Nitrogen",
-                        widget.nitrogen ?? "?",
-                        "assets/nutrients.png",
-                        suffix: "mg/kg",
-                        isInRange: (40 <= nitrogenValue && nitrogenValue <= 60),
+                    ),
+                    SizedBox(height: 15),
+
+                    // Stats Grid
+                    GridView.count(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 15,
+                      mainAxisSpacing: 15,
+                      childAspectRatio: 1.5,
+                      children: [
+                        _buildStatCard(
+                            "Temperature",
+                            "${sensorData['temperature']}°C",
+                            Icons.thermostat,
+                            Colors.orange),
+                        _buildStatCard("Humidity", "${sensorData['humidity']}%",
+                            Icons.water_drop, Colors.blue),
+                        _buildStatCard(
+                            "Soil Moisture",
+                            "${sensorData['soil_moisture']}%",
+                            Icons.grass,
+                            Colors.green),
+                        _buildStatCard(
+                            "Nitrogen",
+                            "${sensorData['nitrogen']} mg/kg",
+                            Icons.science,
+                            Colors.purple),
+                      ],
+                    ),
+                    SizedBox(height: 25),
+
+                    // Recommendations Section
+                    Container(
+                      padding: EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                        color: Color(0xFF8EAC50),
+                        borderRadius: BorderRadius.circular(25),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Color(0xFF8EAC50).withOpacity(0.3),
+                            spreadRadius: 2,
+                            blurRadius: 10,
+                            offset: Offset(0, 5),
+                          ),
+                        ],
                       ),
-                      _buildSensorRow(
-                        "Phosphorus",
-                        widget.phosphorous ?? "?",
-                        "assets/nutrients.png",
-                        suffix: "mg/kg",
-                        isInRange:
-                            (30 <= phosphorusValue && phosphorusValue <= 50),
-                      ),
-                      _buildSensorRow(
-                        "Potassium",
-                        widget.potassium ?? "?",
-                        "assets/nutrients.png",
-                        suffix: "mg/kg",
-                        isInRange:
-                            (40 <= potassiumValue && potassiumValue <= 70),
-                      ),
-                      SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.035),
-                      Row(
+                      child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
-                            'Recommendations',
-                            style: TextStyle(
-                              fontSize:
-                                  MediaQuery.of(context).size.width * 0.07,
-                              fontWeight: FontWeight.bold,
-                            ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "AI Analysis",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              SizedBox(height: 5),
+                              Text(
+                                "3 New Recommendations",
+                                style: TextStyle(
+                                  color: Colors.white.withOpacity(0.9),
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ],
                           ),
                           ElevatedButton(
                             onPressed: () {
@@ -161,141 +184,71 @@ class _SensorDetailsState extends State<SensorDetails> {
                               );
                             },
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: Color(0xFF8EAC50),
+                              backgroundColor: Colors.white,
+                              foregroundColor: Color(0xFF8EAC50),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15),
+                              ),
                             ),
-                            child: Text("See More"),
+                            child: Text("View All"),
                           ),
                         ],
                       ),
-                      SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.035),
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(20),
-                        child: Container(
-                          height: MediaQuery.of(context).size.height * 0.25,
-                          width: MediaQuery.of(context).size.width * 0.9,
-                          decoration: BoxDecoration(
-                            color: Color(0xFFFAE392),
-                          ),
-                          child: Image.asset(
-                            'assets/tomatoes.jpg',
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.035),
-                    ],
-                  ),
+                    ),
+                    SizedBox(height: 20),
+                  ],
                 ),
-              ],
+              ),
             ),
-          ),
-        ],
-      ),
     );
   }
 
-  Widget _buildSensorRow(String label, String value, String iconPath,
-      {String? suffix, bool isInRange = true}) {
-    return Padding(
-      padding:
-          EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.02),
-      child: Row(
-        children: [
-          Image.asset(iconPath, height: 24),
-          SizedBox(width: 11),
-          Text(
-            label,
-            style: TextStyle(
-              color: isInRange ? Colors.black : Colors.red,
-              fontSize: MediaQuery.of(context).size.width * 0.05,
-            ),
+  Widget _buildStatCard(
+      String title, String value, IconData icon, Color color) {
+    return Container(
+      padding: EdgeInsets.all(15),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.05),
+            spreadRadius: 2,
+            blurRadius: 5,
           ),
-          Spacer(),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Row(
+            children: [
+              Icon(icon, color: color, size: 20),
+              SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  title,
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: Colors.grey[600],
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: 8),
           Text(
             value,
             style: TextStyle(
-              color: isInRange ? Colors.black : Colors.red,
-              fontSize: MediaQuery.of(context).size.width * 0.05,
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: Colors.black87,
             ),
           ),
-          if (suffix != null) ...[
-            SizedBox(width: 11),
-            Text(
-              suffix,
-              style: TextStyle(
-                color: isInRange ? Colors.black : Colors.red,
-                fontSize: MediaQuery.of(context).size.width * 0.05,
-              ),
-            ),
-          ],
         ],
       ),
     );
   }
-}
-
-class MapSD extends StatelessWidget {
-  const MapSD({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(
-        horizontal: MediaQuery.of(context).size.height * 0.02,
-      ),
-      child: Container(
-        height: MediaQuery.of(context).size.height * 0.25,
-        width: MediaQuery.of(context).size.width * 0.9,
-        child: Stack(
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(20),
-              child: GoogleMap(
-                initialCameraPosition: CameraPosition(
-                  target: LatLng(46.77945, 23.61126),
-                  zoom: 10.0,
-                ),
-                mapType: MapType.satellite,
-                markers: _createMarkers(),
-              ),
-            ),
-            Positioned(
-              top: 10,
-              right: 10,
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => MapScreen(),
-                    ),
-                  );
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0xFF8EAC50),
-                ),
-                child: Text('View map'),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-Set<Marker> _createMarkers() {
-  return {
-    Marker(
-      markerId: MarkerId('marker1'),
-      position: LatLng(46.7514415, 23.5757458),
-      infoWindow: InfoWindow(title: 'Marker 1'),
-    ),
-    Marker(
-      markerId: MarkerId('marker2'),
-      position: LatLng(46.75129, 23.5759646),
-      infoWindow: InfoWindow(title: 'Marker 2'),
-    ),
-  };
 }
