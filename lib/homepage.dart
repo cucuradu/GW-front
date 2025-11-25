@@ -6,6 +6,9 @@ import 'package:flutter/services.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:gwfront/services/weather_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:gwfront/services/ml_prediction_service.dart';
+import 'package:gwfront/widgets/smart_recommendation_card.dart';
+import 'package:gwfront/widgets/skeleton_loader.dart';
 
 class Homepage extends StatefulWidget {
   final Function(int) onNavigate;
@@ -20,14 +23,18 @@ class _HomepageState extends State<Homepage> {
   double _temp = 0;
   double _humidity = 0;
   bool _loadingWeather = true;
+  bool _loadingRecs = true;
 
   bool _isCelsius = true;
+  final _mlService = MLPredictionService();
+  List<SmartRecommendation> _recommendations = [];
 
   @override
   void initState() {
     super.initState();
     _loadSettings();
     _fetchWeatherData();
+    _loadRecommendations();
   }
 
   Future<void> _loadSettings() async {
@@ -53,6 +60,30 @@ class _HomepageState extends State<Homepage> {
       print("Error fetching weather for homepage: $e");
       setState(() {
         _loadingWeather = false;
+      });
+    }
+  }
+
+  Future<void> _loadRecommendations() async {
+    try {
+      // Simulate sensor data - in real app, fetch from API
+      final recs = _mlService.generateRecommendations(
+        sensorData: {
+          'moisture': 28.0,
+          'temperature': _temp > 0 ? _temp : 25.0,
+          'nitrogen': 45.0,
+        },
+        todayWeather: null, // Can integrate with weather forecast
+      );
+
+      setState(() {
+        _recommendations = recs;
+        _loadingRecs = false;
+      });
+    } catch (e) {
+      print("Error loading recommendations: $e");
+      setState(() {
+        _loadingRecs = false;
       });
     }
   }
@@ -130,6 +161,15 @@ class _HomepageState extends State<Homepage> {
                   isCelsius: _isCelsius,
                 ),
                 SizedBox(height: 30),
+
+                // Smart Recommendations
+                if (_loadingRecs)
+                  SkeletonRecommendation()
+                else if (_recommendations.isNotEmpty)
+                  SmartRecommendationsCarousel(
+                    recommendations: _recommendations,
+                  ),
+                if (_recommendations.isNotEmpty) SizedBox(height: 30),
 
                 // Critical Insights Section
                 _buildCriticalInsights(context),
