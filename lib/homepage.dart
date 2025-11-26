@@ -66,6 +66,7 @@ class _HomepageState extends State<Homepage> {
 
   Future<void> _loadRecommendations() async {
     try {
+      print('🔍 DEBUG: Loading recommendations...');
       // Simulate sensor data - in real app, fetch from API
       final recs = _mlService.generateRecommendations(
         sensorData: {
@@ -76,12 +77,13 @@ class _HomepageState extends State<Homepage> {
         todayWeather: null, // Can integrate with weather forecast
       );
 
+      print('✅ DEBUG: Got ${recs.length} recommendations');
       setState(() {
         _recommendations = recs;
         _loadingRecs = false;
       });
     } catch (e) {
-      print("Error loading recommendations: $e");
+      print("❌ ERROR loading recommendations: $e");
       setState(() {
         _loadingRecs = false;
       });
