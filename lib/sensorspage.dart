@@ -145,8 +145,8 @@ class _Sensors extends State<Sensors> {
 
   Future<void> _onRefresh() async {
     HapticFeedbackUtil.light();
-    await getData();
-    await getUserData();
+    getData();
+    getUserData();
     _refreshController.refreshCompleted();
     await HapticFeedbackUtil.success();
   }
